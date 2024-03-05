@@ -11,11 +11,15 @@
         "laravel/framework": "^10.10",
         "laravel/jetstream": "^4.2",
         "laravel/sanctum": "^3.3",
+        "laravel/scout": "^10.8",
         "laravel/tinker": "^2.8",
+        "spatie/laravel-query-builder": "^5.8",
+        "spatie/laravel-tags": "^4.6",
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
+        "itsgoingd/clockwork": "^5.2",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
         "mockery/mockery": "^1.4.4",

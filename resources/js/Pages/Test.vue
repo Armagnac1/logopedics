@@ -1,0 +1,27 @@
+<script setup>
+import AppLayout from '@/Layouts/AppLayout.vue';
+import LargeCalendar from '@/Components/LargeCalendar.vue';
+import { JitsiMeeting } from "@jitsi/vue-sdk";
+import Card from '@/Components/Card.vue';
+
+const props = defineProps({
+    lessons: Array
+})
+
+</script>
+
+<template>
+    <AppLayout title="Calendar">
+        <Card class="grid place-items-center grow">
+            <div class="grow">
+                <JitsiMeeting class="w-9"
+                              :domain="'meet.logopedics.buzz'"
+                              :room-name="'Встреча'"
+                              lang="ru"
+                />
+            </div>
+
+        </Card>
+
+    </AppLayout>
+</template>

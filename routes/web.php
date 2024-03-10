@@ -37,6 +37,7 @@ Route::middleware([
         return Inertia::render('Test');
     })->name('test');
     Route::resource('pupil', \App\Http\Controllers\PupilController::class);
+    Route::resource('media', \App\Http\Controllers\MediaController::class)->parameters(['media' => 'media']);
     Route::resource('learning_material', \App\Http\Controllers\LearningMaterialController::class);
     Route::resource('lesson', \App\Http\Controllers\LessonController::class);
     Route::resource('calendar', \App\Http\Controllers\CalendarController::class);

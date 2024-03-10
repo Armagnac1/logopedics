@@ -13,7 +13,7 @@ class LearningMaterialPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -21,7 +21,7 @@ class LearningMaterialPolicy
      */
     public function view(User $user, LearningMaterial $learningMaterial): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -35,9 +35,11 @@ class LearningMaterialPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, LearningMaterial $learningMaterial): bool
+    public function update(User $user, LearningMaterial $learningMaterial): Response
     {
-        //
+        return $learningMaterial->creator_user_id === $user->id
+            ? Response::allow()
+            : Response::deny('You are not allowed to update this learning material.');
     }
 
     /**

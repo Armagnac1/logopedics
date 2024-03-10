@@ -9,25 +9,16 @@ use Inertia\Inertia;
 
 class LessonController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->authorizeResource(Lesson::class, 'lesson');
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Inertia::render('Lesson/Index', [
-            'lessons' => Lesson::query()
-                ->with('pupil')
-                ->paginate(20)
-                ->through(function ($item) {
-                    return [
-                        'id' => $item->id,
-                        'title' => $item->title,
-                        'start_at' => $item->start_at,
-                        'pupil' => $item->pupil
-                    ];
-                })
-
-        ]);
     }
 
     /**
@@ -35,7 +26,7 @@ class LessonController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**

@@ -1,7 +1,6 @@
 <script setup>
 import { Link } from "@inertiajs/vue3";
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { dayjs } from '@/translation.config.js';
 import Badge from '@/Components/Badge.vue';
 
 defineProps({

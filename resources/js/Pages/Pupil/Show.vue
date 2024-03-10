@@ -1,34 +1,41 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { dayjs } from '@/translation.config.js';
-import { Link } from '@inertiajs/vue3';
 import BackButton from '@/Components/BackButton.vue';
+import Card from '@/Components/Card.vue';
+import LearningMaterialItem from '@/Components/LearningMaterial/LearningMaterialItem.vue';
 
 
-
-defineProps({
+const props = defineProps({
     pupil: Object
 })
+
 </script>
 
 <template>
-    <AppLayout :title="pupil.full_name">
+    <AppLayout title="Calendar">
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            <h2 class="font-semibold text-xl L dark:text-gray-200 leading-tight">
                 <BackButton/>
                 {{ pupil.full_name }}
             </h2>
         </template>
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white light:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
-                    <div v-for="lesson in pupil.lessons" key="lesson.id">
-                        <Link :href="route('lesson.show', lesson.id)">
-                            {{ dayjs(lesson.start_at).format('LLL') }} - {{ lesson.title }}
-                        </Link>
-                    </div>
+        <div class="grid grid-cols-4 gap-4">
+            <Card class="grid row-span-1 col-span-1 place-items-center">
+                <h1 class="text-2xl font-bold">{{ pupil.full_name }}</h1>
+            </Card>
+            <Card class="row-span-1 col-span-3">
+
+            </Card>
+            <Card class="row-span-2 col-span-1">
+                <h1 class="text-2xl font-bold">Использованные материалы</h1>
+                <div v-for="material in pupil.lessons.map(i=>i.learning_materials).flat()" :key="material.id">
+                    <LearningMaterialItem :material="material"/>
                 </div>
-            </div>
+            </Card>
+            <Card class="col-span-3">
+            </Card>
+            <Card class="col-span-3">
+            </Card>
         </div>
     </AppLayout>
 </template>

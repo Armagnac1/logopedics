@@ -14,10 +14,12 @@ class CalendarController extends Controller
      */
     public function index()
     {
+        $tutorId = auth()->user()->tutor->id;
+        $lessons = Lesson::whereHas('pupil', function ($query) use ($tutorId) {
+            $query->where('tutor_id', $tutorId);
+        })->with('pupil')->get();
         return Inertia::render('Calendar', [
-            'lessons' => Lesson::query()
-                ->with('pupil')
-                ->get()
+            'lessons' => $lessons
         ]);
     }
 

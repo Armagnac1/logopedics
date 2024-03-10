@@ -1,10 +1,12 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
 import Banner from '@/Components/Banner.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
+import SearchInput from '@/Layouts/SearchInput.vue';
+import { HSStaticMethods } from 'preline/preline';
 
 defineProps({
     title: String
@@ -23,6 +25,11 @@ const switchToTeam = (team) => {
 const logout = () => {
     router.post(route('logout'));
 };
+
+onMounted(() => {
+    HSStaticMethods.autoInit();
+});
+
 </script>
 
 <template>
@@ -54,15 +61,7 @@ const logout = () => {
                 </div>
 
                 <div class="hidden sm:block">
-                    <label for="icon" class="sr-only">Search</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-4">
-                            <font-awesome-icon icon="fa-solid fa-search"/>
-                        </div>
-                        <input type="text" id="icon" name="icon"
-                               class="py-2 px-4 ps-11 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
-                               placeholder="Поиск">
-                    </div>
+                    <SearchInput/>
                 </div>
 
                 <div class="flex flex-row items-center justify-end gap-2">
@@ -73,7 +72,7 @@ const logout = () => {
                     <div class="hs-dropdown relative inline-flex [--placement:bottom-right]">
                         <button id="hs-dropdown-with-header" type="button"
                                 class="w-[2.375rem] h-[2.375rem] inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
-                            <img class="inline-block size-[38px] rounded-full ring-2 ring-white dark:ring-gray-800"
+                            <img draggable="false"  class="inline-block size-[38px] rounded-full ring-2 ring-white dark:ring-gray-800"
                                  :src="$page.props.auth.user.profile_photo_path"
                                  alt="Image Description">
                         </button>
@@ -86,7 +85,7 @@ const logout = () => {
                                     {{ $page.props.auth.user.name }}</p>
                             </div>
                             <div class="mt-2 py-2">
-                                <DropdownLink as="button" :href="route('profile.show')">
+                                <DropdownLink as="a" :href="route('profile.show')">
                                     Профиль
                                 </DropdownLink>
 
@@ -141,19 +140,16 @@ const logout = () => {
 
         <nav class="hs-accordion-group p-6 w-full flex flex-col flex-wrap" data-hs-accordion-always-open>
             <ul class="space-y-1.5">
-                <NavLink draggable="false" :href="route('dashboard')" :active="route().current('dashboard')">
-                    Сводка
-                </NavLink>
-                <NavLink draggable="false":href="route('lesson.index')" :active="route().current('lesson.index')">
-                    Уроки
-                </NavLink>
-                <NavLink draggable="false" :href="route('pupil.index')" :active="route().current('pupil.index')">
+<!--                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">-->
+<!--                    Сводка-->
+<!--                </NavLink>-->
+                <NavLink :href="route('pupil.index')" :active="route().current('pupil.index')">
                     Ученики
                 </NavLink>
-                <NavLink draggable="false" :href="route('calendar.index')" :active="route().current('calendar.index')">
+                <NavLink :href="route('calendar.index')" :active="route().current('calendar.index')">
                     Календарь
                 </NavLink>
-                <NavLink draggable="false" :href="route('test')" :active="route().current('test')">
+                <NavLink :href="route('test')" :active="route().current('test')">
                     Видеоконференция
                 </NavLink>
             </ul>

@@ -1,17 +1,18 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import LargeCalendar from '@/Components/LargeCalendar.vue';
+import Card from '@/Components/Card.vue';
 
 const props = defineProps({
     lessons: Array
 })
-console.log(props.lessons);
 const events = props.lessons.map((lesson, key) => {
     return {
-        title: lesson.title, date: lesson.start_at
+        title: lesson.title,
+        date: lesson.start_at,
+        url: route('lesson.show', lesson.id)
     }
 })
-console.log(events);
 </script>
 
 <template>
@@ -21,12 +22,8 @@ console.log(events);
                 Calendar
             </h2>
         </template>
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white light:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
-                    <LargeCalendar :events="events"></LargeCalendar>
-                </div>
-            </div>
-        </div>
+            <Card class="place-items-center">
+                <LargeCalendar :events="events"></LargeCalendar>
+            </Card>
     </AppLayout>
 </template>

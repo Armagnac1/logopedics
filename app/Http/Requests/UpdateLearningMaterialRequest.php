@@ -26,7 +26,8 @@ class UpdateLearningMaterialRequest extends FormRequest
         return [
             'tags' => ['array'],
             'text' => ['string', 'nullable'],
-            'title' => ['string']
+            'title' => ['string'],
+            'mediaIds' => ['array'],
         ];
     }
 }

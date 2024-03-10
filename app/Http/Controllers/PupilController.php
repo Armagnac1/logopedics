@@ -12,11 +12,13 @@ use Inertia\Inertia;
 
 class PupilController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+        $tutorId = auth()->user()->tutor->id;
         $pupilsIds = Pupil::search($request->search)->keys();
         $upcomingLessons = \DB::table('lessons')
             ->selectRaw('pupil_id, MIN(start_at) as start_at')
@@ -27,6 +29,7 @@ class PupilController extends Controller
             ->joinSub($upcomingLessons, 'lessons', function ($join) {
                 $join->on('pupils.id', '=', 'lessons.pupil_id');
             })
+            ->where('tutor_id', $tutorId)
             ->with(['lessons', 'user'])
             ->orderBy('lessons.start_at', 'ASC')
             ->paginate(20)->withQueryString();
@@ -58,7 +61,7 @@ class PupilController extends Controller
     public function show(Pupil $pupil)
     {
         return Inertia::render('Pupil/Show', [
-            'pupil' => $pupil->load('lessons')
+            'pupil' => $pupil->load(['lessons.learningMaterials.tags'])
         ]);
     }
 

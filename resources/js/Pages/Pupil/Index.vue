@@ -15,7 +15,6 @@ const props = defineProps({
                 Ученики
             </h2>
         </template>
-        <!-- Card -->
         <PupilTable :pupils="pupils" :filters="filters"/>
     </AppLayout>
 </template>

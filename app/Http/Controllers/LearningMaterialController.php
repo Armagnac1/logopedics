@@ -29,7 +29,9 @@ class LearningMaterialController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('LearningMaterial/CreateShow', [
+            'tags' => Tag::getWithType('learning_material')
+        ]);
     }
 
     /**
@@ -37,7 +39,18 @@ class LearningMaterialController extends Controller
      */
     public function store(StoreLearningMaterialRequest $request)
     {
-        //
+        $learningMaterial = new LearningMaterial($request->validated());
+        $learningMaterial->creator_user_id = auth()->id();
+        $learningMaterial->save();
+        $learningMaterial->syncTags(collect($request->tags)->pluck('name')->toArray());
+        Media::whereIn('id', $request->mediaIds)
+            ->get()
+            ->each(function ($media) use ($learningMaterial) {
+                $media->model_id = $learningMaterial->id;
+                $media->model_type = LearningMaterial::class;
+                $media->save();
+            });
+        return redirect()->route('learning_material.show', $learningMaterial);
     }
 
     /**
@@ -53,9 +66,9 @@ class LearningMaterialController extends Controller
                 'name' => $media->name
             ];
         });
-        return Inertia::render('LearningMaterial/Show', [
+        return Inertia::render('LearningMaterial/CreateShow', [
             'learning_material' => $learningMaterialWithLoaded,
-            'usedForPupils' => $learningMaterial->lessons->pluck('pupil')->unique('id'),
+            'usedForPupils' => $learningMaterial->lessons->pluck('pupil')->unique('id')->values(),
             'tags' => Tag::getWithType('learning_material')
         ]);
     }

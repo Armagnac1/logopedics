@@ -13,19 +13,26 @@ use Inertia\Inertia;
 class PupilController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->authorizeResource(Pupil::class, 'pupil');
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
         $tutorId = auth()->user()->tutor->id;
-        $pupilsIds = Pupil::search($request->search)->keys();
         $upcomingLessons = \DB::table('lessons')
             ->selectRaw('pupil_id, MIN(start_at) as start_at')
             ->where('status', LessonStatus::SCHEDULED)
             ->where('lessons.start_at', '>', now())
             ->groupByRaw(1);
-        $pupilsOrdered = Pupil::whereIn('pupils.id', $pupilsIds)
+        $pupilsOrdered = Pupil::when($request->search, function ($query) use ($request) {
+            $pupilsIds = Pupil::search($request->search)->keys();
+            $query->whereIn('pupils.id', $pupilsIds);
+        })
             ->joinSub($upcomingLessons, 'lessons', function ($join) {
                 $join->on('pupils.id', '=', 'lessons.pupil_id');
             })
@@ -44,7 +51,7 @@ class PupilController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Pupil/CreateShow');
     }
 
     /**
@@ -52,7 +59,11 @@ class PupilController extends Controller
      */
     public function store(StorePupilRequest $request)
     {
-        //
+        $pupil = new Pupil($request->validated());
+        $pupil->tutor_id = auth()->user()->tutor->id;
+        $pupil->save();
+        $request->session()->flash('flash.banner', 'Новый ученик создан');
+        $request->session()->flash('flash.bannerStyle', 'success');
     }
 
     /**
@@ -60,7 +71,7 @@ class PupilController extends Controller
      */
     public function show(Pupil $pupil)
     {
-        return Inertia::render('Pupil/Show', [
+        return Inertia::render('Pupil/CreateShow', [
             'pupil' => $pupil->load(['lessons.learningMaterials.tags'])
         ]);
     }

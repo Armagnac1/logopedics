@@ -20,7 +20,7 @@ class PupilFactory extends Factory
         $gender = fake()->randomElement(['male', 'female']);
 
         return [
-            'user_id' => User::factory(),
+            'user_id' => User::factory()->create()->assignRole('pupil')->id,
             'first_name' => fake()->firstName($gender),
             'last_name' => fake()->lastName($gender)
         ];

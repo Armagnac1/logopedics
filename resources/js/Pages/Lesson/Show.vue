@@ -6,6 +6,8 @@ import LessonTimelineSection from '@/Components/Lesson/LessonTimelineSection.vue
 import Card from '@/Components/Card.vue';
 import LessonTitleCard from '@/Components/Lesson/LessonTitleCard.vue';
 import LessonCommentsSection from '@/Components/Lesson/LessonCommentsSection.vue';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
+import SecondaryButton from '@/Components/SecondaryButton.vue';
 
 const props = defineProps({
     pupilLessons: Array,
@@ -38,6 +40,10 @@ const props = defineProps({
             </Card>
             <Card class="col-span-3">
                 <LearningMaterialSection :materials="lesson.learning_materials"/>
+                <PrimaryButton class="mt-4" href="{{ route('lesson.learning_material.create', lesson.id) }}">Добавить
+                    учебный материал
+                </PrimaryButton>
+                <SecondaryButton>dasdsad</SecondaryButton>
             </Card>
         </div>
     </AppLayout>

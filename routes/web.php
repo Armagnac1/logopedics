@@ -18,7 +18,7 @@ use Inertia\Inertia;
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
+        //'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
@@ -29,10 +29,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
-
+    Route::redirect('/', '/calendar')->name('main');
     Route::get('/test', function () {
         return Inertia::render('Test');
     })->name('test');
@@ -41,4 +38,9 @@ Route::middleware([
     Route::resource('learning_material', \App\Http\Controllers\LearningMaterialController::class);
     Route::resource('lesson', \App\Http\Controllers\LessonController::class);
     Route::resource('calendar', \App\Http\Controllers\CalendarController::class);
+    Route::name('admin.')->prefix('admin')->controller(\App\Http\Controllers\AdminController::class)->group(function () {
+        Route::get('/', 'index')->name('index')->middleware(['can:login as others']);
+        Route::get('login-as/{user}', 'loginAs')->name('login-as')->middleware(['can:login as others']);
+        Route::get('impersonate-back', 'impersonateBack')->name('impersonate-back');
+    });
 });

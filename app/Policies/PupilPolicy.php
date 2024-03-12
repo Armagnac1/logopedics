@@ -29,7 +29,7 @@ class PupilPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->can('create/change pupil');
     }
 
     /**

@@ -13,18 +13,44 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('users')->insert([
-            'name' => 'Dmitrii',
-            'email' => 'crack7747@gmail.com',
-            'password' => bcrypt('qwe123rty'),
-            'profile_photo_path' => 'https://i.pravatar.cc/300?u=1'
-        ]);
+        $user = new User();
+        $user->name = 'Dmitrii';
+        $user->email = 'crack7747@gmail.com';
+        $user->password = bcrypt('qwe123rty');
+        $user->profile_photo_path = 'https://i.pravatar.cc/300?u=1';
+        $user->assignRole('superadmin');
+        $user->save();
 
-        DB::table('users')->insert([
-            'name' => 'user2',
-            'email' => 'user2@email.com',
-            'password' => bcrypt('password'),
-            'profile_photo_path' => 'https://i.pravatar.cc/300?u=2'
-        ]);
+        $user = new User();
+        $user->name = 'admin';
+        $user->email = 'admin@test.com';
+        $user->password = bcrypt('test');
+        $user->profile_photo_path = 'https://i.pravatar.cc/300?u=2';
+        $user->assignRole('superadmin');
+        $user->save();
+
+        $user = new User();
+        $user->name = 'tutor';
+        $user->email = 'tutor@test.com';
+        $user->password = bcrypt('test');
+        $user->profile_photo_path = 'https://i.pravatar.cc/300?u=3';
+        $user->assignRole('tutor');
+        $user->save();
+
+        $user = new User();
+        $user->name = 'tutor-seller';
+        $user->email = 'tutor-seller@test.com';
+        $user->password = bcrypt('test');
+        $user->profile_photo_path = 'https://i.pravatar.cc/300?u=4';
+        $user->assignRole('tutor-seller');
+        $user->save();
+
+        $user = new User();
+        $user->name = 'pupil';
+        $user->email = 'pupil@test.com';
+        $user->password = bcrypt('test');
+        $user->profile_photo_path = 'https://i.pravatar.cc/300?u=5';
+        $user->assignRole('pupil');
+        $user->save();
     }
 }

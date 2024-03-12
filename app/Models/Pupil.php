@@ -16,6 +16,7 @@ class Pupil extends Model
     use Searchable;
 
     protected $appends = ['full_name'];
+    protected $fillable = ['first_name', 'last_name'];
 
     #[SearchUsingPrefix(['first_name', 'last_name'])]
     public function toSearchableArray(): array

@@ -22,14 +22,15 @@ const classes = computed(() => {
             <div
                 :class="classes">
                 <div class="grow truncate">
-                    <p class="block truncate dark:text-neutral-200">
-                        {{ lesson.title }}
-                    </p>
+                    <div class="block truncate dark:text-neutral-200">
+                        <span v-if="lesson.title">{{ lesson.title }}</span>
+                        <span v-else class="text-gray-400 font-normal italic">Без названия</span>
+                    </div>
                     <p v-if="lesson.start_at" class="block truncate text-gray-400 dark:text-neutral-500">
                         {{ dayjs(lesson.start_at).format('LLL') }}
                     </p>
                     <p v-else class="block truncate text-gray-400 dark:text-neutral-500">
-                        Не запланирован
+                        Не в расписании
                     </p>
                 </div>
             </div>

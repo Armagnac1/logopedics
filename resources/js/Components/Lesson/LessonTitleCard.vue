@@ -1,19 +1,29 @@
 <script setup>
+import EditableLabel from '@/Components/EditableLabel.vue';
+import EditableTimepicker from '@/Components/EditableTimepicker.vue';
 import { dayjs } from '../../translation.config.js';
 
 const props = defineProps({
-    lesson: Object
+    lesson: Object,
+    editable: Boolean
 })
 </script>
 
 <template>
-    <p class="block truncate dark:text-neutral-200">
-        {{ lesson.title }}
-    </p>
-    <p v-if="lesson.start_at" class="block truncate text-gray-400 dark:text-neutral-500">
-        {{ dayjs(lesson.start_at).format('LLL') }}
-    </p>
-    <p v-else class="block truncate text-gray-400 dark:text-neutral-500">
-        Не запланирован
-    </p>
+    <div>
+        <div class="block font-semibold truncate">
+            <EditableLabel v-if="editable" v-model="lesson.title" :route_url="route('lesson.update', lesson.id)"
+                           field="title"/>
+            <div v-else>
+                <span v-if="lesson.title">{{ lesson.title }}</span>
+                <span v-else class="text-gray-400 font-normal italic">Без названия</span>
+            </div>
+        </div>
+        <p class="block truncate text-gray-400 dark:text-neutral-500">
+            <EditableTimepicker v-if="editable" v-model="lesson.start_at" :route_url="route('lesson.update', lesson.id)"
+                                field="start_at"/>
+            <span v-else>{{ lesson.start_at ? dayjs(lesson.start_at).format('D MMM, LT') : 'Не в расписании' }}</span>
+        </p>
+
+    </div>
 </template>

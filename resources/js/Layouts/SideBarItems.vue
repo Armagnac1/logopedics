@@ -1,12 +1,11 @@
 <script setup>
 import NavLink from '@/Components/NavLink.vue';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
-import { Link, usePage } from '@inertiajs/vue3';
+import { Link, } from '@inertiajs/vue3';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import {checkHasOneOfRoles} from '@/helpers.js';
 
-const page = usePage();
-const checkHasOneOfRoles = (roles) => {
-    return page.props.roles.some(r => roles.includes(r))
-}
+
 </script>
 
 
@@ -23,19 +22,20 @@ const checkHasOneOfRoles = (roles) => {
             <ul class="space-y-1.5">
                 <NavLink v-if="checkHasOneOfRoles(['superadmin','admin','tutor', 'tutor-seller'])"
                          :href="route('pupil.index')" :active="route().current('pupil.index')">
-                    Ученики
+                    <FontAwesomeIcon icon="fa-regular fa-user"/> Ученики
                 </NavLink>
                 <NavLink v-if="checkHasOneOfRoles(['superadmin','admin','tutor', 'tutor-seller'])"
                          :href="route('calendar.index')" :active="route().current('calendar.index')">
-                    Календарь
+                    <FontAwesomeIcon icon="fa-regular fa-calendar-check"/> Календарь
                 </NavLink>
-                <NavLink :href="route('test')" :active="route().current('test')">
-                    Видеоконференция
+                <NavLink v-if="checkHasOneOfRoles(['superadmin','admin','tutor', 'tutor-seller'])"
+                         :href="route('test')" :active="route().current('test')">
+                    <FontAwesomeIcon icon="fa-regular fa-eye"/> Видеоконференция
                 </NavLink>
                 <NavLink v-if="checkHasOneOfRoles(['superadmin', 'admin'])"
                          :href="route('admin.index')"
                          :active="route().current('admin.index')">
-                    Администрирование
+                    <FontAwesomeIcon icon="fa-regular fa-chess-king"/> Администрирование
                 </NavLink>
             </ul>
         </nav>

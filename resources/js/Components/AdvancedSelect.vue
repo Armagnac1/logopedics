@@ -1,18 +1,27 @@
 <script setup>
 import VueMultiselect from 'vue-multiselect';
-import { ref } from 'vue';
+import { nextTick, ref } from 'vue';
 
 const props = defineProps({
     modelValue: Object,
     options: Array
 })
 
-const ss = (e) => console.log(e)
+let input = ref(null);
+defineExpose({
+    focus: () => {
+        nextTick().then(() => {
+            input.value.$el.focus()
+        })
+    }
+});
 </script>
 
 <template>
     <VueMultiselect
-        select-label="Нажмите Enter чтобы выбрать"
+        ref="input"
+        selectLabel="Нажмите Enter чтобы выбрать"
+        selectedLabel="Выбрано"
         deselectLabel="Нажмите Enter чтобы убрать"
         placeholder="Выберите.."
         @update:model-value="$emit('update:modelValue', $event)"

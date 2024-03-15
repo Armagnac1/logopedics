@@ -3,6 +3,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import LargeCalendar from '@/Components/LargeCalendar.vue';
 import { JitsiMeeting } from "@jitsi/vue-sdk";
 import Card from '@/Components/Card.vue';
+import TopBarLayout from '@/Layouts/TopBarLayout.vue';
 
 const props = defineProps({
     lessons: Array
@@ -11,7 +12,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <AppLayout title="Calendar">
+    <TopBarLayout title="Calendar">
         <Card class="grid place-items-center grow">
             <div class="grow">
                 <JitsiMeeting class="w-9"
@@ -23,5 +24,5 @@ const props = defineProps({
 
         </Card>
 
-    </AppLayout>
+    </TopBarLayout>
 </template>

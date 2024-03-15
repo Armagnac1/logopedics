@@ -18,10 +18,11 @@ class DatabaseSeeder extends Seeder
     {
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
         $this->call([
+            CitySeeder::class,
             RoleSeeder::class,
             UserSeeder::class,
             TagsSeeder::class,
-            LearningMaterialSeeder::class,
+            TestLearningMaterialSeeder::class,
             TutorSeeder::class,
             PupilSeeder::class,
             LessonSeeder::class,

@@ -11,6 +11,9 @@ watchEffect(async () => {
     style.value = page.props.jetstream.flash?.bannerStyle || 'success';
     message.value = page.props.jetstream.flash?.banner || '';
     show.value = true;
+    setTimeout(() => {
+        show.value = false;
+    }, 5000);
 });
 </script>
 

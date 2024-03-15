@@ -3,6 +3,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import { Link } from "@inertiajs/vue3";
 import Paginator from '@/Components/Paginator.vue';
 import Card from '@/Components/Card.vue';
+import TopBarLayout from '@/Layouts/TopBarLayout.vue';
 
 defineProps({
     lessons: Object
@@ -10,7 +11,7 @@ defineProps({
 </script>
 
 <template>
-    <AppLayout title="Уроки">
+    <TopBarLayout title="Уроки">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 Уроки
@@ -19,10 +20,10 @@ defineProps({
 
         <Card>
             <div v-for="lesson in lessons.data" :key="lesson.id">
-                <Link :href="route('lesson.show', lesson.id)">{{ lesson.title }} - {{ lesson.pupil.first_name }}</Link>
+                <Link :href="route('lesson.show', lesson.id)">{{ lesson.title }} - {{ lesson.pupil.full_name }}</Link>
             </div>
             <Paginator :links="lessons.links"></Paginator>
         </Card>
 
-    </AppLayout>
+    </TopBarLayout>
 </template>

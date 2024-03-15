@@ -9,6 +9,7 @@
         "@inertiajs/vue3": "^1.0.0",
         "@tailwindcss/forms": "^0.5.2",
         "@tailwindcss/typography": "^0.5.2",
+        "@types/node": "^20.11.30",
         "@vitejs/plugin-vue": "^4.5.0",
         "autoprefixer": "^10.4.7",
         "axios": "^1.6.4",
@@ -20,6 +21,7 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-svg-core": "^6.5.1",
+        "@fortawesome/free-regular-svg-icons": "^6.5.1",
         "@fortawesome/free-solid-svg-icons": "^6.5.1",
         "@fortawesome/vue-fontawesome": "^3.0.6",
         "@fullcalendar/core": "^6.1.11",
@@ -27,10 +29,15 @@
         "@fullcalendar/interaction": "^6.1.11",
         "@fullcalendar/timegrid": "^6.1.11",
         "@fullcalendar/vue3": "^6.1.11",
+        "@headlessui/vue": "^1.7.19",
         "@jitsi/vue-sdk": "^1.0.4",
+        "@vuepic/vue-datepicker": "^8.6.0",
         "dayjs": "^1.11.10",
         "lodash": "^4.17.21",
         "preline": "^2.0.3",
         "vue-multiselect": "^3.0.0-beta.3"
+    },
+    "optionalDependencies": {
+        "@rollup/rollup-linux-x64-gnu": "4.6.1"
     }
 }

@@ -39,7 +39,7 @@ class LearningMaterialPolicy
     {
         return $learningMaterial->creator_user_id === $user->id
             ? Response::allow()
-            : Response::deny('You are not allowed to update this learning material.');
+            : Response::deny('Нет доступа к редактированию материала');
     }
 
     /**

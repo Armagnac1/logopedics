@@ -21,8 +21,10 @@ class PupilFactory extends Factory
 
         return [
             'user_id' => User::factory()->create()->assignRole('pupil')->id,
-            'first_name' => fake()->firstName($gender),
-            'last_name' => fake()->lastName($gender)
+            'city_id' => $this->faker->numberBetween(1, 1000),
+            'lesson_duration' => $this->faker->randomElement([30, 40, 50, 60]),
+            'tutor_comments' => fake()->realText(200),
+            'full_name' => fake()->firstName($gender). ' ' . fake()->lastName($gender)
         ];
     }
 }

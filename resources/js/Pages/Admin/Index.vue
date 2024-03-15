@@ -3,6 +3,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import Paginator from '@/Components/Paginator.vue';
 import Card from '@/Components/Card.vue';
 import { Link } from '@inertiajs/vue3';
+import TopBarLayout from '@/Layouts/TopBarLayout.vue';
 
 defineProps({
     users: Object
@@ -10,7 +11,7 @@ defineProps({
 </script>
 
 <template>
-    <AppLayout title="Calendar">
+    <TopBarLayout title="Calendar">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 Администрирование
@@ -28,5 +29,5 @@ defineProps({
             </Link>
             <Paginator :links="users.links"></Paginator>
         </Card>
-    </AppLayout>
+    </TopBarLayout>
 </template>

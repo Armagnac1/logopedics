@@ -13,6 +13,7 @@ return new class extends Migration
 
             $table->json('name');
             $table->json('slug');
+            $table->string('model')->nullable();
             $table->string('type')->nullable();
             $table->integer('order_column')->nullable();
 

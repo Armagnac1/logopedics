@@ -11,6 +11,7 @@ import InputError from '@/Components/InputError.vue';
 import AdvancedSelect from '@/Components/AdvancedSelect.vue';
 import AttachedFiles from '@/Components/File/AttachedFiles.vue';
 import SmallLessonCard from '@/Components/Lesson/SmallLessonCard.vue';
+import TopBarLayout from '@/Layouts/TopBarLayout.vue';
 
 const props = defineProps({
     learning_material: Object,
@@ -44,7 +45,7 @@ const submit = () => {
 </script>
 
 <template>
-    <AppLayout :title="learning_material.title">
+    <TopBarLayout :title="learning_material.title">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 <BackButton/>
@@ -102,6 +103,5 @@ const submit = () => {
                 <SmallLessonCard v-for="lesson in learning_material.lessons" :key="lesson.id" :lesson="lesson"/>
             </Card>
         </div>
-    </AppLayout>
+    </TopBarLayout>
 </template>
-<style src="vue-multiselect/dist/vue-multiselect.css"></style>

@@ -14,8 +14,13 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('tutor_id')->nullable();
             $table->foreignId('user_id')->nullable();
-            $table->string('first_name');
-            $table->string('last_name');
+            $table->foreignId('city_id')->nullable();
+            $table->string('full_name');
+            $table->string('parent_name')->nullable();
+            $table->string('age')->nullable();
+            $table->string('time_zone')->nullable();  //integer?
+            $table->text('tutor_comments')->nullable();
+            $table->unsignedInteger('lesson_duration')->default(30);
             $table->timestamps();
         });
     }

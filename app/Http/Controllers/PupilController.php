@@ -6,7 +6,9 @@ use App\Enums\LessonStatus;
 use App\Http\Requests\StorePupilRequest;
 use App\Http\Requests\UpdatePupilRequest;
 use App\Http\Resources\PupilTableResource;
+use App\Models\Lesson;
 use App\Models\Pupil;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -33,13 +35,13 @@ class PupilController extends Controller
             $pupilsIds = Pupil::search($request->search)->keys();
             $query->whereIn('pupils.id', $pupilsIds);
         })
-            ->joinSub($upcomingLessons, 'lessons', function ($join) {
+            ->leftJoinSub($upcomingLessons, 'lessons', function ($join) {
                 $join->on('pupils.id', '=', 'lessons.pupil_id');
             })
             ->where('tutor_id', $tutorId)
             ->with(['lessons', 'user'])
             ->orderBy('lessons.start_at', 'ASC')
-            ->paginate(20)->withQueryString();
+            ->paginate(10)->withQueryString();
         return Inertia::render('Pupil/Index', [
             'pupils' => PupilTableResource::collection($pupilsOrdered),
             'filters' => $request->only(['search'])
@@ -61,9 +63,12 @@ class PupilController extends Controller
     {
         $pupil = new Pupil($request->validated());
         $pupil->tutor_id = auth()->user()->tutor->id;
+        //$pupil->
         $pupil->save();
+
         $request->session()->flash('flash.banner', 'Новый ученик создан');
         $request->session()->flash('flash.bannerStyle', 'success');
+        return redirect()->route('pupil.index');
     }
 
     /**
@@ -71,8 +76,13 @@ class PupilController extends Controller
      */
     public function show(Pupil $pupil)
     {
+        $pupil->load(['lessons.learningMaterials.tags', 'city']);
+        $pupil->setRelation('lessons', $pupil->lessons->sortBy([
+                fn(Lesson $a, Lesson $b) => strtotime($a['start_at']) <=> strtotime($b['start_at']),
+                fn(Lesson $a, Lesson $b) => $b['id'] <=> $a['id'],
+            ])->values());
         return Inertia::render('Pupil/CreateShow', [
-            'pupil' => $pupil->load(['lessons.learningMaterials.tags'])
+            'pupil' => $pupil
         ]);
     }
 
@@ -89,7 +99,10 @@ class PupilController extends Controller
      */
     public function update(UpdatePupilRequest $request, Pupil $pupil)
     {
-        //
+        $pupil->update($request->validated());
+        $request->session()->flash('flash.banner', 'Информация об ученике обновлена');
+        $request->session()->flash('flash.bannerStyle', 'success');
+        return redirect()->route('pupil.index');
     }
 
     /**

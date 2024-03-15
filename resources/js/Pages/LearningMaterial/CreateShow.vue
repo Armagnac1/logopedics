@@ -10,6 +10,8 @@ import TextInput from '@/Components/TextInput.vue';
 import InputError from '@/Components/InputError.vue';
 import AdvancedSelect from '@/Components/AdvancedSelect.vue';
 import AttachedFiles from '@/Components/File/AttachedFiles.vue';
+import TopBarLayout from '@/Layouts/TopBarLayout.vue';
+import DeleteEntityButton from '@/Components/DeleteEntityButton.vue';
 
 const props = defineProps({
     learning_material: Object,
@@ -43,7 +45,6 @@ const submit = () => {
     })).submit(props.learning_material ? 'put' : 'post',
         props.learning_material ? route('learning_material.update', props.learning_material.id) : route('learning_material.store'), {
             onSuccess: () => {
-                router.reload()
             }
         })
 }
@@ -51,7 +52,7 @@ const submit = () => {
 </script>
 
 <template>
-    <AppLayout :title="props.learning_material ? 'Редактирование учебного материала' : 'Создание учебного материала'">
+    <TopBarLayout :title="props.learning_material ? 'Редактирование учебного материала' : 'Создание учебного материала'">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 <BackButton/>
@@ -87,6 +88,11 @@ const submit = () => {
                         <AttachedFiles v-model="form.media"/>
                     </div>
                     <div class="flex justify-end items-center gap-x-2 pt-4 sm:px-7 border-t dark:border-gray-700">
+                        <template v-if="learning_material">
+
+                            <DeleteEntityButton :entityName="'материал'" :url="route('learning_material.destroy', learning_material.id)"></DeleteEntityButton>
+                        </template>
+
                         <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }"
                                        :disabled="form.processing">
                             Сохранить
@@ -107,6 +113,5 @@ const submit = () => {
                             <SmallLessonCard v-for="lesson in learning_material.lessons" :key="lesson.id" :lesson="lesson"/>
                         </Card>-->
         </div>
-    </AppLayout>
+    </TopBarLayout>
 </template>
-<style src="vue-multiselect/dist/vue-multiselect.css"></style>

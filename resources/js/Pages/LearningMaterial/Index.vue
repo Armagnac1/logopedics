@@ -2,6 +2,7 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Link } from "@inertiajs/vue3";
 import Paginator from '@/Components/Paginator.vue';
+import TopBarLayout from '@/Layouts/TopBarLayout.vue';
 
 defineProps({
     pupils: Object
@@ -9,7 +10,7 @@ defineProps({
 </script>
 
 <template>
-    <AppLayout title="Calendar">
+    <TopBarLayout title="Ученики">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 Ученики
@@ -25,5 +26,5 @@ defineProps({
                 </div>
             </div>
         </div>
-    </AppLayout>
+    </TopBarLayout>
 </template>

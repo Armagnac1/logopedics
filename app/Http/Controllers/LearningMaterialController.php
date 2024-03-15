@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreLearningMaterialRequest;
 use App\Http\Requests\UpdateLearningMaterialRequest;
 use App\Models\LearningMaterial;
+use App\Models\Lesson;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Tags\Tag;
@@ -19,9 +21,16 @@ class LearningMaterialController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if (!$request->inertia() && $request->expectsJson()) {
+            $lesson = Lesson::find($request->lessonId);
+            return response()->json([
+                'tags' => Tag::whereModel(LearningMaterial::class)->get(['id', 'name']),
+                'learning_materials' => LearningMaterial::with(['tags'])->get(['id', 'title']),
+                'usedMaterials' => $lesson->pupil->lessons->pluck('learningMaterials')->flatten()->pluck('id')->toArray()
+            ]);
+        }
     }
 
     /**
@@ -30,7 +39,7 @@ class LearningMaterialController extends Controller
     public function create()
     {
         return Inertia::render('LearningMaterial/CreateShow', [
-            'tags' => Tag::getWithType('learning_material')
+            'tags' => Tag::whereModel(LearningMaterial::class)->get()
         ]);
     }
 
@@ -50,6 +59,8 @@ class LearningMaterialController extends Controller
                 $media->model_type = LearningMaterial::class;
                 $media->save();
             });
+        $request->session()->flash('flash.banner', 'Учебный материал создан');
+        $request->session()->flash('flash.bannerStyle', 'success');
         return redirect()->route('learning_material.show', $learningMaterial);
     }
 
@@ -69,7 +80,7 @@ class LearningMaterialController extends Controller
         return Inertia::render('LearningMaterial/CreateShow', [
             'learning_material' => $learningMaterialWithLoaded,
             'usedForPupils' => $learningMaterial->lessons->pluck('pupil')->unique('id')->values(),
-            'tags' => Tag::getWithType('learning_material')
+            'tags' => Tag::whereModel(LearningMaterial::class)->get(['id', 'name'])
         ]);
     }
 
@@ -102,14 +113,19 @@ class LearningMaterialController extends Controller
             });
         $learningMaterial->update($request->validated());
         $learningMaterial->syncTags(collect($request->tags)->pluck('name')->toArray());
+        $request->session()->flash('flash.banner', 'Информация об учебном материале обновлена');
+        $request->session()->flash('flash.bannerStyle', 'success');
         return back();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(LearningMaterial $learningMaterial)
+    public function destroy(Request $request, LearningMaterial $learningMaterial)
     {
-        //
+        $learningMaterial->delete();
+        $request->session()->flash('flash.banner', 'Материал удален');
+        $request->session()->flash('flash.bannerStyle', 'success');
+        return to_route('main');
     }
 }

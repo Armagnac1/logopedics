@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('lesson_learning_materials', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('lesson_id');
-            $table->foreignId('learning_material_id');
+            $table->foreignId('lesson_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('learning_material_id')->constrained()->cascadeOnDelete();
+            $table->unique(['lesson_id', 'lesson_id']);
         });
     }
 

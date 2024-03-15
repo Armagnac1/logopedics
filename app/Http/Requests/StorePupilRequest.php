@@ -14,9 +14,14 @@ class StorePupilRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
-            'email' => ['nullable', 'string', 'email', 'max:255', 'unique:users'],
+            'full_name' => ['required', 'string', 'max:255'],
+            'age' => ['nullable', 'string', 'max:255'],
+            'parent_name' => ['nullable', 'string', 'max:255'],
+            'time_zone' => ['nullable', 'string', 'max:255'],
+            'email' => ['nullable', 'string', 'email', 'max:255'],
+            'lesson_duration' => ['integer'],
+            'tutor_comments' => ['nullable', 'string'],
+            'city_id' => ['nullable', 'integer', 'exists:cities,id'],
         ];
     }
 }

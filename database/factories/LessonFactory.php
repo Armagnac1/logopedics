@@ -20,14 +20,13 @@ class LessonFactory extends Factory
         $scheduled = fake()->randomElement([true, false]);
         $finished = $scheduled && fake()->randomElement([true, false]);
         $startTime = null;
-        $endTime = null;
         $tutor_comments = null;
         $homework_comments = null;
         $status = LessonStatus::CREATED;
         if ($scheduled) {
             $status = LessonStatus::SCHEDULED;
             $startTime = fake()->dateTimeBetween('now', '+30 days');
-            $endTime = fake()->dateTimeBetween($startTime, (clone $startTime)->modify('+1 hours'));
+            $startTime = $startTime->setTime($startTime->format('G'), 0);
         }
         if ($finished) {
             $status = $scheduled ? LessonStatus::FINISHED : LessonStatus::CREATED;
@@ -38,7 +37,7 @@ class LessonFactory extends Factory
             'title' => fake()->realText(40),
             'status' => $status,
             'start_at' => $startTime,
-            'end_at' => $endTime,
+            'duration' => fake()->randomElement([30,40,50,60]),
             'tutor_comments' => $tutor_comments,
             'homework_comments' => $homework_comments,
         ];

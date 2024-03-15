@@ -13,7 +13,7 @@ class PupilPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -21,7 +21,7 @@ class PupilPolicy
      */
     public function view(User $user, Pupil $pupil): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -35,9 +35,10 @@ class PupilPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Pupil $pupil): bool
+    public function update(User $user, Pupil $pupil): Response
     {
-        //
+        return $user->can('create/change pupil') ? Response::allow()
+            : Response::deny('Нет доступа к редактированию ученика');
     }
 
     /**

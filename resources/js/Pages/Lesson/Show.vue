@@ -1,15 +1,17 @@
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
 import BackButton from '@/Components/BackButton.vue';
 import LearningMaterialSection from '@/Components/LearningMaterial/LearningMaterialSection.vue';
-import LessonTimelineSection from '@/Components/Lesson/LessonTimelineSection.vue';
 import Card from '@/Components/Card.vue';
 import LessonTitleCard from '@/Components/Lesson/LessonTitleCard.vue';
 import LessonCommentsSection from '@/Components/Lesson/LessonCommentsSection.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import SecondaryButton from '@/Components/SecondaryButton.vue';
+import { Link } from "@inertiajs/vue3";
+import TopBarLayout from '@/Layouts/TopBarLayout.vue';
+import PupilSmallCard from '@/Components/Pupil/PupilSmallCard.vue';
+import DeleteEntityButton from '@/Components/DeleteEntityButton.vue';
 
 const props = defineProps({
+    previousLesson: Object,
+    nextLesson: Object,
     pupilLessons: Array,
     lesson: Object
 })
@@ -17,7 +19,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <AppLayout :title="lesson.title">
+    <TopBarLayout :title="lesson.title">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 <BackButton/>
@@ -25,26 +27,37 @@ const props = defineProps({
             </h2>
         </template>
 
-        <div class="grid grid-cols-4 gap-4">
-            <Card class="grid row-span-1 col-span-1 place-items-center">
-                <h1 class="text-2xl font-bold">{{ lesson.pupil.full_name }}</h1>
+        <div class="grid gap-4 grid-cols-4">
+            <Card class="col-span-4">
+                <PupilSmallCard :pupil="lesson.pupil"/>
             </Card>
-            <Card class="row-span-1 col-span-3">
-                <LessonTitleCard :lesson="lesson"/>
+
+            <Link v-if="previousLesson" :href="route('lesson.show', previousLesson.id)">
+                <Card class="col-span-1">
+                    <LessonTitleCard :lesson="previousLesson"/>
+                </Card>
+            </Link>
+            <Card v-else class="col-span-1"/>
+            <Card class="col-span-2 bg-gray">
+                <LessonTitleCard :lesson="lesson" :editable="true"/>
             </Card>
-            <Card class="row-span-2 col-span-1">
-                <LessonTimelineSection :pupilLessons="pupilLessons" :currentLessonId="lesson.id"/>
+
+            <Link v-if="nextLesson" :href="route('lesson.show', nextLesson.id)">
+                <Card class="col-span-1">
+                    <LessonTitleCard :lesson="nextLesson"/>
+                </Card>
+            </Link>
+            <Card v-else class="col-span-1"/>
+            <Card class="col-span-4 xl:col-span-2">
+                <LearningMaterialSection :lessonId="lesson.id" :usedMaterials="lesson.learning_materials"/>
             </Card>
-            <Card class="col-span-3">
+            <Card class="col-span-4 xl:col-span-2">
                 <LessonCommentsSection :lesson="lesson"/>
             </Card>
-            <Card class="col-span-3">
-                <LearningMaterialSection :materials="lesson.learning_materials"/>
-                <PrimaryButton class="mt-4" href="{{ route('lesson.learning_material.create', lesson.id) }}">Добавить
-                    учебный материал
-                </PrimaryButton>
-                <SecondaryButton>dasdsad</SecondaryButton>
+            <Card class="col-span-4 xl:col-span-4">
+                <DeleteEntityButton class="float-right" :entityName="'урок'" :url="route('lesson.destroy', lesson.id)"></DeleteEntityButton>
             </Card>
         </div>
-    </AppLayout>
+
+    </TopBarLayout>
 </template>

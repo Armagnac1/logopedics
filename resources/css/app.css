@@ -1,3 +1,5 @@
+@import  "./vue-multiselect.css";
+@import '@vuepic/vue-datepicker/dist/main.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

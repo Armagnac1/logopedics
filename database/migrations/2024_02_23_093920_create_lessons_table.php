@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->unsignedTinyInteger('status')->default(0);
             $table->timestamp('start_at')->nullable();
-            $table->timestamp('end_at')->nullable();
+            $table->unsignedInteger('duration');
             $table->text('tutor_comments')->nullable();
             $table->text('homework_comments')->nullable();
             $table->timestamps();

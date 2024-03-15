@@ -25,6 +25,9 @@ class UpdateLessonRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'title' => ['string', 'nullable'],
+            'start_at' => ['date', 'nullable'],
+            'duration' => ['integer', 'min:5', 'max:240', 'nullable'],
             'homework_comments' => ['string', 'nullable'],
             'tutor_comments' => ['string', 'nullable'],
         ];

@@ -15,5 +15,8 @@ class TutorSeeder extends Seeder
     public function run(): void
     {
         Tutor::factory()->for(User::find(1))->create();
+        Tutor::factory()->for(User::find(2))->create();
+        Tutor::factory()->for(User::find(3))->create();
+        Tutor::factory()->for(User::find(4))->create();
     }
 }

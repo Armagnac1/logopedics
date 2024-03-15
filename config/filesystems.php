@@ -35,6 +35,12 @@ return [
             'root' => storage_path('app'),
             'throw' => false,
         ],
+        'media' => [
+            'driver' => 'local',
+            'root'   => public_path('app/public/media'),
+            'url'    => env('APP_URL').'/storage/media',
+            'visibility' => 'public',
+        ],
 
         'public' => [
             'driver' => 'local',
@@ -55,6 +61,7 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
         ],
+
 
     ],
 

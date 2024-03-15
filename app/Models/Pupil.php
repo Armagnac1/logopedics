@@ -14,16 +14,12 @@ class Pupil extends Model
 {
     use HasFactory;
     use Searchable;
-
-    protected $appends = ['full_name'];
-    protected $fillable = ['first_name', 'last_name'];
-
-    #[SearchUsingPrefix(['first_name', 'last_name'])]
+    protected $guarded = ['id', 'created_at'];
+    #[SearchUsingPrefix(['full_name'])]
     public function toSearchableArray(): array
     {
         return [
-            'first_name' => $this->first_name,
-            'last_name' => $this->last_name,
+            'full_name' => $this->full_name
         ];
     }
 
@@ -42,9 +38,9 @@ class Pupil extends Model
         return $this->belongsTo(Tutor::class);
     }
 
-    public function getFullNameAttribute()
+    public function city(): BelongsTo
     {
-        return $this->first_name . ' ' . $this->last_name;
+        return $this->belongsTo(City::class);
     }
 
     public function getNextLessonAttribute()

@@ -16,7 +16,7 @@ const props = defineProps({
         <Card class="grid place-items-center grow">
             <div class="grow">
                 <JitsiMeeting class="w-9"
-                              :domain="'meet.logopedics.buzz'"
+                              :domain="'meet.logopedics.ru'"
                               :room-name="'Встреча'"
                               lang="ru"
                 />

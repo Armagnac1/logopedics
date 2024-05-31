@@ -23,12 +23,29 @@ class LearningMaterialController extends Controller
      */
     public function index(Request $request)
     {
+
         if (!$request->inertia() && $request->expectsJson()) {
-            $lesson = Lesson::find($request->lessonId);
+            $searchInput = $request->input('search');
+            $filters = $request->input('filters');
+
+
+            $learningMaterials = LearningMaterial::search($searchInput)->query(function ($builder) use ($filters) {
+                $builder->with(['tags', 'media'])
+                    ->when($filters['onlyNotUsed'] === '1', function ($query) use ($filters) {
+
+                        $lesson = Lesson::find($filters['lessonId']);
+                        $usedLearningMaterialsIds = $lesson->pupil->lessons->pluck('learningMaterials')->flatten()->pluck('id')->toArray();
+                        $query->whereNotIn('id', $usedLearningMaterialsIds);
+                    })->when(isset($filters['tags']) && count($filters['tags']) > 0, function ($query) use ($filters) {
+                        $ids = collect($filters['tags'])->pluck('id');
+                        $query->whereHas('tags', function ($query) use ($ids) {
+                            $query->whereIn('id', $ids);
+                        }, '=', count($ids));
+                    });
+            })->simplePaginate(10);
+
             return response()->json([
-                'tags' => Tag::whereModel(LearningMaterial::class)->get(['id', 'name']),
-                'learning_materials' => LearningMaterial::with(['tags'])->get(['id', 'title']),
-                'usedMaterials' => $lesson->pupil->lessons->pluck('learningMaterials')->flatten()->pluck('id')->toArray()
+                'learning_materials' => $learningMaterials,
             ]);
         }
     }
@@ -126,6 +143,6 @@ class LearningMaterialController extends Controller
         $learningMaterial->delete();
         $request->session()->flash('flash.banner', 'Материал удален');
         $request->session()->flash('flash.bannerStyle', 'success');
-        return to_route('main');
+        return to_route('home');
     }
 }

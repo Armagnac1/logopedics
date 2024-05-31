@@ -23,7 +23,7 @@ let input = ref(null)
 
 watch(search, throttle(value => {
     loadResults(value)
-}, 700))
+}, 100))
 
 const loadResults = (input) => {
     axios.get(route('search', { search: input }))

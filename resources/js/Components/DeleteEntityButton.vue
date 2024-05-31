@@ -1,7 +1,7 @@
 <script setup>
 import ConfirmationModal from '@/Components/ConfirmationModal.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
-import { useForm } from '@inertiajs/vue3';
+import { router, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import DangerButton from '@/Components/DangerButton.vue';
 

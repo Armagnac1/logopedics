@@ -29,13 +29,14 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::redirect('/', '/calendar')->name('main');
+    Route::redirect('/', '/calendar')->name('home');
     Route::get('/test', function () {
         return Inertia::render('Test');
     })->name('test');
     Route::resource('pupil', \App\Http\Controllers\PupilController::class);
     Route::resource('media', \App\Http\Controllers\MediaController::class)->parameters(['media' => 'media']);
     Route::resource('learning_material', \App\Http\Controllers\LearningMaterialController::class);
+    Route::resource('tags', \App\Http\Controllers\TagsController::class);
     Route::resource('lesson', \App\Http\Controllers\LessonController::class);
     Route::get('lesson/create/{pupil}', [\App\Http\Controllers\LessonController::class, 'create'])->name('lesson.create');
     Route::resource('lesson_learning_material', \App\Http\Controllers\LessonLearningMaterialController::class);

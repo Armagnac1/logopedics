@@ -37,7 +37,8 @@ class LessonLearningMaterialController extends Controller
     {
         Gate::authorize('update', $request->lessonId);
         $lesson = Lesson::find($request->lessonId);
-        $lesson->learningMaterials()->attach($request->material['id']);
+        $ids = collect($request->materials)->pluck('id');
+        $lesson->learningMaterials()->attach($ids);
         session()->flash('success', 'Учебный материал добавлен к уроку');
         session()->flash('bannerStyle', 'success');
         return back();
@@ -79,6 +80,5 @@ class LessonLearningMaterialController extends Controller
 
         session()->flash('success', 'Учебный материал убран из урока');
         session()->flash('bannerStyle', 'success');
-        return back();
     }
 }

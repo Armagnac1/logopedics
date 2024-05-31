@@ -42,7 +42,7 @@ const calendarOptions = {
     <FullCalendar :options="calendarOptions">
         <template #dayHeaderContent="arg">
             <div class="fc-scrollgrid-sync-inner">
-                <a aria-label="16 марта 2024 г." class="fc-col-header-cell-cushion">
+                <a class="fc-col-header-cell-cushion">
                     <span class="fc-day-of-week">{{ dayjs(arg.date).format('dd') }} </span>
                     <span class="fc-day-number">{{ dayjs(arg.date).format('D') }}</span>
                 </a>
@@ -52,7 +52,6 @@ const calendarOptions = {
 </template>
 
 
-//styles for fullcalendar
 <style scoped>
 :deep(.fc-button) {
     @apply bg-white border-0 border-t-2 border-b-2 border-gray-200 rounded-lg shadow-sm text-gray-700 py-1;

@@ -75,6 +75,5 @@ class MediaController extends Controller
     public function destroy(Media $media)
     {
         $media->delete();
-        return back();
     }
 }

@@ -19,9 +19,8 @@ class LearningMaterial extends Model implements HasMedia
     use HasTags;
     use InteractsWithMedia;
 
-    protected $fillable = ['title', 'text'];
+    protected $guarded = ['id'];
 
-    #[SearchUsingPrefix(['title'])]
     public function toSearchableArray(): array
     {
         return [

@@ -15,7 +15,6 @@ class Pupil extends Model
     use HasFactory;
     use Searchable;
     protected $guarded = ['id', 'created_at'];
-    #[SearchUsingPrefix(['full_name'])]
     public function toSearchableArray(): array
     {
         return [

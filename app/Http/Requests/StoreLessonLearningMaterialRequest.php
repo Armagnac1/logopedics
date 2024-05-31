@@ -16,8 +16,8 @@ class StoreLessonLearningMaterialRequest extends FormRequest
     {
         return [
             'lessonId' => ['integer', 'exists:lessons,id'],
-            'material' => ['array'],
-            'material.id' => ['integer', 'exists:learning_materials,id'],
+            'materials' => ['array'],
+            'materials.id' => ['integer', 'exists:learning_materials,id'],
         ];
     }
 }

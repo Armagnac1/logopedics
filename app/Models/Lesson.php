@@ -22,7 +22,6 @@ class Lesson extends Model
 
     protected $guarded = ['id', 'created_at', 'status'];
 
-    #[SearchUsingPrefix(['title'])]
     public function toSearchableArray(): array
     {
         return [

@@ -24,7 +24,7 @@ const events = props.lessons.map((lesson, key) => {
                 Календарь
             </h2>
         </template>
-            <Card class="place-items-center">
+            <Card>
                 <LargeCalendar :events="events"></LargeCalendar>
             </Card>
     </TopBarLayout>

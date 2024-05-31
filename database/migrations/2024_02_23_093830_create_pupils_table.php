@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->string('parent_name')->nullable();
             $table->string('age')->nullable();
             $table->string('time_zone')->nullable();  //integer?
+            $table->string('phone')->nullable();
             $table->text('tutor_comments')->nullable();
             $table->unsignedInteger('lesson_duration')->default(30);
             $table->timestamps();

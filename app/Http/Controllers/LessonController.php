@@ -101,6 +101,6 @@ class LessonController extends Controller
         $request->session()->flash('flash.banner', 'Урок удален');
         $request->session()->flash('flash.bannerStyle', 'success');
         $lesson->delete();
-        return to_route('main');
+        return to_route('pupil.show', $lesson->pupil_id);
     }
 }

@@ -19,7 +19,7 @@ class HandleInertiaRequests extends Middleware
      * Determines the current asset version.
      *
      * @see https://inertiajs.com/asset-versioning
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return string|null
      */
     public function version(Request $request): ?string
@@ -31,24 +31,51 @@ class HandleInertiaRequests extends Middleware
      * Defines the props that are shared by default.
      *
      * @see https://inertiajs.com/shared-data
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function share(Request $request): array
     {
         $permissions = [];
         $roles = [];
-        if(auth()->user()) {
+        if (auth()->user()) {
             $permissions = auth()->user()->roles()->with('permissions')->get()->pluck('permissions')->first()->pluck('name');
             $roles = auth()->user()->roles()->get()->pluck('name');
         }
+        $urlPrev = request()->wantsJson() ? null : $this->savePreviousUrl();
+        //dd($urlPrev);
+
+
         return array_merge(parent::share($request), [
             'roles' => $roles,
             'permissions' => $permissions,
-            'impersonate' => fn () => $request->session()->get('impersonate'),
+            'urlPrev' => fn() => $urlPrev,
+            'impersonate' => fn() => $request->session()->get('impersonate'),
             'flash' => [
-                'message' => fn () => $request->session()->get('message')
+                'message' => fn() => $request->session()->get('message')
             ],
         ]);
+    }
+
+    protected function savePreviousUrl()
+    {
+        $history = session()->get('linkHistory', []);
+        $previous = end($history) ?: null;
+        $lastBeforePrevious = prev($history) ?: null;
+        $current = url()->current();
+        if ($lastBeforePrevious === $current) {
+            array_pop($history);
+            end($history);
+            $previous = prev($history) ?: null;
+        } else {
+            if ($current !== route('login') && $current !== '') {
+                $history[] = $current;
+            }
+            if (count($history) > 10) {
+                array_shift($history);
+            }
+        }
+        session()->put('linkHistory', $history);
+        return $previous;
     }
 }

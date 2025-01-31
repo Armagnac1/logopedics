@@ -14,6 +14,7 @@ use Inertia\Inertia;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('calendar/generate_calendar/{user}', [\App\Http\Controllers\CalendarController::class, 'generateCalendar']);
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -49,3 +50,6 @@ Route::middleware([
         Route::get('impersonate-back', 'impersonateBack')->name('impersonate-back');
     });
 });
+
+
+

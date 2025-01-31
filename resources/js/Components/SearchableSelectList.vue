@@ -1,5 +1,5 @@
 <script setup>
-import { computed, nextTick, ref, watch } from 'vue';
+import { computed, nextTick, ref, watch, onMounted } from 'vue';
 import throttle from 'lodash/throttle.js';
 import TextInput from '@/Components/TextInput.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
@@ -18,13 +18,24 @@ let search = ref('')
 let input = ref(null)
 let page = ref(1)
 let results = ref({ data: [], links: [] })
+let getAISuggestions = ref(true)
+
+onMounted(() => {
+    getAISuggestions.value = true;
+});
 
 watch(search, throttle(() => {
-    page.value = 1
-    loadResults()
-}, 100))
+    page.value = 1;
+    getAISuggestions.value = false;
+    loadResults();
+}, 100));
+
+watch(() => props.filters, () => {
+    getAISuggestions.value = false;
+}, { deep: true });
+
 const loadResults = () => {
-    axios.get(route('learning_material.index', { search: search.value, filters: props.filters, page: page.value }))
+    axios.get(route('learning_material.index', { search: search.value, filters: props.filters, page: page.value, ai: getAISuggestions.value }))
         .then(response => {
             results.value = response.data.learning_materials;
         })
@@ -32,25 +43,28 @@ const loadResults = () => {
             console.log(error)
         })
 }
+
 defineExpose({
     focus: () => {
-        page.value = 1
-        loadResults()
+        page.value = 1;
+        loadResults();
         nextTick().then(() => {
-            input.value.focus()
+            input.value.focus();
         })
     }
 });
+
 const emit = defineEmits(['update:modelValue'])
+
 const materials = computed(() => {
     var selectedList = selected.value.map(item => {
-        item.isAdded = true
-        return item
-    })
+        item.isAdded = true;
+        return item;
+    });
     var resultsList = results.value.data.filter(item => {
-        return selected.value.findIndex(i => i.id === item.id) === -1
-    }).slice(0, 10 - selectedList.length)
-    return selectedList.concat(resultsList)
+        return selected.value.findIndex(i => i.id === item.id) === -1;
+    }).slice(0, 10 - selectedList.length);
+    return selectedList.concat(resultsList);
 })
 
 function switchItem(material) {
@@ -92,7 +106,12 @@ function switchItem(material) {
                 </div>
             </div>
             <div class="flex">
-                <a v-if="material.media[0]" :href="material.media[0].original_url" target="_blank">
+                <a v-if="material.media[0]" :href="material.media[0].original_url" target="_blank" class="ml-3">
+                    <SecondaryButton class="hidden group-hover:block">
+                        <FontAwesomeIcon icon="fa-solid fa-eye"/>
+                    </SecondaryButton>
+                </a>
+                <a v-if="material.media[0]" :href="material.media[0].original_url" download>
                     <SecondaryButton class="hidden group-hover:block">
                         <FontAwesomeIcon icon="fa-solid fa-download"/>
                     </SecondaryButton>

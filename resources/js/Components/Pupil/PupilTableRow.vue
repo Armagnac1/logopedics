@@ -76,6 +76,11 @@ const props = defineProps({
                     :href="route('lesson.show', pupil.next_lesson.id)" class="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" draggable="false">
                     К занятию
                 </Link>
+                <Link
+                    v-else
+                    :href="route('lesson.create', pupil.id)" class="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" draggable="false">
+                    Добавить занятие
+                </Link>
             </div>
         </td>
     </tr>

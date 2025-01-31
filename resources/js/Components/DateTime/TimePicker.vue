@@ -28,7 +28,7 @@ defineExpose({
     }
 });
 
-const formatTime = (time) => `${time.hours}:${time.minutes < 10 ? '0' + time.minutes : time.minutes}`
+const formatTime = (time) => `${time.hours < 10 ? '0' + time.hours : time.hours}:${time.minutes < 10 ? '0' + time.minutes : time.minutes}`
 
 
 </script>

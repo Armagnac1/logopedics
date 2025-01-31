@@ -19,7 +19,7 @@ const calendarOptions = {
     eventShortHeight: 60,
     slotEventOverlap: false,
     nowIndicator: true,
-    slotMinTime: '08:00:00',
+    slotMinTime: '00:00:00',
     slotMaxTime: '24:00:00',
     expandRows: true,
     events: props.events,
@@ -117,7 +117,7 @@ const calendarOptions = {
 }
 
 :deep(.fc-event .fc-event-main-frame) {
-    @apply text-blue-400 font-medium;
+    @apply text-black font-medium;
 }
 
 :deep(.fc-toolbar-title) {

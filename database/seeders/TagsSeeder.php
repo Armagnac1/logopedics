@@ -21,5 +21,16 @@ class TagsSeeder extends Seeder
             'ВПФ'
         ];
         collect($logopedicsGroups)->each(fn($group) => Tag::findOrCreateFromString($group, 'learning_material'));
+        collect([
+            'Частный',
+            'Белая Цапля',
+            'Школа'
+        ])->each(function ($tag) {
+            \App\Models\Tag::create([
+                'name' => ['ru' => $tag],
+                'model' => 'App\Models\Pupil',
+                'type' => 'Источник',
+            ]);
+        });
     }
 }

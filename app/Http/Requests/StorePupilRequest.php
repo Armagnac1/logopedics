@@ -22,6 +22,7 @@ class StorePupilRequest extends FormRequest
             'lesson_duration' => ['integer'],
             'tutor_comments' => ['nullable', 'string'],
             'city_id' => ['nullable', 'integer', 'exists:cities,id'],
+            'tags' => ['array'],
         ];
     }
 }

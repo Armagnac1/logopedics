@@ -11,10 +11,13 @@ import TopBarLayout from '@/Layouts/TopBarLayout.vue';
 import SmallLessonCard from '@/Components/Lesson/SmallLessonCard.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import Textarea from '@/Components/Textarea.vue';
+import AdvancedSelect from '@/Components/AdvancedSelect.vue';
+import DeleteEntityButton from '@/Components/DeleteEntityButton.vue';
 
 
 const props = defineProps({
-    pupil: Object
+    pupil: Object,
+    tags: Array
 })
 
 const form = useForm({
@@ -25,8 +28,14 @@ const form = useForm({
     email: '',
     lesson_duration: '30',
     tutor_comments: '',
-    city_id: null
+    city_id: null,
+    tags: []
 })
+
+const tagMap = (i) => {
+    return { name: i.name.ru, id: i.id }
+}
+const tagsOptions = props.tags.map(tagMap)
 
 if (props.pupil) {
     form.full_name = props.pupil.full_name
@@ -37,6 +46,7 @@ if (props.pupil) {
     form.lesson_duration = props.pupil.lesson_duration
     form.tutor_comments = props.pupil.tutor_comments
     form.city_id = props.pupil.city?.id
+    form.tags = props.pupil.tags.map(tagMap)
 }
 const submit = () => {
     form.transform(({ media, ...data }) => ({
@@ -115,6 +125,12 @@ const submit = () => {
                                 <InputError :message="form.errors.email" class="mt-2"/>
                             </div>
                             <div class="sm:col-span-4">
+                                <InputLabel for="tags" value="Группа"/>
+                                <AdvancedSelect id="tags" v-model="form.tags" :multiple="true" :options="tagsOptions"
+                                                label="name"
+                                                track-by="id"/>
+                            </div>
+                            <div class="sm:col-span-4">
                                 <CitySelector v-model="form.city_id"/>
                                 <InputError :message="form.errors.city_id" class="mt-2"/>
                             </div>
@@ -135,9 +151,9 @@ const submit = () => {
                                 <InputError :message="form.errors.lesson_duration" class="mt-2"/>
                             </div>
                             <div class="sm:col-span-4">
-                                <Textarea v-model="form.tutor_comments" class="mt-1 block w-full"
-                                          :label="'Комментарии логопеда'"
-                                          :rows="9"/>
+                                <Textarea v-model="form.tutor_comments" :label="'Комментарии логопеда'"
+                                          :rows="9"
+                                          class="mt-1 block w-full"/>
                                 <InputError :message="form.errors.email" class="mt-2"/>
                             </div>
                         </div>
@@ -150,10 +166,10 @@ const submit = () => {
                     </div>
                 </form>
             </Card>
-            <Card v-if="pupil" class="row-span-2 col-span-1">
+            <Card v-if="pupil" class="row-span-2 col-span-1 mb-5">
                 <div class="py-1.5 pb-5 px-1 border-b border-gray-100 justify-between align-middle flex items-center">
                     <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Уроки</h3>
-                    <Link draggable="false" :href="route('lesson.create', pupil.id)">
+                    <Link :href="route('lesson.create', pupil.id)" draggable="false">
                         <PrimaryButton class="py-2 px-3 inline-flex items-center gap-x-2">
                             <font-awesome-icon icon="fa-solid fa-plus"/>
                             Создать
@@ -161,11 +177,13 @@ const submit = () => {
                     </Link>
                 </div>
                 <div class="divide-y divide-gray-100 gap-2">
-                    <SmallLessonCard class="mb-2" v-for="lesson in pupil.lessons" :key="lesson.id" :lesson="lesson"/>
+                    <SmallLessonCard v-for="lesson in pupil.lessons" :key="lesson.id" :lesson="lesson" class="mb-2"/>
                 </div>
 
             </Card>
-
+            <Card class="row-span-2 col-span-1 flex justify-end items-center gap-x-2">
+                <DeleteEntityButton  :entityName="'ученика'" :url="route('pupil.destroy', pupil.id)"></DeleteEntityButton>
+            </Card>
         </div>
     </TopBarLayout>
 </template>

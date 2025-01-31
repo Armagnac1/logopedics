@@ -6,6 +6,7 @@ use App\Http\Requests\StoreLearningMaterialRequest;
 use App\Http\Requests\UpdateLearningMaterialRequest;
 use App\Models\LearningMaterial;
 use App\Models\Lesson;
+use App\Services\AISuggestionsService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -13,8 +14,11 @@ use Spatie\Tags\Tag;
 
 class LearningMaterialController extends Controller
 {
-    public function __construct()
+    private AISuggestionsService $aiSuggestionsService;
+
+    public function __construct(AISuggestionsService $aiSuggestionsService)
     {
+        $this->aiSuggestionsService = $aiSuggestionsService;
         $this->authorizeResource(LearningMaterial::class, 'learning_material');
     }
 
@@ -27,22 +31,29 @@ class LearningMaterialController extends Controller
         if (!$request->inertia() && $request->expectsJson()) {
             $searchInput = $request->input('search');
             $filters = $request->input('filters');
+            $useAI = $request->input('ai');
 
+            if ($useAI) {
+                $lesson = Lesson::find($filters['lessonId']);
+                $resultIds = $this->aiSuggestionsService->getLearningMaterialSuggestions($lesson);
+                $learningMaterials = LearningMaterial::whereIn('id', $resultIds)->with(['tags', 'media'])->simplePaginate(10);
+            } else {
+                $learningMaterials = LearningMaterial::search($searchInput)->query(function ($builder) use ($filters) {
+                    $builder->with(['tags', 'media'])
+                        ->when($filters['onlyNotUsed'] === '1', function ($query) use ($filters) {
 
-            $learningMaterials = LearningMaterial::search($searchInput)->query(function ($builder) use ($filters) {
-                $builder->with(['tags', 'media'])
-                    ->when($filters['onlyNotUsed'] === '1', function ($query) use ($filters) {
+                            $lesson = Lesson::find($filters['lessonId']);
+                            $usedLearningMaterialsIds = $lesson->pupil->lessons->pluck('learningMaterials')->flatten()->pluck('id')->toArray();
+                            $query->whereNotIn('id', $usedLearningMaterialsIds);
+                        })->when(isset($filters['tags']) && count($filters['tags']) > 0, function ($query) use ($filters) {
+                            $ids = collect($filters['tags'])->pluck('id');
+                            $query->whereHas('tags', function ($query) use ($ids) {
+                                $query->whereIn('id', $ids);
+                            }, '=', count($ids));
+                        });
+                })->simplePaginate(10);
+            }
 
-                        $lesson = Lesson::find($filters['lessonId']);
-                        $usedLearningMaterialsIds = $lesson->pupil->lessons->pluck('learningMaterials')->flatten()->pluck('id')->toArray();
-                        $query->whereNotIn('id', $usedLearningMaterialsIds);
-                    })->when(isset($filters['tags']) && count($filters['tags']) > 0, function ($query) use ($filters) {
-                        $ids = collect($filters['tags'])->pluck('id');
-                        $query->whereHas('tags', function ($query) use ($ids) {
-                            $query->whereIn('id', $ids);
-                        }, '=', count($ids));
-                    });
-            })->simplePaginate(10);
 
             return response()->json([
                 'learning_materials' => $learningMaterials,
@@ -68,7 +79,8 @@ class LearningMaterialController extends Controller
         $learningMaterial = new LearningMaterial($request->validated());
         $learningMaterial->creator_user_id = auth()->id();
         $learningMaterial->save();
-        $learningMaterial->syncTags(collect($request->tags)->pluck('name')->toArray());
+        $tags = collect($request->tags)->pluck('id')->toArray();
+        $learningMaterial->tags()->sync($tags);
         Media::whereIn('id', $request->mediaIds)
             ->get()
             ->each(function ($media) use ($learningMaterial) {
@@ -78,7 +90,7 @@ class LearningMaterialController extends Controller
             });
         $request->session()->flash('flash.banner', 'Учебный материал создан');
         $request->session()->flash('flash.bannerStyle', 'success');
-        return redirect()->route('learning_material.show', $learningMaterial);
+        return to_route('home');
     }
 
     /**
@@ -129,10 +141,20 @@ class LearningMaterialController extends Controller
                 $media->save();
             });
         $learningMaterial->update($request->validated());
-        $learningMaterial->syncTags(collect($request->tags)->pluck('name')->toArray());
+        $tags = collect($request->tags)->pluck('id')->toArray();
+        $learningMaterial->tags()->sync($tags);
         $request->session()->flash('flash.banner', 'Информация об учебном материале обновлена');
         $request->session()->flash('flash.bannerStyle', 'success');
         return back();
+    }
+
+    public function getSuggestionsForLesson(Lesson $lesson)
+    {
+        $resultIds = $this->aiSuggestionsService->getLearningMaterialSuggestions($lesson);
+        $learningMaterials = LearningMaterial::whereIn('id', $resultIds)->get();
+        return response()->json([
+            'learning_materials' => $learningMaterials,
+        ]);
     }
 
     /**

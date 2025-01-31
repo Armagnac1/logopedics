@@ -30,5 +30,17 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
+    'openai' => [
+        'api_key' => env('OPENAI_API_KEY'),
+    ],
+    'openrouter' => [
+        'api_key' => env('OPENROUTER_API_KEY'),
+    ],
+    'deepseek'=> [
+        'api_key' => env('DEEPSEEK_API_KEY'),
+    ],
+    'groq'=> [
+        'api_key' => env('GROQ_API_KEY'),
+    ],
 
 ];

@@ -11,6 +11,7 @@ use App\Models\Pupil;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Spatie\Tags\Tag;
 
 class PupilController extends Controller
 {
@@ -41,7 +42,7 @@ class PupilController extends Controller
             ->where('tutor_id', $tutorId)
             ->with(['lessons', 'user'])
             ->orderBy('lessons.start_at', 'ASC')
-            ->paginate(10)->withQueryString();
+            ->paginate(30)->withQueryString();
         return Inertia::render('Pupil/Index', [
             'pupils' => PupilTableResource::collection($pupilsOrdered),
             'filters' => $request->only(['search'])
@@ -53,7 +54,9 @@ class PupilController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Pupil/CreateShow');
+        return Inertia::render('Pupil/CreateShow',[
+            'tags' => Tag::whereModel(Pupil::class)->get()
+        ]);
     }
 
     /**
@@ -66,6 +69,8 @@ class PupilController extends Controller
         //$pupil->
         $pupil->save();
 
+        $tags = collect($request->tags)->pluck('id')->toArray();
+        $pupil->tags()->sync($tags);
         $request->session()->flash('flash.banner', 'Новый ученик создан');
         $request->session()->flash('flash.bannerStyle', 'success');
         return redirect()->route('pupil.index');
@@ -76,13 +81,14 @@ class PupilController extends Controller
      */
     public function show(Pupil $pupil)
     {
-        $pupil->load(['lessons.learningMaterials.tags', 'city']);
+        $pupil->load(['tags', 'lessons.learningMaterials.tags', 'city']);
         $pupil->setRelation('lessons', $pupil->lessons->sortBy([
                 fn(Lesson $a, Lesson $b) => strtotime($a['start_at']) <=> strtotime($b['start_at']),
                 fn(Lesson $a, Lesson $b) => $b['id'] <=> $a['id'],
             ])->values());
         return Inertia::render('Pupil/CreateShow', [
-            'pupil' => $pupil
+            'pupil' => $pupil,
+            'tags' => Tag::whereModel(Pupil::class)->get(['id', 'name'])
         ]);
     }
 
@@ -100,6 +106,8 @@ class PupilController extends Controller
     public function update(UpdatePupilRequest $request, Pupil $pupil)
     {
         $pupil->update($request->validated());
+        $tags = collect($request->tags)->pluck('id')->toArray();
+        $pupil->tags()->sync($tags);
         $request->session()->flash('flash.banner', 'Информация об ученике обновлена');
         $request->session()->flash('flash.bannerStyle', 'success');
         return redirect()->route('pupil.index');
@@ -108,8 +116,11 @@ class PupilController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Pupil $pupil)
+    public function destroy(Request $request, Pupil $pupil)
     {
-        //
+        $pupil->delete();
+        $request->session()->flash('flash.banner', 'Ученик удален');
+        $request->session()->flash('flash.bannerStyle', 'success');
+        return to_route('home');
     }
 }

@@ -84,7 +84,7 @@ const submit = () => {
                                         v-model="form.tags"/>
                     </div>
                     <div>
-                        <InputLabel for="tags" value="Файлы"/>
+                        <InputLabel for="media" value="Файлы"/>
                         <AttachedFiles v-model="form.media"/>
                     </div>
                     <div class="flex justify-end items-center gap-x-2 pt-4 sm:px-7 border-t dark:border-gray-700">

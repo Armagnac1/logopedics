@@ -45,16 +45,16 @@ const closeModal = () => {
 <template>
     <ActionSection>
         <template #title>
-            Browser Sessions
+            {{ $t('sessions.title') }}
         </template>
 
         <template #description>
-            Управляйте и выходите из активных сеансов на других браузерах и устройствах.
+            {{ $t('sessions.description') }}
         </template>
 
         <template #content>
             <div class="max-w-xl text-sm text-gray-600 dark:text-gray-400">
-                Если необходимо, вы можете выйти из всех других сеансов браузера на всех ваших устройствах. Ниже приведен список некоторых из ваших недавних сеансов; однако этот список может быть не исчерпывающим. Если вы считаете, что ваша учетная запись была скомпрометирована, вы также должны обновить свой пароль.
+                {{ $t('sessions.info') }}
             </div>
 
             <!-- Other Browser Sessions -->
@@ -72,15 +72,15 @@ const closeModal = () => {
 
                     <div class="ms-3">
                         <div class="text-sm text-gray-600 dark:text-gray-400">
-                            {{ session.agent.platform ? session.agent.platform : 'Unknown' }} - {{ session.agent.browser ? session.agent.browser : 'Unknown' }}
+                            {{ session.agent.platform ? session.agent.platform : $t('sessions.unknown') }} - {{ session.agent.browser ? session.agent.browser : $t('sessions.unknown') }}
                         </div>
 
                         <div>
                             <div class="text-xs text-gray-500">
                                 {{ session.ip_address }},
 
-                                <span v-if="session.is_current_device" class="text-green-500 font-semibold">This device</span>
-                                <span v-else>Last active {{ session.last_active }}</span>
+                                <span v-if="session.is_current_device" class="text-green-500 font-semibold">{{ $t('sessions.thisDevice') }}</span>
+                                <span v-else>{{ $t('sessions.lastActive') }} {{ session.last_active }}</span>
                             </div>
                         </div>
                     </div>
@@ -89,23 +89,22 @@ const closeModal = () => {
 
             <div class="flex items-center mt-5">
                 <PrimaryButton @click="confirmLogout">
-                    Выйти из других браузерных сеансов
+                    {{ $t('sessions.logoutButton') }}
                 </PrimaryButton>
 
                 <ActionMessage :on="form.recentlySuccessful" class="ms-3">
-                    Сделано.
+                    {{ $t('sessions.done') }}
                 </ActionMessage>
             </div>
 
             <!-- Log Out Other Devices Confirmation Modal -->
             <DialogModal :show="confirmingLogout" @close="closeModal">
                 <template #title>
-                    Выход из других сеансов браузера
+                    {{ $t('sessions.modalTitle') }}
                 </template>
 
                 <template #content>
-
-                    Пожалуйста, введите свой пароль, чтобы подтвердить, что вы хотите выйти из других сеансов браузера на всех своих устройствах.
+                    {{ $t('sessions.modalContent') }}
 
                     <div class="mt-4">
                         <TextInput
@@ -124,7 +123,7 @@ const closeModal = () => {
 
                 <template #footer>
                     <SecondaryButton @click="closeModal">
-                        Отменить
+                        {{ $t('sessions.cancelButton') }}
                     </SecondaryButton>
 
                     <PrimaryButton
@@ -133,7 +132,7 @@ const closeModal = () => {
                         :disabled="form.processing"
                         @click="logoutOtherBrowserSessions"
                     >
-                        Выход из других сеансов браузера
+                        {{ $t('sessions.confirmButton') }}
                     </PrimaryButton>
                 </template>
             </DialogModal>

@@ -61,24 +61,25 @@ const submit = () => {
 </script>
 
 <template>
-    <TopBarLayout title="Calendar">
+    <TopBarLayout :title="$t('common.calendar')">
         <template #header>
             <h2 class="font-semibold text-xl L dark:text-gray-200 leading-tight">
                 <BackButton/>
-                {{ props.pupil ? props.pupil.full_name : 'Новый ученик' }}
+                {{ props.pupil ? props.pupil.full_name : $t('common.newPupil') }}
             </h2>
         </template>
         <div>
             <Card class="mb-5">
                 <form @submit.prevent="submit">
                     <div class="grid grid-cols-1 md:grid-cols-3 border-b">
-                        <div><h2 class="text-base font-semibold leading-7 text-gray-900">Персональная информация</h2>
-                            <p class="mt-1 text-sm leading-6 text-gray-600">Заполните персональную информацию об
-                                ученике</p></div>
+                        <div>
+                            <h2 class="text-base font-semibold leading-7 text-gray-900">{{ $t('common.personalInfo') }}</h2>
+                            <p class="mt-1 text-sm leading-6 text-gray-600">{{ $t('common.personalInfoDesc') }}</p>
+                        </div>
 
                         <div class="md:col-span-2 mt-10 pb-7 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                             <div class="sm:col-span-4">
-                                <InputLabel for="full_name" value="Имя*"/>
+                                <InputLabel for="full_name" :value="$t('common.name') + '*'"/>
                                 <TextInput
                                     v-model="form.full_name"
                                     class="mt-1 block w-full"
@@ -88,7 +89,7 @@ const submit = () => {
                                 <InputError :message="form.errors.full_name" class="mt-2"/>
                             </div>
                             <div class="sm:col-span-4">
-                                <InputLabel for="age" value="Возраст"/>
+                                <InputLabel for="age" :value="$t('common.age')"/>
                                 <TextInput
                                     v-model="form.age"
                                     class="mt-1 block w-full"
@@ -97,7 +98,7 @@ const submit = () => {
                                 <InputError :message="form.errors.age" class="mt-2"/>
                             </div>
                             <div class="sm:col-span-4">
-                                <InputLabel for="parent_name" value="Имя родителя"/>
+                                <InputLabel for="parent_name" :value="$t('common.parentName')"/>
                                 <TextInput
                                     v-model="form.parent_name"
                                     class="mt-1 block w-full"
@@ -106,7 +107,7 @@ const submit = () => {
                                 <InputError :message="form.errors.parent_name" class="mt-2"/>
                             </div>
                             <div class="sm:col-span-4">
-                                <InputLabel for="time_zone" value="Временная зона"/>
+                                <InputLabel for="time_zone" :value="$t('common.timeZone')"/>
                                 <TextInput
                                     v-model="form.time_zone"
                                     class="mt-1 block w-full"
@@ -116,7 +117,7 @@ const submit = () => {
                             </div>
 
                             <div class="sm:col-span-4">
-                                <InputLabel for="email" value="Email"/>
+                                <InputLabel for="email" :value="$t('common.email')"/>
                                 <TextInput
                                     v-model="form.email"
                                     class="mt-1 block w-full"
@@ -125,7 +126,7 @@ const submit = () => {
                                 <InputError :message="form.errors.email" class="mt-2"/>
                             </div>
                             <div class="sm:col-span-4">
-                                <InputLabel for="tags" value="Группа"/>
+                                <InputLabel for="tags" :value="$t('common.group')"/>
                                 <AdvancedSelect id="tags" v-model="form.tags" :multiple="true" :options="tagsOptions"
                                                 label="name"
                                                 track-by="id"/>
@@ -137,12 +138,14 @@ const submit = () => {
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 border-b">
-                        <div><h2 class="text-base font-semibold leading-7 text-gray-900">Обучение</h2>
-                            <p class="mt-1 text-sm leading-6 text-gray-600">Информация об обучении</p></div>
+                        <div>
+                            <h2 class="text-base font-semibold leading-7 text-gray-900">{{ $t('common.education') }}</h2>
+                            <p class="mt-1 text-sm leading-6 text-gray-600">{{ $t('common.educationDesc') }}</p>
+                        </div>
 
                         <div class="md:col-span-2 mt-10 pb-7 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                             <div class="sm:col-span-4">
-                                <InputLabel for="duration" value="Длительность урока (в минутах)"/>
+                                <InputLabel for="duration" :value="$t('common.lessonDuration')"/>
                                 <TextInput
                                     v-model="form.lesson_duration"
                                     class="mt-1 block w-full"
@@ -151,7 +154,7 @@ const submit = () => {
                                 <InputError :message="form.errors.lesson_duration" class="mt-2"/>
                             </div>
                             <div class="sm:col-span-4">
-                                <Textarea v-model="form.tutor_comments" :label="'Комментарии логопеда'"
+                                <Textarea v-model="form.tutor_comments" :label="$t('common.tutorComments')"
                                           :rows="9"
                                           class="mt-1 block w-full"/>
                                 <InputError :message="form.errors.email" class="mt-2"/>
@@ -161,18 +164,18 @@ const submit = () => {
                     <div class="flex justify-end items-center gap-x-2 mt-6 sm:px-7">
                         <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing"
                                        class="ms-4">
-                            Сохранить
+                            {{ $t('common.save') }}
                         </PrimaryButton>
                     </div>
                 </form>
             </Card>
             <Card v-if="pupil" class="row-span-2 col-span-1 mb-5">
                 <div class="py-1.5 pb-5 px-1 border-b border-gray-100 justify-between align-middle flex items-center">
-                    <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Уроки</h3>
+                    <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">{{ $t('common.lessons') }}</h3>
                     <Link :href="route('lesson.create', pupil.id)" draggable="false">
                         <PrimaryButton class="py-2 px-3 inline-flex items-center gap-x-2">
                             <font-awesome-icon icon="fa-solid fa-plus"/>
-                            Создать
+                            {{ $t('common.create') }}
                         </PrimaryButton>
                     </Link>
                 </div>
@@ -181,10 +184,10 @@ const submit = () => {
                 </div>
 
             </Card>
-            <Card class="row-span-2 col-span-1 flex justify-end items-center gap-x-2">
-                <DeleteEntityButton  :entityName="'ученика'" :url="route('pupil.destroy', pupil.id)"></DeleteEntityButton>
+            <Card v-if="pupil" class="row-span-2 col-span-1 flex justify-end items-center gap-x-2">
+                <DeleteEntityButton :entityName="$t('common.deletePupil')"
+                                    :url="route('pupil.destroy', pupil.id)"></DeleteEntityButton>
             </Card>
         </div>
     </TopBarLayout>
 </template>
-

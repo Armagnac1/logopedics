@@ -123,17 +123,17 @@ function switchItem(material) {
                class="text-sm font-medium text-blue-600 decoration-2 hover:underline cursor-pointer"
                draggable="false"
                @click.prevent="page--; loadResults()">
-                Предыдущие 10
+                {{ $t('common.previous10') }}
             </a>
             <a v-if="results.next_page_url !== null"
                class="float-right text-sm font-medium text-blue-600 decoration-2 hover:underline cursor-pointer"
                draggable="false"
                @click.prevent="page++; loadResults()">
-                Следующие 10
+                {{ $t('common.next10') }}
             </a>
         </div>
         <div v-if="materials.length === 0" class="mt-1 text-center text-sm text-gray-500">
-            Ничего не найдено
+            {{ $t('common.nothingFound') }}
         </div>
     </div>
 </template>

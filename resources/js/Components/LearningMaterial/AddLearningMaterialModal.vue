@@ -65,19 +65,19 @@ const emit = defineEmits(['close'])
 <template>
     <form class="p-5" @submit.prevent="submit">
         <div class="py-1.5 pb-5 px-1 border-b border-gray-100 justify-between align-middle flex items-center">
-            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">Прикрепить материал</h3>
+            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">{{ $t('common.attachMaterial') }}</h3>
         </div>
         <div
             class="grid sm:grid-cols-12 gap-2 sm:gap-4 py-8 first:pt-0 last:pb-0 border-t first:border-transparent border-gray-200 dark:border-neutral-700 dark:first:border-transparent">
             <div class="sm:col-span-12">
                 <h2 class="text-lg font-semibold text-gray-800 dark:text-neutral-200">
-                    Фильтры
+                    {{ $t('common.filters') }}
                 </h2>
             </div>
             <div class="sm:col-span-4">
                 <label class="inline-block text-sm font-medium text-gray-500 mt-2.5 dark:text-neutral-500"
                        for="tags">
-                    Группа
+                    {{ $t('common.group') }}
                 </label>
             </div>
             <div class="sm:col-span-8">
@@ -89,7 +89,7 @@ const emit = defineEmits(['close'])
             <div class="sm:col-span-4">
                 <label class="inline-block text-sm font-medium text-gray-500 mt-1 dark:text-neutral-500"
                        for="onlyNotUsed">
-                    Не использованные
+                    {{ $t('common.notUsed') }}
                 </label>
                 <div class="hs-tooltip inline-block">
                     <button class="hs-tooltip-toggle ms-1" type="button">
@@ -107,8 +107,8 @@ const emit = defineEmits(['close'])
                         data-popper-placement="top"
                         role="tooltip"
                         style="position: fixed; inset: auto auto 0px 0px; margin: 0px; transform: translate3d(49.5px, -656.5px, 0px);">
-                                        Показывать только те материалы, которые ранее не использовались в уроках этого ученика
-            </span>
+               {{ $t('common.showOnlyUnused') }}
+             </span>
                 </div>
             </div>
             <div class="sm:col-span-8 content-center">
@@ -117,19 +117,18 @@ const emit = defineEmits(['close'])
         </div>
         <div class="grid border-t py-8 gap-2 sm:gap-4">
             <h2 class="text-lg font-semibold text-gray-800 dark:text-neutral-200">
-                Материал
+                {{ $t('common.material') }}
             </h2>
             <SearchableSelectList ref="searchInput" v-model="form.materials"
                                   :filters="filters"/>
             <InputError :message="form.errors.materials" class="mt-2"/>
-
         </div>
         <div class="flex justify-end items-center gap-x-2 pt-4 border-t dark:border-gray-700">
             <SecondaryButton @click="$emit('close')">
-                Отмена
+                {{ $t('common.cancel') }}
             </SecondaryButton>
             <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                Добавить
+                {{ $t('common.add') }}
             </PrimaryButton>
         </div>
     </form>

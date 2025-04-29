@@ -16,15 +16,6 @@ use Inertia\Inertia;
 */
 Route::get('calendar/generate_calendar/{user}', [\App\Http\Controllers\CalendarController::class, 'generateCalendar']);
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        //'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
-
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -49,6 +40,7 @@ Route::middleware([
         Route::get('login-as/{user}', 'loginAs')->name('login-as')->middleware(['can:login as others']);
         Route::get('impersonate-back', 'impersonateBack')->name('impersonate-back');
     });
+    Route::get('logout', [\Laravel\Fortify\Http\Controllers\AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });
 
 

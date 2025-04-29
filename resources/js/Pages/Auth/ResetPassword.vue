@@ -27,7 +27,7 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="Сброс пароля" />
+    <Head :title="$t('passwordForm.reset_password')" />
 
     <AuthenticationCard>
         <template #logo>
@@ -36,7 +36,7 @@ const submit = () => {
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="email" value="Email" />
+                <InputLabel for="email" :value="$t('passwordForm.email')" />
                 <TextInput
                     id="email"
                     v-model="form.email"
@@ -50,7 +50,7 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password" value="Пароль" />
+                <InputLabel for="password" :value="$t('passwordForm.password')" />
                 <TextInput
                     id="password"
                     v-model="form.password"
@@ -63,7 +63,7 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password_confirmation" value="Подтвердите пароль" />
+                <InputLabel for="password_confirmation" :value="$t('passwordForm.confirm_password')" />
                 <TextInput
                     id="password_confirmation"
                     v-model="form.password_confirmation"
@@ -77,7 +77,7 @@ const submit = () => {
 
             <div class="flex items-center justify-end mt-4">
                 <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Сброс пароля
+                    {{ $t('passwordForm.reset_password_button') }}
                 </PrimaryButton>
             </div>
         </form>

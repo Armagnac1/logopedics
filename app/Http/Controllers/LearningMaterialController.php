@@ -88,8 +88,8 @@ class LearningMaterialController extends Controller
                 $media->model_type = LearningMaterial::class;
                 $media->save();
             });
-        $request->session()->flash('flash.banner', 'Учебный материал создан');
-        $request->session()->flash('flash.bannerStyle', 'success');
+        session()->flash('flash.banner', __('messages.model_created', ['model' => __('models.learningMaterial')]));
+        session()->flash('flash.bannerStyle', 'success');
         return to_route('home');
     }
 
@@ -143,8 +143,8 @@ class LearningMaterialController extends Controller
         $learningMaterial->update($request->validated());
         $tags = collect($request->tags)->pluck('id')->toArray();
         $learningMaterial->tags()->sync($tags);
-        $request->session()->flash('flash.banner', 'Информация об учебном материале обновлена');
-        $request->session()->flash('flash.bannerStyle', 'success');
+        session()->flash('flash.banner', __('messages.model_updated', ['model' => __('models.learningMaterial')]));
+        session()->flash('flash.bannerStyle', 'success');
         return back();
     }
 
@@ -163,8 +163,8 @@ class LearningMaterialController extends Controller
     public function destroy(Request $request, LearningMaterial $learningMaterial)
     {
         $learningMaterial->delete();
-        $request->session()->flash('flash.banner', 'Материал удален');
-        $request->session()->flash('flash.bannerStyle', 'success');
+        session()->flash('flash.banner', __('messages.model_deleted', ['model' => __('models.learningMaterial')]));
+        session()->flash('flash.bannerStyle', 'success');
         return to_route('home');
     }
 }

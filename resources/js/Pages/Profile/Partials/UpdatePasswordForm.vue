@@ -40,16 +40,16 @@ const updatePassword = () => {
 <template>
     <FormSection @submitted="updatePassword">
         <template #title>
-            Обновить пароль
+            {{ $t('passwordForm.title') }}
         </template>
 
         <template #description>
-            Убедитесь, что ваша учетная запись использует длинный, случайный пароль, чтобы остаться в безопасности.
+            {{ $t('passwordForm.description') }}
         </template>
 
         <template #form>
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="current_password" value="Текущий пароль" />
+                <InputLabel for="current_password" :value="$t('passwordForm.currentPassword')" />
                 <TextInput
                     id="current_password"
                     ref="currentPasswordInput"
@@ -62,7 +62,7 @@ const updatePassword = () => {
             </div>
 
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="password" value="Новый пароль" />
+                <InputLabel for="password" :value="$t('passwordForm.newPassword')" />
                 <TextInput
                     id="password"
                     ref="passwordInput"
@@ -75,7 +75,7 @@ const updatePassword = () => {
             </div>
 
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="password_confirmation" value="Подтвердить пароль" />
+                <InputLabel for="password_confirmation" :value="$t('passwordForm.confirmPassword')" />
                 <TextInput
                     id="password_confirmation"
                     v-model="form.password_confirmation"
@@ -89,11 +89,11 @@ const updatePassword = () => {
 
         <template #actions>
             <ActionMessage :on="form.recentlySuccessful" class="me-3">
-                Сохранено
+                {{ $t('passwordForm.saved') }}
             </ActionMessage>
 
             <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                Сохранить
+                {{ $t('passwordForm.save') }}
             </PrimaryButton>
         </template>
     </FormSection>

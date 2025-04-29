@@ -1,5 +1,4 @@
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
 import Paginator from '@/Components/Paginator.vue';
 import Card from '@/Components/Card.vue';
 import { Link } from '@inertiajs/vue3';
@@ -14,12 +13,12 @@ defineProps({
     <TopBarLayout title="Calendar">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                Администрирование
+                {{ $t('common.administration') }}
             </h2>
         </template>
 
         <Card>
-            Войти как:
+            {{ $t('common.loginAs') }} :
             <Link v-for="user in users.data" :key="user.id" :href="route('admin.login-as', user.id)">
                 <Card class="mb-4">
                     <div>{{ user.email }}</div>

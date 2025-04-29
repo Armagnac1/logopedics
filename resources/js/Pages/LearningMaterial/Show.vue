@@ -1,5 +1,4 @@
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
 import BackButton from '@/Components/BackButton.vue';
 import Textarea from '@/Components/Textarea.vue';
 import Card from '@/Components/Card.vue';
@@ -56,7 +55,7 @@ const submit = () => {
         <div class="grid gap-3">
             <Card class="">
                 <form class="space-y-5 " @submit.prevent="submit">
-                    <InputLabel for="title" value="Название"/>
+                    <InputLabel for="title" :value="$t('common.title')"/>
                     <TextInput
                         id="title"
                         v-model="form.title"
@@ -67,17 +66,17 @@ const submit = () => {
                     />
                     <InputError :message="form.errors.title" class="mt-2"/>
                     <Textarea
-                        :label="'Текст'"
+                        :label="$t('common.text')"
                         :rows="9"
                         v-model="form.text"
                     />
                     <div>
-                        <InputLabel for="tags" value="Категория"/>
+                        <InputLabel for="tags" :value="$t('common.category')"/>
                         <AdvancedSelect id="tags" track-by="id" :multiple="true" label="name" :options="tagsOptions"
                                         v-model="form.tags"/>
                     </div>
                     <div>
-                        <InputLabel for="tags" value="Файлы"/>
+                        <InputLabel for="tags" :value="$t('common.files')"/>
                         <AttachedFiles :related-model-name="'App\\Models\\LearningMaterial'"
                                        :related-model-id="learning_material.id"
                                        v-model="form.media"/>
@@ -85,13 +84,13 @@ const submit = () => {
                     <div class="flex justify-end items-center gap-x-2 pt-4 sm:px-7 border-t dark:border-gray-700">
                         <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }"
                                        :disabled="form.processing">
-                            Сохранить
+                            {{ $t('common.save') }}
                         </PrimaryButton>
                     </div>
                 </form>
             </Card>
             <Card class="space-y-2">
-                <h1 class="text-2xl font-bold">Запланировано/пройдено у учеников</h1>
+                <h1 class="text-2xl font-bold">{{ $t('common.plannedOrCompleted') }}</h1>
                 <Link v-for="pupil in usedForPupils" :key="pupil.id" :href="route('pupil.show', pupil.id)">
                     <Card class="grid row-span-1 col-span-1 place-items-center mb-2">
                         <h1 class="text-2xl font-bold">{{ pupil.full_name }}</h1>
@@ -99,7 +98,7 @@ const submit = () => {
                 </Link>
             </Card>
             <Card class="space-y-2">
-                <h1 class="text-2xl font-bold">Используется в уроках</h1>
+                <h1 class="text-2xl font-bold">{{ $t('common.usedInLessons') }}</h1>
                 <SmallLessonCard v-for="lesson in learning_material.lessons" :key="lesson.id" :lesson="lesson"/>
             </Card>
         </div>

@@ -1,5 +1,4 @@
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
 import BackButton from '@/Components/BackButton.vue';
 import Textarea from '@/Components/Textarea.vue';
 import Card from '@/Components/Card.vue';
@@ -50,20 +49,19 @@ const submit = () => {
 }
 
 </script>
-
 <template>
-    <TopBarLayout :title="props.learning_material ? 'Редактирование учебного материала' : 'Создание учебного материала'">
+    <TopBarLayout :title="props.learning_material ? $t('common.editTitle') : $t('common.createTitle')">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 <BackButton/>
-                {{ props.learning_material ? 'Редактирование учебного материала' : 'Создание учебного материала' }}
+                {{ props.learning_material ? $t('common.editTitle') : $t('common.createTitle') }}
             </h2>
         </template>
 
         <div class="grid gap-3">
             <Card class="">
                 <form class="space-y-5 " @submit.prevent="submit">
-                    <InputLabel for="title" value="Название"/>
+                    <InputLabel for="title" :value="$t('common.title')"/>
                     <TextInput
                         id="title"
                         v-model="form.title"
@@ -74,44 +72,31 @@ const submit = () => {
                     />
                     <InputError :message="form.errors.title" class="mt-2"/>
                     <Textarea
-                        :label="'Текст'"
+                        :label="$t('common.text')"
                         :rows="9"
                         v-model="form.text"
                     />
                     <div>
-                        <InputLabel for="tags" value="Категория"/>
+                        <InputLabel for="tags" :value="$t('common.category')"/>
                         <AdvancedSelect id="tags" track-by="id" :multiple="true" label="name" :options="tagsOptions"
                                         v-model="form.tags"/>
                     </div>
                     <div>
-                        <InputLabel for="media" value="Файлы"/>
+                        <InputLabel for="media" :value="$t('common.files')"/>
                         <AttachedFiles v-model="form.media"/>
                     </div>
                     <div class="flex justify-end items-center gap-x-2 pt-4 sm:px-7 border-t dark:border-gray-700">
                         <template v-if="learning_material">
-
-                            <DeleteEntityButton :entityName="'материал'" :url="route('learning_material.destroy', learning_material.id)"></DeleteEntityButton>
+                            <DeleteEntityButton :entityName="$t('common.material')" :url="route('learning_material.destroy', learning_material.id)"></DeleteEntityButton>
                         </template>
 
                         <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }"
                                        :disabled="form.processing">
-                            Сохранить
+                            {{ $t('common.save') }}
                         </PrimaryButton>
                     </div>
                 </form>
             </Card>
-            <!--            <Card class="space-y-2">
-                            <h1 class="text-2xl font-bold">Запланировано/пройдено у учеников</h1>
-                            <Link v-for="pupil in usedForPupils" :key="pupil.id" :href="route('pupil.show', pupil.id)">
-                                <Card class="grid row-span-1 col-span-1 place-items-center mb-2">
-                                    <h1 class="text-2xl font-bold">{{ pupil.full_name }}</h1>
-                                </Card>
-                            </Link>
-                        </Card>
-                        <Card class="space-y-2">
-                            <h1 class="text-2xl font-bold">Используется в уроках</h1>
-                            <SmallLessonCard v-for="lesson in learning_material.lessons" :key="lesson.id" :lesson="lesson"/>
-                        </Card>-->
         </div>
     </TopBarLayout>
 </template>

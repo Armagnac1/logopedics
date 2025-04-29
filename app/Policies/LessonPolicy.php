@@ -8,6 +8,7 @@ use Illuminate\Auth\Access\Response;
 
 class LessonPolicy
 {
+
     /**
      * Determine whether the user can view any models.
      */
@@ -25,13 +26,22 @@ class LessonPolicy
             ? Response::allow()
             : Response::deny('You are not allowed to view this lesson.');
     }
-
     /**
      * Determine whether the user can create models.
      */
     public function create(User $user): bool
     {
-        //
+        return $user->can('create lesson');
+    }
+
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete(User $user, Lesson $lesson): Response
+    {
+        return $lesson->pupil->tutor->id === $user->tutor->id
+            ? Response::allow()
+            : Response::deny('You are not allowed to delete this lesson.');
     }
 
     /**
@@ -39,32 +49,8 @@ class LessonPolicy
      */
     public function update(User $user, Lesson $lesson): Response
     {
-        return $lesson->pupil->tutor->id === $user->tutor->id
+        return $user->can('update lesson') && $lesson->pupil->tutor->id === $user->tutor->id
             ? Response::allow()
             : Response::deny('You are not allowed to update this lesson.');
-    }
-
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, Lesson $lesson): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Lesson $lesson): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Lesson $lesson): bool
-    {
-        //
     }
 }

@@ -18,9 +18,9 @@ const modal = ref(null)
 <template>
     <div>
         <div class="py-1.5 pb-5 px-1 border-b border-gray-100 justify-between align-middle flex items-center">
-            <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Материалы</h3>
+            <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">{{ $t('common.materials') }}</h3>
             <PrimaryButton class="" @click="showModal = true; modal.onOpen()">
-                Добавить
+                {{ $t('common.add') }}
             </PrimaryButton>
         </div>
         <div class="divide-y divide-gray-100">
@@ -30,6 +30,5 @@ const modal = ref(null)
         <Modal :show="showModal" @close="showModal = false">
             <AddLearningMaterialModal ref="modal" :lessonId="lessonId" @close="showModal = false"/>
         </Modal>
-
     </div>
 </template>

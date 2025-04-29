@@ -20,10 +20,10 @@ defineExpose({
 <template>
     <VueMultiselect
         ref="input"
-        selectLabel="Нажмите Enter чтобы выбрать"
-        selectedLabel="Выбрано"
-        deselectLabel="Нажмите Enter чтобы убрать"
-        placeholder="Выберите.."
+        :selectLabel="$t('common.selectLabel')"
+        :selectedLabel="$t('common.selectedLabel')"
+        :deselectLabel="$t('common.deselectLabel')"
+        :placeholder="$t('common.placeholder')"
         @update:model-value="$emit('update:modelValue', $event)"
         :options="options"
         :model-value="modelValue"/>

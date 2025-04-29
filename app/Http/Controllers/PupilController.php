@@ -71,8 +71,8 @@ class PupilController extends Controller
 
         $tags = collect($request->tags)->pluck('id')->toArray();
         $pupil->tags()->sync($tags);
-        $request->session()->flash('flash.banner', 'Новый ученик создан');
-        $request->session()->flash('flash.bannerStyle', 'success');
+        session()->flash('flash.banner', __('messages.model_created', ['model' => __('models.pupil')]));
+        session()->flash('flash.bannerStyle', 'success');
         return redirect()->route('pupil.index');
     }
 
@@ -108,8 +108,8 @@ class PupilController extends Controller
         $pupil->update($request->validated());
         $tags = collect($request->tags)->pluck('id')->toArray();
         $pupil->tags()->sync($tags);
-        $request->session()->flash('flash.banner', 'Информация об ученике обновлена');
-        $request->session()->flash('flash.bannerStyle', 'success');
+        session()->flash('flash.banner', __('messages.model_updated', ['model' => __('models.pupil')]));
+        session()->flash('flash.bannerStyle', 'success');
         return redirect()->route('pupil.index');
     }
 
@@ -119,8 +119,8 @@ class PupilController extends Controller
     public function destroy(Request $request, Pupil $pupil)
     {
         $pupil->delete();
-        $request->session()->flash('flash.banner', 'Ученик удален');
-        $request->session()->flash('flash.bannerStyle', 'success');
+        session()->flash('flash.banner', __('messages.model_deleted', ['model' => __('models.pupil')]));
+        session()->flash('flash.bannerStyle', 'success');
         return to_route('home');
     }
 }

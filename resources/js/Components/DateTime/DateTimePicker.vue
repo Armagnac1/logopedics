@@ -45,23 +45,23 @@ defineExpose({
         :start-time="startTime"
         :teleport="true"
         time-picker-inline
-        cancelText="Отмена"
+        :cancel-text="$t('common.cancel')"
         locale="ru"
         minutes-increment="5"
-        selectText="ОК"
+        :select-text="$t('common.ok')"
         @update:model-value="$emit('update:modelValue', dayjs(value).format('YYYY-MM-DD HH:mm:00'))"
     >
         <template #action-extra="{ selectCurrentDate }">
             <SecondaryButton @click="clearDate()">
-                Убрать из расписания
+                {{ $t('common.removeFromSchedule') }}
             </SecondaryButton>
         </template>
         <template #action-buttons>
             <SecondaryButton @click="input.closeMenu()">
-                Отмена
+                {{ $t('common.cancel') }}
             </SecondaryButton>
             <PrimaryButton @click="input.selectDate()">
-                OK
+                {{ $t('common.ok') }}
             </PrimaryButton>
         </template>
         <template #action-preview="{ value }">

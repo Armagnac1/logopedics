@@ -39,20 +39,20 @@ const formatTime = (time) => `${time.hours < 10 ? '0' + time.hours : time.hours}
         v-model="value"
         :clearable="false"
         :start-time="startTime"
-        cancelText="Отмена"
+        cancel-text="$t('common.cancel')"
         format="HH:mm"
         locale="ru"
-        selectText="ОК"
+        select-text="$t('common.ok')"
         teleport
         time-picker
         @update:model-value="$emit('update:modelValue', formatTime(value))"
     >
         <template #action-buttons>
             <SecondaryButton @click="input.closeMenu()">
-                Отмена
+                {{ $t('common.cancel') }}
             </SecondaryButton>
             <PrimaryButton @click="input.selectDate()">
-                OK
+                {{ $t('common.ok') }}
             </PrimaryButton>
         </template>
         <template #action-preview="{ value }">

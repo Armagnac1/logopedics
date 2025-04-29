@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watchEffect } from 'vue';
-import { usePage, Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 
 const page = usePage();
@@ -20,14 +20,14 @@ watchEffect(async () => {
                 <div class="flex items-center justify-between flex-wrap">
                     <div class="w-0 flex-1 flex items-center min-w-0">
                         <p class="ms-3 font-medium text-sm text-white truncate">
-                            Сейчас страница просматривается от другого пользователя
+                            {{ $t('common.impersonateMessage') }}
                         </p>
                     </div>
 
                     <div class="shrink-0 sm:ms-3">
                         <Link :href="route('admin.impersonate-back')">
                             <PrimaryButton>
-                                Вернуться к себе
+                                {{ $t('common.returnToSelf') }}
                             </PrimaryButton>
                         </Link>
                     </div>

@@ -5,6 +5,7 @@ import { router, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import DangerButton from '@/Components/DangerButton.vue';
 
+
 const props = defineProps({
     entityName: String,
     url: String
@@ -25,24 +26,24 @@ const submit = () => {
 
 <template>
     <div>
-        <DangerButton @click="confirmingUserDeletion = true">Удалить {{ entityName }}</DangerButton>
+        <DangerButton @click="confirmingUserDeletion = true">{{ $t('common.delete') }} {{ entityName }}</DangerButton>
         <ConfirmationModal :show="confirmingUserDeletion" @close="confirmingUserDeletion = false">
             <template #title>
-                Удалить {{ entityName }}
+                {{ $t('common.delete') }} {{ entityName }}
             </template>
 
             <template #content>
-                Вы уверены что хотите удалить {{ entityName }}?
+                {{ $t('common.confirmDelete', { entityName }) }}
             </template>
 
             <template #footer>
                 <SecondaryButton @click.native="confirmingUserDeletion = false">
-                    Отмена
+                    {{ $t('common.cancel') }}
                 </SecondaryButton>
 
                 <DangerButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing" class="ml-2"
                               @click.native="submit">
-                    Удалить {{ entityName }}
+                    {{ $t('common.delete') }} {{ entityName }}
                 </DangerButton>
             </template>
         </ConfirmationModal>

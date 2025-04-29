@@ -1,6 +1,4 @@
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
-import LargeCalendar from '@/Components/LargeCalendar.vue';
 import { JitsiMeeting } from "@jitsi/vue-sdk";
 import Card from '@/Components/Card.vue';
 import TopBarLayout from '@/Layouts/TopBarLayout.vue';

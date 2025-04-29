@@ -1,5 +1,4 @@
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
 import PupilTable from '@/Components/Pupil/PupilTable.vue';
 import TopBarLayout from '@/Layouts/TopBarLayout.vue';
 
@@ -10,10 +9,10 @@ const props = defineProps({
 </script>
 
 <template>
-    <TopBarLayout title="Ученики">
+    <TopBarLayout :title="$t('common.pupils')">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                Ученики
+                {{ $t('common.pupils') }}
             </h2>
         </template>
         <PupilTable :pupils="pupils" :filters="filters"/>

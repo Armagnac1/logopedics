@@ -39,22 +39,16 @@ watch(search, throttle(value => {
                     </div>
                     <input type="text" id="icon" name="icon" v-model="search"
                            class="py-2 px-4 ps-11 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
-                           placeholder="Поиск">
+                           :placeholder="$t('common.search')">
                 </div>
             </div>
 
             <div v-if="checkHasOneOfRoles(['superadmin','admin', 'tutor-seller'])">
                 <div class="inline-flex gap-x-2">
-                    <!--
-                                        <a class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-                                           href="#">
-                                            View all
-                                        </a>
-                    -->
                     <Link draggable="false" :href="route('pupil.create')">
                         <PrimaryButton class="py-2 px-3 inline-flex items-center gap-x-2">
                             <font-awesome-icon icon="fa-solid fa-plus"/>
-                            Добавить ученика
+                            {{ $t('common.add_student') }}
                         </PrimaryButton>
                     </Link>
                 </div>
@@ -66,18 +60,10 @@ watch(search, throttle(value => {
         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead class="bg-gray-50 dark:bg-slate-800">
             <tr>
-<!--                <th scope="col" class="ps-6 py-3 text-start">
-                    <label for="hs-at-with-checkboxes-main" class="flex">
-                        <input type="checkbox"
-                               class="shrink-0 border-gray-300 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-600 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
-                               id="hs-at-with-checkboxes-main">
-                    </label>
-                </th>-->
-
                 <th scope="col" class="ps-6 text-start">
                     <div class="flex items-center gap-x-2">
                     <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
-                      Имя
+                      {{ $t('common.name') }}
                     </span>
                     </div>
                 </th>
@@ -85,7 +71,7 @@ watch(search, throttle(value => {
                 <th scope="col" class="px-6 py-3 text-start">
                     <div class="flex items-center gap-x-2">
                     <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
-                      Статус
+                      {{ $t('common.lessons_conducted_total') }}
                     </span>
                     </div>
                 </th>
@@ -93,15 +79,7 @@ watch(search, throttle(value => {
                 <th scope="col" class="px-6 py-3 text-start">
                     <div class="flex items-center gap-x-2">
                     <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
-                      Занятия (проведено/всего)
-                    </span>
-                    </div>
-                </th>
-
-                <th scope="col" class="px-6 py-3 text-start">
-                    <div class="flex items-center gap-x-2">
-                    <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
-                      Следующее занятие
+                      {{ $t('common.next_lesson') }}
                     </span>
                     </div>
                 </th>
@@ -122,7 +100,7 @@ watch(search, throttle(value => {
             <div>
                 <p class="text-sm text-gray-600 dark:text-gray-400">
                     <span class="font-semibold text-gray-800 dark:text-gray-200">{{ pupils.meta.total }}</span>
-                    результатов
+                    {{ $t('common.results') }}
                 </p>
             </div>
 
@@ -132,5 +110,4 @@ watch(search, throttle(value => {
         </div>
         <!-- End Footer -->
     </div>
-
 </template>

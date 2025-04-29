@@ -17,23 +17,20 @@ const classes = computed(() => {
 </script>
 
 <template>
-    <div>
-        <Link draggable="false" :href="route('lesson.show', lesson.id)" replace>
-            <div
-                :class="classes">
-                <div class="grow truncate">
-                    <div class="block truncate dark:text-neutral-200">
-                        <span v-if="lesson.title">{{ lesson.title }}</span>
-                        <span v-else class="text-gray-400 font-normal italic">Без названия</span>
-                    </div>
-                    <p v-if="lesson.start_at" class="block truncate text-gray-400 dark:text-neutral-500">
-                        {{ dayjs(lesson.start_at).format('LLL') }}
-                    </p>
-                    <p v-else class="block truncate text-gray-400 dark:text-neutral-500">
-                        Не в расписании
-                    </p>
+    <Link :href="route('lesson.show', lesson.id)" replace>
+        <div :class="classes">
+            <div class="grow truncate">
+                <div class="block truncate dark:text-neutral-200">
+                    <span v-if="lesson.title">{{ lesson.title }}</span>
+                    <span v-else class="text-gray-400 font-normal italic">{{ $t('common.untitled') }}</span>
                 </div>
+                <p v-if="lesson.start_at" class="block truncate text-gray-400 dark:text-neutral-500">
+                    {{ dayjs(lesson.start_at).format('YYYY-MM-DD HH:mm') }}
+                </p>
+                <p v-else class="block truncate text-gray-400 dark:text-neutral-500">
+                    {{ $t('common.notScheduled') }}
+                </p>
             </div>
-        </Link>
-    </div>
+        </div>
+    </Link>
 </template>

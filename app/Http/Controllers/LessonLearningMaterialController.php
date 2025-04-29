@@ -39,7 +39,7 @@ class LessonLearningMaterialController extends Controller
         $lesson = Lesson::find($request->lessonId);
         $ids = collect($request->materials)->pluck('id');
         $lesson->learningMaterials()->attach($ids);
-        session()->flash('success', 'Учебный материал добавлен к уроку');
+        session()->flash('flash.banner', __('messages.model_attached', ['attachable' => __('models.learningMaterial'),'model' => __('models.lesson')]));
         session()->flash('bannerStyle', 'success');
         return back();
     }

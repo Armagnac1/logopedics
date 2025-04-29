@@ -23,7 +23,7 @@ const props = defineProps({
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 <BackButton/>
-                Урок
+                {{ $t('common.lesson') }}
             </h2>
         </template>
 
@@ -55,7 +55,7 @@ const props = defineProps({
                 <LessonCommentsSection :lesson="lesson"/>
             </Card>
             <Card class="col-span-4 xl:col-span-4">
-                <DeleteEntityButton class="float-right" :entityName="'урок'" :url="route('lesson.destroy', lesson.id)"></DeleteEntityButton>
+                <DeleteEntityButton class="float-right" :entityName="$t('common.lesson')" :url="route('lesson.destroy', lesson.id)"></DeleteEntityButton>
             </Card>
         </div>
 

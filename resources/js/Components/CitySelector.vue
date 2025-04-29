@@ -17,18 +17,17 @@ const loadOptions = () => {
 loadOptions()
 </script>
 <template>
-    <InputLabel for="city" value="Город"/>
-    <VueMultiselect selectLabel="Нажмите Enter чтобы выбрать"
-                    selectedLabel="Выбрано"
-                    deselectLabel="Нажмите Enter чтобы убрать"
-                    placeholder="Выберите.."
+    <InputLabel for="city" :value="$t('citySelector.cityLabel')"/>
+    <VueMultiselect :selectLabel="$t('citySelector.selectLabel')"
+                    :selectedLabel="$t('citySelector.selectedLabel')"
+                    :deselectLabel="$t('citySelector.deselectLabel')"
+                    :placeholder="$t('citySelector.placeholder')"
                     track-by="id" label="name"
                     @update:model-value="$emit('update:modelValue', $event.id)"
                     :options="options"
                     :model-value="options.find(i=>i.id === modelValue)">
         <template #noResult>
-            Город не найден. Попробуйте изменить поисковый запрос.
+            {{ $t('citySelector.noResult') }}
         </template>
     </VueMultiselect>
 </template>
-

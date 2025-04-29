@@ -38,7 +38,7 @@ const deleteMaterial = () => {
         <div class="flex">
             <SecondaryButton class="hidden group-hover:block"
                              @click="deleteMaterial">
-                Убрать
+                {{ $t('common.remove') }}
             </SecondaryButton>
         </div>
     </div>

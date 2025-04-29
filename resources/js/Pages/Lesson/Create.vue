@@ -36,11 +36,11 @@ const setTitleFormSuggestion = (value) => {
 </script>
 
 <template>
-    <TopBarLayout :title="'Создание урока для ученика ' + pupil.full_name">
+    <TopBarLayout :title="$t('lesson.create_for_pupil', { name: pupil.full_name })">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 <BackButton/>
-                {{ 'Создание урока для ученика ' + pupil.full_name }}
+                {{ $t('lesson.create_for_pupil', { name: pupil.full_name }) }}
             </h2>
         </template>
 
@@ -49,12 +49,12 @@ const setTitleFormSuggestion = (value) => {
                 <form class="space-y-5 " @submit.prevent="submit">
                     <div class="grid grid-cols-1 md:grid-cols-3 border-b">
                         <div>
-                            <h2 class="text-base font-semibold leading-7 text-gray-900">Основная информация</h2>
+                            <h2 class="text-base font-semibold leading-7 text-gray-900">{{ $t('lesson.main_information') }}</h2>
                         </div>
 
                         <div class="md:col-span-2 mt-10 pb-7 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                             <div class="sm:col-span-4">
-                                <InputLabel for="title" value="Название"/>
+                                <InputLabel for="title" :value="$t('common.title')"/>
                                 <TextInput
                                     id="title"
                                     v-model="form.title"
@@ -73,21 +73,21 @@ const setTitleFormSuggestion = (value) => {
                             </div>
                         </div>
                         <div>
-                            <h2 class="text-base font-semibold leading-7 text-gray-900">Расписание</h2>
+                            <h2 class="text-base font-semibold leading-7 text-gray-900">{{ $t('common.schedule') }}</h2>
                         </div>
                         <div class="md:col-span-2 mt-10 pb-7 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                             <div class="sm:col-span-4">
-                                <InputLabel for="start_time" value="Время"/>
+                                <InputLabel for="start_time" :value="$t('common.time')"/>
                                 <TimePicker v-model="form.start_time"/>
                                 <InputError :message="form.errors.start_time" class="mt-2"/>
                             </div>
                             <div class="sm:col-span-4">
-                                <InputLabel for="start_dates" value="Дата"/>
+                                <InputLabel for="start_dates" :value="$t('common.date')"/>
                                 <DatePicker v-model="form.start_dates" multiple/>
                                 <InputError :message="form.errors.start_dates" class="mt-2"/>
                             </div>
                             <div class="sm:col-span-4">
-                                <InputLabel for="duration" value="Длительность урока (в минутах)"/>
+                                <InputLabel for="duration" :value="$t('lesson.duration')"/>
                                 <TextInput
                                     v-model="form.duration"
                                     class="mt-1 block w-full"
@@ -103,7 +103,7 @@ const setTitleFormSuggestion = (value) => {
                     <div class="flex justify-end items-center gap-x-2 mt-6 sm:px-7">
                         <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing"
                                        class="ms-4">
-                            Сохранить
+                            {{ $t('common.save') }}
                         </PrimaryButton>
                     </div>
                 </form>

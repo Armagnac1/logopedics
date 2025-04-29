@@ -21,7 +21,7 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="Забыли пароль" />
+    <Head :title="$t('passwordForm.forgot_password_title')" />
 
     <AuthenticationCard>
         <template #logo>
@@ -29,7 +29,7 @@ const submit = () => {
         </template>
 
         <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-            Забыли пароль? Нет проблем. Просто напишите ваш электронный адрес и мы вышлем вам письмо с ссылкой, чтобы войти.
+            {{ $t('passwordForm.forgot_password_message') }}
         </div>
 
         <div v-if="status" class="mb-4 font-medium text-sm text-green-600 dark:text-green-400">
@@ -38,7 +38,7 @@ const submit = () => {
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="email" value="Email" />
+                <InputLabel for="email" :value="$t('passwordForm.email_label')" />
                 <TextInput
                     id="email"
                     v-model="form.email"
@@ -53,7 +53,7 @@ const submit = () => {
 
             <div class="flex items-center justify-end mt-4">
                 <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Выслать письмо со ссылкой
+                    {{ $t('passwordForm.send_link_button') }}
                 </PrimaryButton>
             </div>
         </form>

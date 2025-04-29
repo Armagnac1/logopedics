@@ -9,6 +9,7 @@ use App\Models\Pupil;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Str;
 
 class LessonController extends Controller
 {
@@ -33,7 +34,7 @@ class LessonController extends Controller
         $pupilLessonCount = $pupil->lessons->count();
         return Inertia::render('Lesson/Create', [
             'pupil' => $pupil->load('user'),
-            'name_suggestions' => ['Урок ' . ($pupilLessonCount + 1), 'Диагностика']
+            'name_suggestions' => [Str::ucfirst(__('models.lesson')) . ' ' . ($pupilLessonCount + 1)] //TODO: add more suggestions later
         ]);
     }
 
@@ -50,7 +51,7 @@ class LessonController extends Controller
             $lesson->save();
         }
 
-        $request->session()->flash('flash.banner', 'Урок создан');
+        $request->session()->flash('flash.banner', __('messages.model_created', ['model' => __('models.lesson')]));
         $request->session()->flash('flash.bannerStyle', 'success');
         return to_route('lesson.show', $lesson->id);
     }
@@ -88,18 +89,18 @@ class LessonController extends Controller
     public function update(UpdateLessonRequest $request, Lesson $lesson)
     {
         $lesson->update($request->validated());
-        $request->session()->flash('flash.banner', 'Информация об уроке обновлена');
-        $request->session()->flash('flash.bannerStyle', 'success');
+        session()->flash('flash.banner', __('messages.model_updated', ['model' => __('models.lesson')]));
+        session()->flash('flash.bannerStyle', 'success');
         return to_route('lesson.show', $lesson->id);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request,  Lesson $lesson)
+    public function destroy(Request $request, Lesson $lesson)
     {
-        $request->session()->flash('flash.banner', 'Урок удален');
-        $request->session()->flash('flash.bannerStyle', 'success');
+        session()->flash('flash.banner', __('messages.model_deleted', ['model' => __('models.lesson')]));
+        session()->flash('flash.bannerStyle', 'success');
         $lesson->delete();
         return to_route('pupil.show', $lesson->pupil_id);
     }

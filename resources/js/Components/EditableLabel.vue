@@ -9,42 +9,42 @@ const props = defineProps({
     route_url: String
 });
 
-
 const input = ref(null);
-const edited = ref(false)
+const edited = ref(false);
 
 const form = useForm({
     [props.field]: props.modelValue
-})
+});
+
 const editStart = () => {
-    edited.value = true
+    edited.value = true;
     nextTick().then(() => {
-        input.value.focus()
-    })
-}
+        input.value.focus();
+    });
+};
 
 const editEnd = () => {
     setTimeout(() => {
-        edited.value = false
+        edited.value = false;
     }, 5);
-}
+};
 
 const submit = () => {
     form.submit('put', props.route_url, {
         preserveScroll: true,
         onSuccess: () => {
-            editEnd()
+            editEnd();
         }
-    })
-}
+    });
+};
 
 </script>
 
 <template>
     <div @keydown.enter="submit" @keydown.esc="editEnd">
-        <div @click="editStart"  class="flex group items-center cursor-pointer" v-show="!edited">
+        <div @click="editStart" class="flex group items-center cursor-pointer" v-show="!edited">
             <span v-if="modelValue">{{ modelValue }}</span>
-            <span v-else class="text-gray-400 font-normal italic">Без названия</span>
+            <span v-else class="text-gray-400 font-normal italic">{{ $t('common.untitled') }}</span>
             <FontAwesomeIcon class="ml-1.5 size-3 group-hover:visible invisible" icon="fa-regular fa-pen-to-square"/>
         </div>
         <div class="flex" v-show="edited">

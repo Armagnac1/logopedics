@@ -57,19 +57,19 @@ const formatDate = (value) => {
         :enable-time-picker="false"
         :multi-dates="multiple"
         :teleport="true"
-        cancelText="Отмена"
+        :cancel-text="$t('common.cancel')"
         format="dd/MM/yyyy"
         locale="ru"
         minutes-increment="5"
-        selectText="ОК"
+        :select-text="$t('common.ok')"
         @update:model-value="$emit('update:modelValue', formatDate(value))"
     >
         <template #action-buttons>
             <SecondaryButton @click="input.closeMenu()">
-                Отмена
+                {{ $t('common.cancel') }}
             </SecondaryButton>
             <PrimaryButton @click="input.selectDate()">
-                OK
+                {{ $t('common.ok') }}
             </PrimaryButton>
         </template>
         <template #action-preview="{ value }">

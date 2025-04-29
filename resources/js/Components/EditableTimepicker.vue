@@ -11,26 +11,23 @@ const props = defineProps({
     route_url: String
 });
 
-
 const input = ref(null);
 
 const form = useForm({
     [props.field]: props.modelValue
-})
+});
 
 const submit = () => {
-    console.log(form[props.field])
+    console.log(form[props.field]);
     form.submit('put', props.route_url, {
         preserveScroll: true,
-        onSuccess: () => {
-        }
-    })
-}
+        onSuccess: () => {}
+    });
+};
 
 </script>
 
 <template>
-
     <DateTimePicker
         ref="input"
         position="left"
@@ -38,7 +35,7 @@ const submit = () => {
         @update:model-value="submit">
         <template #trigger>
             <div class="flex group items-center cursor-pointer">
-                <span>{{ modelValue ? dayjs(modelValue).format('D MMM, LT') : 'Не в расписании' }}</span>
+                <span>{{ modelValue ? dayjs(modelValue).format('D MMM, LT') : $t('common.notScheduled') }}</span>
                 <FontAwesomeIcon class="ml-1.5 size-3 group-hover:visible invisible"
                                  icon="fa-regular fa-pen-to-square"/>
             </div>

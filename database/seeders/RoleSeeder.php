@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use App\Enums\RoleEnum;
 
 class RoleSeeder extends Seeder
 {
@@ -13,39 +14,56 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        Permission::create(['name' => 'superadmin']);
-        $loginasothers = Permission::create(['name' => 'login as others']);
-        $permissionMaterial = Permission::create(['name' => 'create/change/view owned learning material']);
-        $permissionCreateLesson = Permission::create(['name' => 'create lesson']);
-        $permissionUpdateLesson = Permission::create(['name' => 'update lesson']);
-        $permissionPupil = Permission::create(['name' => 'create/change pupil']);
+        // Define permissions
+        $permissions = [
+            'superadmin',
+            'login as others',
+            'create/change/view owned learning material',
+            'create lesson',
+            'update lesson',
+            'create/change pupil'
+        ];
 
-        Role::create(['name' => 'superadmin'])->syncPermissions([
-            $permissionMaterial,
-            $permissionCreateLesson,
-            $permissionUpdateLesson,
-            $permissionPupil,
-            $loginasothers
-        ]);
+        // Create permissions
+        $permissionInstances = [];
+        foreach ($permissions as $permission) {
+            $permissionInstances[$permission] = Permission::create(['name' => $permission]);
+        }
 
-        Role::create(['name' => 'admin'])->syncPermissions([
-            $permissionMaterial,
-            $permissionCreateLesson,
-            $permissionUpdateLesson,
-            $permissionPupil,
-            $loginasothers
-        ]);
-        Role::create(['name' => 'tutor'])->syncPermissions([
-            $permissionMaterial,
-            $permissionUpdateLesson
-        ]);
-        Role::create(['name' => 'tutor-seller'])->syncPermissions([
-            $permissionMaterial,
-            $permissionCreateLesson,
-            $permissionUpdateLesson,
-            $permissionPupil
-        ]);
-        Role::create(['name' => 'pupil']);
+        // Define roles and their permissions
+        $roles = [
+            RoleEnum::SUPERADMIN->value => [
+                'superadmin',
+                'login as others',
+                'create/change/view owned learning material',
+                'create lesson',
+                'update lesson',
+                'create/change pupil'
+            ],
+            RoleEnum::ADMIN->value => [
+                'login as others',
+                'create/change/view owned learning material',
+                'create lesson',
+                'update lesson',
+                'create/change pupil'
+            ],
+            RoleEnum::TUTOR->value => [
+                'create/change/view owned learning material',
+                'update lesson'
+            ],
+            RoleEnum::TUTOR_SELLER->value => [
+                'create/change/view owned learning material',
+                'create lesson',
+                'update lesson',
+                'create/change pupil'
+            ],
+            RoleEnum::PUPIL->value => []
+        ];
 
+        // Create roles and sync permissions
+        foreach ($roles as $roleName => $rolePermissions) {
+            $role = Role::create(['name' => $roleName]);
+            $role->syncPermissions(array_map(fn($permission) => $permissionInstances[$permission], $rolePermissions));
+        }
     }
 }

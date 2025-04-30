@@ -1,4 +1,12 @@
 {
+    "citySelector": {
+        "cityLabel": "City",
+        "deselectLabel": "Press Enter to deselect",
+        "noResult": "City not found. Try changing the search query.",
+        "placeholder": "Select..",
+        "selectLabel": "Press Enter to select",
+        "selectedLabel": "Selected"
+    },
     "common": {
         "add": "Add",
         "addLesson": "Add Lesson",
@@ -47,10 +55,11 @@
         "parentName": "Parent's Name",
         "personalInfo": "Personal Information",
         "personalInfoDesc": "Fill in the student's personal information",
-        "plannedOrCompleted": "Planned/Completed for Students",
         "placeholder": "Select..",
+        "plannedOrCompleted": "Planned/Completed for Students",
         "previous10": "Previous 10",
         "profile": "Profile",
+        "pupil": "pupil",
         "pupils": "Students",
         "remove": "Remove",
         "removeFromSchedule": "Remove from Schedule",
@@ -80,28 +89,6 @@
         "duration": "Lesson Duration (in minutes)",
         "main_information": "Main Information"
     },
-    "citySelector": {
-        "cityLabel": "City",
-        "deselectLabel": "Press Enter to deselect",
-        "noResult": "City not found. Try changing the search query.",
-        "placeholder": "Select..",
-        "selectLabel": "Press Enter to select",
-        "selectedLabel": "Selected"
-    },
-    "sessions": {
-        "cancelButton": "Cancel",
-        "confirmButton": "Logout from other browser sessions",
-        "description": "Manage and logout from active sessions on other browsers and devices.",
-        "done": "Done.",
-        "info": "If necessary, you can logout from all other browser sessions on all your devices. Below is a list of some of your recent sessions; however, this list may not be complete. If you believe your account has been compromised, you should also update your password.",
-        "lastActive": "Last Active",
-        "logoutButton": "Logout from other browser sessions",
-        "modalContent": "Please enter your password to confirm that you want to logout from other browser sessions on all your devices.",
-        "modalTitle": "Logout from other browser sessions",
-        "thisDevice": "This Device",
-        "title": "Browser Sessions",
-        "unknown": "Unknown"
-    },
     "passwordForm": {
         "agreeTerms": "I agree to the",
         "alreadyRegistered": "Already registered?",
@@ -114,10 +101,12 @@
         "forgot_password": "Forgot Password?",
         "forgot_password_message": "Forgot your password? No problem. Just enter your email address and we'll send you a link to log in.",
         "forgot_password_title": "Forgot Password",
+        "loading": "Loading...",
         "login": "Login",
         "name": "Name",
         "newPassword": "New Password",
         "password": "Password",
+        "privacyPolicy": "Privacy Policy",
         "register": "Register",
         "registration": "Registration",
         "remember_me": "Remember Me",
@@ -128,8 +117,7 @@
         "send_link_button": "Send Link Email",
         "status_message": "Your Status",
         "termsOfService": "Terms of Service",
-        "title": "Update Password",
-        "privacyPolicy": "Privacy Policy"
+        "title": "Update Password"
     },
     "profileForm": {
         "avatar": "Avatar",
@@ -144,5 +132,19 @@
         "selectNewAvatar": "Select New Avatar",
         "title": "Profile",
         "verificationSent": "A new verification link has been sent to your email address."
+    },
+    "sessions": {
+        "cancelButton": "Cancel",
+        "confirmButton": "Logout from other browser sessions",
+        "description": "Manage and logout from active sessions on other browsers and devices.",
+        "done": "Done.",
+        "info": "If necessary, you can logout from all other browser sessions on all your devices. Below is a list of some of your recent sessions; however, this list may not be complete. If you believe your account has been compromised, you should also update your password.",
+        "lastActive": "Last Active",
+        "logoutButton": "Logout from other browser sessions",
+        "modalContent": "Please enter your password to confirm that you want to logout from other browser sessions on all your devices.",
+        "modalTitle": "Logout from other browser sessions",
+        "thisDevice": "This Device",
+        "title": "Browser Sessions",
+        "unknown": "Unknown"
     }
 }

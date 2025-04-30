@@ -1,18 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Lesson;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateTutorRequest extends FormRequest
+class StoreLessonLearningMaterialRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return false;
-    }
 
     /**
      * Get the validation rules that apply to the request.
@@ -22,7 +15,9 @@ class UpdateTutorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'lessonId' => ['integer', 'exists:lessons,id'],
+            'materials' => ['array'],
+            'materials.id' => ['integer', 'exists:learning_materials,id'],
         ];
     }
 }

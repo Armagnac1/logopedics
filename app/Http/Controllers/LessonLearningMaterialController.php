@@ -2,32 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreLessonLearningMaterialRequest;
+use App\Http\Requests\Lesson\StoreLessonLearningMaterialRequest;
 use App\Models\Lesson;
-use Illuminate\Http\Request;
+use App\Repositories\Abstracts\LessonRepositoryInterface;
 use Illuminate\Support\Facades\Gate;
-use Inertia\Inertia;
 
 class LessonLearningMaterialController extends Controller
 {
+    protected $lessonRepository;
 
-    public function __construct()
+    public function __construct(LessonRepositoryInterface $lessonRepository)
     {
-        $this->authorizeResource(Lesson::class, 'lesson_learning_material');
-    }
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-
+        $this->lessonRepository = $lessonRepository;
     }
 
     /**
@@ -35,38 +21,14 @@ class LessonLearningMaterialController extends Controller
      */
     public function store(StoreLessonLearningMaterialRequest $request)
     {
-        Gate::authorize('update', $request->lessonId);
-        $lesson = Lesson::find($request->lessonId);
+        $lesson = $this->lessonRepository->find($request->lessonId);
+        Gate::authorize('update', $lesson);
         $ids = collect($request->materials)->pluck('id');
-        $lesson->learningMaterials()->attach($ids);
-        session()->flash('flash.banner', __('messages.model_attached', ['attachable' => __('models.learningMaterial'),'model' => __('models.lesson')]));
+        $this->lessonRepository->attachLearningMaterials($lesson, $ids);
+
+        session()->flash('flash.banner', __('messages.model_attached', ['attachable' => __('models.learningMaterial'), 'model' => __('models.lesson')]));
         session()->flash('bannerStyle', 'success');
         return back();
-    }
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Lesson $lesson)
-    {
-
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Lesson $lesson)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $lesson_learning_material)
-    {
-
     }
 
     /**
@@ -74,11 +36,11 @@ class LessonLearningMaterialController extends Controller
      */
     public function destroy($lesson_learning_material)
     {
-        $pivot = \DB::table('lesson_learning_materials')->where('id', $lesson_learning_material)->first();
+        $pivot = $this->lessonRepository->findPivotMaterialById($lesson_learning_material);
         Gate::authorize('delete', Lesson::find($pivot->lesson_id));
-        \DB::table('lesson_learning_materials')->where('id', $lesson_learning_material)->delete();
+        $this->lessonRepository->detachLearningMaterial($lesson_learning_material);
 
-        session()->flash('success', 'Учебный материал убран из урока');
+        session()->flash('flash.banner', __('messages.model_detached', ['model' => __('models.lesson'), 'attachable' => __('models.learningMaterial')]));
         session()->flash('bannerStyle', 'success');
     }
 }

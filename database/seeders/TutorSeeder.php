@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Tutor;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class TutorSeeder extends Seeder
@@ -14,9 +13,15 @@ class TutorSeeder extends Seeder
      */
     public function run(): void
     {
-        Tutor::factory()->for(User::find(1))->create();
-        Tutor::factory()->for(User::find(2))->create();
-        Tutor::factory()->for(User::find(3))->create();
-        Tutor::factory()->for(User::find(4))->create();
+        // Define the range of user IDs
+        $userIds = range(1, 4);
+
+        // Loop through each user ID and create a tutor
+        foreach ($userIds as $userId) {
+            $user = User::find($userId);
+            if ($user) {
+                Tutor::factory()->for($user)->create();
+            }
+        }
     }
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Pupil;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StorePupilRequest extends FormRequest
+class UpdatePupilRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.

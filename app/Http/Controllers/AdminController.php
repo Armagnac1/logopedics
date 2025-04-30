@@ -1,21 +1,26 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\User;
+use App\Repositories\Abstracts\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class AdminController extends Controller
-
 {
+    protected $userRepository;
+
+    public function __construct(UserRepositoryInterface $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+
     public function index(Request $request)
     {
         return Inertia::render('Admin/Index', [
-            'users' => User::orderBy('id', 'asc')
-                ->with('roles')
-                ->paginate(20)
-                ->withQueryString()
+            'users' => $this->userRepository->getForIndex()
         ]);
     }
 
@@ -25,6 +30,7 @@ class AdminController extends Controller
         session()->put(['impersonate' => $user->id]);
         return redirect()->route('profile.show');
     }
+
     public function impersonateBack()
     {
         session()->forget('impersonate');

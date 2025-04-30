@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\LearningMaterial;
 use App\Models\Lesson;
-use App\Services\AISuggestionsService;
+use App\Services\Abstracts\Abstracts\AISuggestionsService;
 use Illuminate\Console\Command;
 
 class TestCommand extends Command

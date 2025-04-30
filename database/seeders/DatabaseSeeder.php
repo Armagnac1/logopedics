@@ -27,17 +27,5 @@ class DatabaseSeeder extends Seeder
             PupilSeeder::class,
             LessonSeeder::class,
         ]);
-
-        /*Pupil::factory(500)
-            ->has(Lesson::factory()->count(10)->hasAttached(LearningMaterial::factory()->count(2)), 'lessons')
-            ->has(Tutor::factory()->create())
-            ->create();*/
-
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
     }
 }

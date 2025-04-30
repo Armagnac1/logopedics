@@ -1,29 +1,32 @@
+// Import styles
 import './bootstrap';
 import '../css/app.css';
+import 'preline/preline';
 
+// Import Vue and Inertia
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+
+// Import Ziggy for route handling
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
-import { i18n } from './i18n'
 
+// Import i18n for internationalization
+import { i18n } from './i18n';
 
-/* import the fontawesome core */
-import { library } from '@fortawesome/fontawesome-svg-core'
-/* import font awesome icon component */
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-/* import specific icons */
-import { fas } from '@fortawesome/free-solid-svg-icons'
-import { far } from '@fortawesome/free-regular-svg-icons'
+// Import FontAwesome
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { far } from '@fortawesome/free-regular-svg-icons';
 
-import 'preline/preline'
+// Add FontAwesome icons to the library
+library.add(fas, far);
 
-/* add icons to the library */
-library.add(fas)
-library.add(far)
-
+// Define application name
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
+// Create and configure Inertia app
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),

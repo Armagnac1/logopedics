@@ -43,17 +43,13 @@ class HandleInertiaRequests extends Middleware
             $roles = auth()->user()->roles()->get()->pluck('name');
         }
         $urlPrev = request()->wantsJson() ? null : $this->savePreviousUrl();
-        //dd($urlPrev);
-
 
         return array_merge(parent::share($request), [
             'roles' => $roles,
             'permissions' => $permissions,
             'urlPrev' => fn() => $urlPrev,
             'impersonate' => fn() => $request->session()->get('impersonate'),
-            'flash' => [
-                'message' => fn() => $request->session()->get('message')
-            ],
+            'flash' =>  fn() => $request->session()->get('flash')
         ]);
     }
 

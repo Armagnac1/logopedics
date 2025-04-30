@@ -39,30 +39,16 @@ class LearningMaterialPolicy
     {
         return $learningMaterial->creator_user_id === $user->id
             ? Response::allow()
-            : Response::deny('Нет доступа к редактированию материала');
+            : Response::deny('You are not allowed to update this material');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, LearningMaterial $learningMaterial): bool
+    public function delete(User $user, LearningMaterial $learningMaterial): Response
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, LearningMaterial $learningMaterial): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, LearningMaterial $learningMaterial): bool
-    {
-        //
+        return $learningMaterial->creator_user_id === $user->id
+            ? Response::allow()
+            : Response::deny('You are not allowed to update this material');
     }
 }

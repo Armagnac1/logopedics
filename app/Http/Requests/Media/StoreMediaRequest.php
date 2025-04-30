@@ -1,19 +1,17 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Media;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 
-class UpdateLearningMaterialRequest extends FormRequest
+class StoreMediaRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        $learningMaterial = $this->route('learning_material');
-        return Auth::user()->tutor->id === $learningMaterial->creator_user_id;
+        return true;
     }
 
     /**
@@ -24,10 +22,7 @@ class UpdateLearningMaterialRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'tags' => ['array'],
-            'text' => ['string', 'nullable'],
-            'title' => ['string'],
-            'mediaIds' => ['array'],
+            'files' => 'required|array',
         ];
     }
 }

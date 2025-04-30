@@ -42,10 +42,7 @@ class MediaPolicy
      */
     public function delete(User $user, Media $media): bool
     {
-        if ($media->model->creator_user_id === $user->id) {
-            return true;
-        }
-        return false;
+        return $media->model->creator_user_id === $user->id;
     }
 
     /**

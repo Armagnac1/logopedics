@@ -29,7 +29,10 @@ defineExpose({
 });
 
 const formatTime = (time) => `${time.hours < 10 ? '0' + time.hours : time.hours}:${time.minutes < 10 ? '0' + time.minutes : time.minutes}`
-
+const handleCancel = () => {
+    input.value.clearValue();
+    input.value.closeMenu();
+};
 
 </script>
 
@@ -46,9 +49,10 @@ const formatTime = (time) => `${time.hours < 10 ? '0' + time.hours : time.hours}
         teleport
         time-picker
         @update:model-value="$emit('update:modelValue', formatTime(value))"
+        @closed="input.selectDate()"
     >
         <template #action-buttons>
-            <SecondaryButton @click="input.closeMenu()">
+            <SecondaryButton @click="handleCancel">
                 {{ $t('common.cancel') }}
             </SecondaryButton>
             <PrimaryButton @click="input.selectDate()">

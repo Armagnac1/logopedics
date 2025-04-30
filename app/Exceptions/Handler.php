@@ -34,7 +34,9 @@ class Handler extends ExceptionHandler
 
         if ($response->status() === 419) {
             return back()->with([
-                'message' => __('auth.expired'),
+                'flash' => [
+                    'csrf_valid' => false,
+                ]
             ]);
         }
 

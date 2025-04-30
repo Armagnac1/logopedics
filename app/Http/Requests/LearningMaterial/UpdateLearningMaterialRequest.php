@@ -1,17 +1,19 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\LearningMaterial;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
-class StoreLearningMaterialRequest extends FormRequest
+class UpdateLearningMaterialRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        $learningMaterial = $this->route('learning_material');
+        return Auth::user()->tutor->id === $learningMaterial->creator_user_id;
     }
 
     /**

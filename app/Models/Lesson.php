@@ -36,20 +36,6 @@ class Lesson extends Model
         return $this->belongsTo(Pupil::class);
     }
 
-
-
-//    protected function title(): Attribute
-//    {
-//        return Attribute::make(
-//            get: function ($value) {
-//                if ($value) {
-//                    return $value;
-//                }
-//                return 'Без названия';
-//            },
-//        );
-//    }
-
     public function learningMaterials(): BelongsToMany
     {
         return $this->belongsToMany(LearningMaterial::class, 'lesson_learning_materials', 'lesson_id', 'learning_material_id')->withPivot('id');

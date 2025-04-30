@@ -1,0 +1,69 @@
+<?php
+
+namespace App\Repositories;
+
+use App\Models\Lesson;
+use App\Repositories\Abstracts\LessonRepositoryInterface;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+
+class LessonRepository implements LessonRepositoryInterface {
+    public function getAll() {
+        return Lesson::all();
+    }
+
+    public function create(array $data) {
+        $dates = $data['start_dates'];
+        foreach ($dates as $date) {
+            $lesson = new Lesson();
+            $lesson = $lesson->fill($data);
+            $lesson->start_at = Carbon::parse($date)->setTimeFromTimeString($data['start_time']);
+            $lesson->save();
+        }
+
+        return $lesson;
+    }
+
+    public function getSortedLessonsWithIndex(Lesson $lesson): array
+    {
+        $sortedLessons = $lesson->pupil->lessons
+            ->sortBy([
+                fn(Lesson $a, Lesson $b) => strtotime($a['start_at']) <=> strtotime($b['start_at']),
+                fn(Lesson $a, Lesson $b) => $b['id'] <=> $a['id'],
+            ])->values();
+
+        $currentLessonIndex = $sortedLessons->where('id', $lesson->id)->keys()->first();
+
+        return [
+            'sortedLessons' => $sortedLessons,
+            'currentLessonIndex' => $currentLessonIndex,
+        ];
+    }
+
+    public function find($id) {
+        return Lesson::findOrFail($id);
+    }
+
+    public function update($id, array $data) {
+        $lesson = $this->find($id);
+        $lesson->update($data);
+        return $lesson;
+    }
+
+    public function delete($lesson) {
+        $lesson->delete();
+    }
+    public function attachLearningMaterials(Lesson $lesson, $materialIds) {
+        $lesson->learningMaterials()->attach($materialIds);
+    }
+
+    public function findPivotMaterialById($lessonLearningMaterialId)
+    {
+        return DB::table('lesson_learning_materials')->where('id', $lessonLearningMaterialId)->first();
+    }
+
+    public function detachLearningMaterial($lessonLearningMaterialId) {
+        return DB::table('lesson_learning_materials')->where('id', $lessonLearningMaterialId)->delete();
+    }
+}
+

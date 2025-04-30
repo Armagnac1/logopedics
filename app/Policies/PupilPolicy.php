@@ -38,30 +38,15 @@ class PupilPolicy
     public function update(User $user, Pupil $pupil): Response
     {
         return $user->can('create/change pupil') ? Response::allow()
-            : Response::deny('Нет доступа к редактированию ученика');
+            : Response::deny('You are not allowed to update this pupil');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Pupil $pupil): bool
+    public function delete(User $user, Pupil $pupil): Response
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Pupil $pupil): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Pupil $pupil): bool
-    {
-        //
+        return $user->can('create/change pupil') ? Response::allow()
+            : Response::deny('You are not allowed to update this pupil');
     }
 }

@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class UserSeeder extends Seeder
 {
@@ -13,44 +12,52 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = new User();
-        $user->name = 'Dmitrii';
-        $user->email = 'crack7747@gmail.com';
-        $user->password = bcrypt('qwe123rty');
-        $user->profile_photo_path = 'https://i.pravatar.cc/300?u=1';
-        $user->assignRole('superadmin');
-        $user->save();
+        $users = [
+            [
+                'name' => 'Dmitrii',
+                'email' => 'crack7747@gmail.com',
+                'password' => 'qwe123rty',
+                'profile_photo_path' => 'https://i.pravatar.cc/300?u=1',
+                'role' => 'superadmin',
+            ],
+            [
+                'name' => 'admin',
+                'email' => 'admin@test.com',
+                'password' => 'test',
+                'profile_photo_path' => 'https://i.pravatar.cc/300?u=2',
+                'role' => 'superadmin',
+            ],
+            [
+                'name' => 'tutor',
+                'email' => 'tutor@test.com',
+                'password' => 'test',
+                'profile_photo_path' => 'https://i.pravatar.cc/300?u=3',
+                'role' => 'tutor',
+            ],
+            [
+                'name' => 'tutor-seller',
+                'email' => 'tutor-seller@test.com',
+                'password' => 'test',
+                'profile_photo_path' => 'https://i.pravatar.cc/300?u=4',
+                'role' => 'tutor-seller',
+            ],
+            [
+                'name' => 'pupil',
+                'email' => 'pupil@test.com',
+                'password' => 'test',
+                'profile_photo_path' => 'https://i.pravatar.cc/300?u=5',
+                'role' => 'pupil',
+            ],
+        ];
 
-        $user = new User();
-        $user->name = 'admin';
-        $user->email = 'admin@test.com';
-        $user->password = bcrypt('test');
-        $user->profile_photo_path = 'https://i.pravatar.cc/300?u=2';
-        $user->assignRole('superadmin');
-        $user->save();
-
-        $user = new User();
-        $user->name = 'tutor';
-        $user->email = 'tutor@test.com';
-        $user->password = bcrypt('test');
-        $user->profile_photo_path = 'https://i.pravatar.cc/300?u=3';
-        $user->assignRole('tutor');
-        $user->save();
-
-        $user = new User();
-        $user->name = 'tutor-seller';
-        $user->email = 'tutor-seller@test.com';
-        $user->password = bcrypt('test');
-        $user->profile_photo_path = 'https://i.pravatar.cc/300?u=4';
-        $user->assignRole('tutor-seller');
-        $user->save();
-
-        $user = new User();
-        $user->name = 'pupil';
-        $user->email = 'pupil@test.com';
-        $user->password = bcrypt('test');
-        $user->profile_photo_path = 'https://i.pravatar.cc/300?u=5';
-        $user->assignRole('pupil');
-        $user->save();
+        foreach ($users as $userData) {
+            $user = new User();
+            $user->name = $userData['name'];
+            $user->email = $userData['email'];
+            $user->password = bcrypt($userData['password']);
+            $user->profile_photo_path = $userData['profile_photo_path'];
+            $user->assignRole($userData['role']);
+            $user->save();
+        }
     }
 }

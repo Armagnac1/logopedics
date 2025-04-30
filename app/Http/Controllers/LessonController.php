@@ -2,26 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreLessonRequest;
-use App\Http\Requests\UpdateLessonRequest;
+use App\Http\Requests\Lesson\StoreLessonRequest;
+use App\Http\Requests\Lesson\UpdateLessonRequest;
 use App\Models\Lesson;
 use App\Models\Pupil;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
+use App\Repositories\Abstracts\LessonRepositoryInterface;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class LessonController extends Controller
 {
+    protected LessonRepositoryInterface $lessonRepository;
 
-    public function __construct()
+    public function __construct(LessonRepositoryInterface $lessonRepository)
     {
+        $this->lessonRepository = $lessonRepository;
         $this->authorizeResource(Lesson::class, 'lesson');
     }
 
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
     }
@@ -31,26 +29,16 @@ class LessonController extends Controller
      */
     public function create(Pupil $pupil)
     {
-        $pupilLessonCount = $pupil->lessons->count();
         return Inertia::render('Lesson/Create', [
             'pupil' => $pupil->load('user'),
-            'name_suggestions' => [Str::ucfirst(__('models.lesson')) . ' ' . ($pupilLessonCount + 1)] //TODO: add more suggestions later
+            'name_suggestions' => [Str::ucfirst(__('models.lesson')) . ' ' . ($pupil->lessons->count() + 1)] //TODO: add more suggestions later
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreLessonRequest $request)
     {
-        $dates = $request->validated()['start_dates'];
-        foreach ($dates as $date) {
-            $lesson = new Lesson();
-            $lesson = $lesson->fill($request->validated());
-            $lesson->start_at = Carbon::parse($date)->setTimeFromTimeString($request->validated()['start_time']);
-            $lesson->save();
-        }
-
+        $data = $request->validated();
+        $lesson = $this->lessonRepository->create($data);
         $request->session()->flash('flash.banner', __('messages.model_created', ['model' => __('models.lesson')]));
         $request->session()->flash('flash.bannerStyle', 'success');
         return to_route('lesson.show', $lesson->id);
@@ -61,12 +49,10 @@ class LessonController extends Controller
      */
     public function show(Lesson $lesson)
     {
-        $sortedLessons = $lesson->pupil->lessons
-            ->sortBy([
-                fn(Lesson $a, Lesson $b) => strtotime($a['start_at']) <=> strtotime($b['start_at']),
-                fn(Lesson $a, Lesson $b) => $b['id'] <=> $a['id'],
-            ])->values();
-        $currentLessonIndex = $sortedLessons->where('id', $lesson->id)->keys()->first();
+        $result = $this->lessonRepository->getSortedLessonsWithIndex($lesson);
+        $sortedLessons = $result['sortedLessons'];
+        $currentLessonIndex = $result['currentLessonIndex'];
+
         return Inertia::render('Lesson/Show', [
             'previousLesson' => $sortedLessons->get($currentLessonIndex - 1),
             'nextLesson' => $sortedLessons->get($currentLessonIndex + 1),
@@ -83,25 +69,21 @@ class LessonController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateLessonRequest $request, Lesson $lesson)
+    public function update(UpdateLessonRequest $request, $id)
     {
-        $lesson->update($request->validated());
+        $data = $request->validated();
+        $lesson = $this->lessonRepository->update($id, $data);
         session()->flash('flash.banner', __('messages.model_updated', ['model' => __('models.lesson')]));
         session()->flash('flash.bannerStyle', 'success');
         return to_route('lesson.show', $lesson->id);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Request $request, Lesson $lesson)
+
+    public function destroy(Lesson $lesson)
     {
+        $this->lessonRepository->delete($lesson);
         session()->flash('flash.banner', __('messages.model_deleted', ['model' => __('models.lesson')]));
         session()->flash('flash.bannerStyle', 'success');
-        $lesson->delete();
-        return to_route('pupil.show', $lesson->pupil_id);
+        return to_route('home');
     }
 }

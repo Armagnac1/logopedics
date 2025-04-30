@@ -46,6 +46,10 @@ const formatDate = (value) => {
 
 }
 
+const handleCancel = () => {
+    input.value.clearValue();
+    input.value.closeMenu();
+};
 
 </script>
 
@@ -60,12 +64,12 @@ const formatDate = (value) => {
         :cancel-text="$t('common.cancel')"
         format="dd/MM/yyyy"
         locale="ru"
-        minutes-increment="5"
         :select-text="$t('common.ok')"
         @update:model-value="$emit('update:modelValue', formatDate(value))"
+        @closed="input.selectDate()"
     >
         <template #action-buttons>
-            <SecondaryButton @click="input.closeMenu()">
+            <SecondaryButton @click="handleCancel">
                 {{ $t('common.cancel') }}
             </SecondaryButton>
             <PrimaryButton @click="input.selectDate()">

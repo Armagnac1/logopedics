@@ -185,7 +185,7 @@ const submit = () => {
 
             </Card>
             <Card v-if="pupil" class="row-span-2 col-span-1 flex justify-end items-center gap-x-2">
-                <DeleteEntityButton :entityName="$t('common.deletePupil')"
+                <DeleteEntityButton :entityName="$t('common.pupil')"
                                     :url="route('pupil.destroy', pupil.id)"></DeleteEntityButton>
             </Card>
         </div>

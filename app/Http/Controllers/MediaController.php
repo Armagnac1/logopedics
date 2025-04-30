@@ -2,40 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreMediaRequest;
-use Illuminate\Http\Request;
+use App\Http\Requests\Media\StoreMediaRequest;
+use App\Services\Abstracts\Abstracts\MediaServiceInterface;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class MediaController extends Controller
 {
+    protected $mediaService;
 
-    public function __construct()
+    public function __construct(MediaServiceInterface $mediaService)
     {
         $this->authorizeResource(Media::class, 'media');
+        $this->mediaService = $mediaService;
     }
 
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreMediaRequest $request)
     {
-        $storedMedia = collect();
-        foreach($request->file('files') as $file) {
-            $storedMedia[] = auth()->user()->addMedia($file)->toMediaCollection('learning_materials_files');
-        }
+        $storedMedia = $this->mediaService->storeMedia($request->file('files'));
         return response()->json(['files' => $storedMedia->transform(function ($media) {
             return [
                 'id' => $media->id,
@@ -45,35 +28,13 @@ class MediaController extends Controller
         })]);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Media $media)
     {
-        //
+        return $this->mediaService->showMedia($media);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Media $media)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Media $media)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Media $media)
     {
-        $media->delete();
+        $this->mediaService->deleteMedia($media);
     }
 }

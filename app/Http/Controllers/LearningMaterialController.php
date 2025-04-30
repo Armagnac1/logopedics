@@ -2,167 +2,72 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreLearningMaterialRequest;
-use App\Http\Requests\UpdateLearningMaterialRequest;
+use App\Http\Requests\LearningMaterial\IndexLearningMaterialRequest;
+use App\Http\Requests\LearningMaterial\StoreLearningMaterialRequest;
+use App\Http\Requests\LearningMaterial\UpdateLearningMaterialRequest;
 use App\Models\LearningMaterial;
-use App\Models\Lesson;
-use App\Services\AISuggestionsService;
-use Illuminate\Http\Request;
+use App\Models\Tag;
+use App\Repositories\Abstracts\LearningMaterialRepositoryInterface;
+use App\Repositories\Abstracts\TagRepositoryInterface;
 use Inertia\Inertia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Spatie\Tags\Tag;
 
 class LearningMaterialController extends Controller
 {
-    private AISuggestionsService $aiSuggestionsService;
+    private LearningMaterialRepositoryInterface $learningMaterialRepository;
+    private TagRepositoryInterface $tagRepository;
 
-    public function __construct(AISuggestionsService $aiSuggestionsService)
+    public function __construct(LearningMaterialRepositoryInterface $learningMaterialRepository, TagRepositoryInterface $tagRepository)
     {
-        $this->aiSuggestionsService = $aiSuggestionsService;
+        $this->learningMaterialRepository = $learningMaterialRepository;
+        $this->tagRepository = $tagRepository;
         $this->authorizeResource(LearningMaterial::class, 'learning_material');
     }
 
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(Request $request)
+    public function index(IndexLearningMaterialRequest $request)
     {
-
         if (!$request->inertia() && $request->expectsJson()) {
-            $searchInput = $request->input('search');
-            $filters = $request->input('filters');
-            $useAI = $request->input('ai');
-
-            if ($useAI) {
-                $lesson = Lesson::find($filters['lessonId']);
-                $resultIds = $this->aiSuggestionsService->getLearningMaterialSuggestions($lesson);
-                $learningMaterials = LearningMaterial::whereIn('id', $resultIds)->with(['tags', 'media'])->simplePaginate(10);
-            } else {
-                $learningMaterials = LearningMaterial::search($searchInput)->query(function ($builder) use ($filters) {
-                    $builder->with(['tags', 'media'])
-                        ->when($filters['onlyNotUsed'] === '1', function ($query) use ($filters) {
-
-                            $lesson = Lesson::find($filters['lessonId']);
-                            $usedLearningMaterialsIds = $lesson->pupil->lessons->pluck('learningMaterials')->flatten()->pluck('id')->toArray();
-                            $query->whereNotIn('id', $usedLearningMaterialsIds);
-                        })->when(isset($filters['tags']) && count($filters['tags']) > 0, function ($query) use ($filters) {
-                            $ids = collect($filters['tags'])->pluck('id');
-                            $query->whereHas('tags', function ($query) use ($ids) {
-                                $query->whereIn('id', $ids);
-                            }, '=', count($ids));
-                        });
-                })->simplePaginate(10);
-            }
-
-
-            return response()->json([
-                'learning_materials' => $learningMaterials,
-            ]);
+            $filters = $request->only(['search', 'filters', 'ai']);
+            $learningMaterials = $this->learningMaterialRepository->getForIndex($filters);
+            return response()->json(['learning_materials' => $learningMaterials]);
         }
+        return to_route('home');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return Inertia::render('LearningMaterial/CreateShow', [
-            'tags' => Tag::whereModel(LearningMaterial::class)->get()
+            'tags' => $this->tagRepository->getTagsForModel(LearningMaterial::class),
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreLearningMaterialRequest $request)
     {
-        $learningMaterial = new LearningMaterial($request->validated());
-        $learningMaterial->creator_user_id = auth()->id();
-        $learningMaterial->save();
-        $tags = collect($request->tags)->pluck('id')->toArray();
-        $learningMaterial->tags()->sync($tags);
-        Media::whereIn('id', $request->mediaIds)
-            ->get()
-            ->each(function ($media) use ($learningMaterial) {
-                $media->model_id = $learningMaterial->id;
-                $media->model_type = LearningMaterial::class;
-                $media->save();
-            });
+        $this->learningMaterialRepository->create($request->validated());
         session()->flash('flash.banner', __('messages.model_created', ['model' => __('models.learningMaterial')]));
         session()->flash('flash.bannerStyle', 'success');
         return to_route('home');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(LearningMaterial $learningMaterial)
     {
-        $learningMaterialWithLoaded = $learningMaterial->load(['tags', 'media', 'lessons.pupil']);
-        $learningMaterialWithLoaded->media->transform(function ($media) {
-            return [
-                'id' => $media->id,
-                'url' => $media->getUrl(),
-                'name' => $media->name
-            ];
-        });
+        $learningMaterialWithLoaded = $this->learningMaterialRepository->getById($learningMaterial->id);
         return Inertia::render('LearningMaterial/CreateShow', [
             'learning_material' => $learningMaterialWithLoaded,
-            'usedForPupils' => $learningMaterial->lessons->pluck('pupil')->unique('id')->values(),
-            'tags' => Tag::whereModel(LearningMaterial::class)->get(['id', 'name'])
+            'tags' => $this->tagRepository->getTagsForModel(LearningMaterial::class),
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(LearningMaterial $learningMaterial)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateLearningMaterialRequest $request, LearningMaterial $learningMaterial)
     {
-        //delete unused media
-        $learningMaterial->media
-            ->reject(fn(Media $media) => in_array($media->id, $request->mediaIds))
-            ->each(function ($media) {
-                $media->delete();
-            });
-        //associate new media
-        Media::whereIn('id', $request->mediaIds)
-            ->get()
-            ->each(function ($media) use ($learningMaterial) {
-                $media->model_id = $learningMaterial->id;
-                $media->model_type = LearningMaterial::class;
-                $media->save();
-            });
-        $learningMaterial->update($request->validated());
-        $tags = collect($request->tags)->pluck('id')->toArray();
-        $learningMaterial->tags()->sync($tags);
+        $this->learningMaterialRepository->update($learningMaterial, $request->validated());
         session()->flash('flash.banner', __('messages.model_updated', ['model' => __('models.learningMaterial')]));
         session()->flash('flash.bannerStyle', 'success');
         return back();
     }
 
-    public function getSuggestionsForLesson(Lesson $lesson)
+    public function destroy(LearningMaterial $learningMaterial)
     {
-        $resultIds = $this->aiSuggestionsService->getLearningMaterialSuggestions($lesson);
-        $learningMaterials = LearningMaterial::whereIn('id', $resultIds)->get();
-        return response()->json([
-            'learning_materials' => $learningMaterials,
-        ]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Request $request, LearningMaterial $learningMaterial)
-    {
-        $learningMaterial->delete();
+        $this->learningMaterialRepository->delete($learningMaterial);
         session()->flash('flash.banner', __('messages.model_deleted', ['model' => __('models.learningMaterial')]));
         session()->flash('flash.bannerStyle', 'success');
         return to_route('home');

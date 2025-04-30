@@ -13,9 +13,10 @@ class PupilSeeder extends Seeder
      */
     public function run(): void
     {
-        Pupil::factory(20)->for(Tutor::find(1))->create();
-        Pupil::factory(20)->for(Tutor::find(2))->create();
-        Pupil::factory(20)->for(Tutor::find(3))->create();
-        Pupil::factory(20)->for(Tutor::find(4))->create();
+        $tutorIds = range(1, 4);
+
+        foreach ($tutorIds as $tutorId) {
+            Pupil::factory(20)->for(Tutor::find($tutorId))->create();
+        }
     }
 }

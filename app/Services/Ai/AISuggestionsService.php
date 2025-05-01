@@ -6,12 +6,15 @@ use App\Models\Lesson;
 
 class AISuggestionsService
 {
-    public function __construct(private AiProviderInterface $provider) {}
+    public function __construct(private AiProviderInterface $provider)
+    {
+    }
 
     public function getSuggestions(array $inputData): string
     {
         $prompt = $this->buildSimplePrompt($inputData);
         $response = $this->provider->ask($prompt);
+
         return $response;
     }
 
@@ -38,6 +41,7 @@ class AISuggestionsService
                 if ($l->id === $lesson->id) {
                     $ids[] = '*';
                 }
+
                 return $ids;
             });
 
@@ -50,13 +54,10 @@ class AISuggestionsService
 
         $grouped = Lesson::with(['pupil', 'learningMaterials'])
             ->get()
-            ->filter(fn($l) =>
-                $l->pupil && $l->learningMaterials->isNotEmpty() && $l->pupil->id !== $currentPupilId
+            ->filter(fn ($l) => $l->pupil && $l->learningMaterials->isNotEmpty() && $l->pupil->id !== $currentPupilId
             )
-            ->groupBy(fn($l) => $l->pupil->id)
-            ->map(fn($lessons) =>
-            $lessons->map(fn($l) =>
-            $l->learningMaterials->pluck('id')->toArray()
+            ->groupBy(fn ($l) => $l->pupil->id)
+            ->map(fn ($lessons) => $lessons->map(fn ($l) => $l->learningMaterials->pluck('id')->toArray()
             )
             );
 
@@ -65,7 +66,7 @@ class AISuggestionsService
 
     private function buildSimplePrompt(array $data): string
     {
-        return "Based on the following data, provide suggestions: " .
+        return 'Based on the following data, provide suggestions: '.
             json_encode($data, JSON_UNESCAPED_UNICODE);
     }
 
@@ -99,6 +100,7 @@ PROMPT;
             $response = str_replace(['[', ']'], '', $response);
             $ids = array_map('trim', explode(',', $response));
         }
+
         return $ids;
     }
 }

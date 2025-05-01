@@ -31,7 +31,7 @@ class LessonController extends Controller
     {
         return Inertia::render('Lesson/Create', [
             'pupil' => $pupil->load('user'),
-            'name_suggestions' => [Str::ucfirst(__('models.lesson')) . ' ' . ($pupil->lessons->count() + 1)] //TODO: add more suggestions later
+            'name_suggestions' => [Str::ucfirst(__('models.lesson')).' '.($pupil->lessons->count() + 1)], //TODO: add more suggestions later
         ]);
     }
 
@@ -41,6 +41,7 @@ class LessonController extends Controller
         $lesson = $this->lessonRepository->create($data);
         $request->session()->flash('flash.banner', __('messages.model_created', ['model' => __('models.lesson')]));
         $request->session()->flash('flash.bannerStyle', 'success');
+
         return to_route('lesson.show', $lesson->id);
     }
 
@@ -57,7 +58,7 @@ class LessonController extends Controller
             'previousLesson' => $sortedLessons->get($currentLessonIndex - 1),
             'nextLesson' => $sortedLessons->get($currentLessonIndex + 1),
             'pupilLessons' => $sortedLessons->values(),
-            'lesson' => $lesson->load(['pupil.user', 'learningMaterials.tags'])
+            'lesson' => $lesson->load(['pupil.user', 'learningMaterials.tags']),
         ]);
     }
 
@@ -75,15 +76,16 @@ class LessonController extends Controller
         $lesson = $this->lessonRepository->update($lesson, $data);
         session()->flash('flash.banner', __('messages.model_updated', ['model' => __('models.lesson')]));
         session()->flash('flash.bannerStyle', 'success');
+
         return to_route('lesson.show', $lesson->id);
     }
-
 
     public function destroy(Lesson $lesson)
     {
         $this->lessonRepository->delete($lesson);
         session()->flash('flash.banner', __('messages.model_deleted', ['model' => __('models.lesson')]));
         session()->flash('flash.bannerStyle', 'success');
+
         return to_route('home');
     }
 }

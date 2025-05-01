@@ -23,12 +23,13 @@ class LearningMaterialSeeder extends Seeder
     private function getMaterialsFromJson(): \Illuminate\Support\Collection
     {
         $json = Storage::disk('local')->get('/json/novator.json');
+
         return collect(json_decode($json, true));
     }
 
     private function processMaterials(\Illuminate\Support\Collection $materials): \Illuminate\Support\Collection
     {
-        return $materials->map(fn($m) => $this->processMaterial($m))->filter();
+        return $materials->map(fn ($m) => $this->processMaterial($m))->filter();
     }
 
     private function processMaterial(array $material): ?\Illuminate\Support\Collection
@@ -41,7 +42,7 @@ class LearningMaterialSeeder extends Seeder
             $material[$group] = $this->separateGroups($material[$group]);
         }
 
-        $material['file_path'] = str_replace('/ЛОГО-презентации /', '', $material['Path'] . '/' . $material['Filename']);
+        $material['file_path'] = str_replace('/ЛОГО-презентации /', '', $material['Path'].'/'.$material['Filename']);
         $material['title'] = pathinfo($material['title'], PATHINFO_FILENAME);
 
         return collect($material);
@@ -49,13 +50,13 @@ class LearningMaterialSeeder extends Seeder
 
     private function separateGroups(string $groups): \Illuminate\Support\Collection
     {
-        return empty($groups) ? collect() : Str::of($groups)->explode('-')->map(fn($word) => Str::ucfirst($word));
+        return empty($groups) ? collect() : Str::of($groups)->explode('-')->map(fn ($word) => Str::ucfirst($word));
     }
 
     private function createTags(\Illuminate\Support\Collection $result): void
     {
         foreach ($this->materialGroups as $group) {
-            $result->pluck($group)->flatten()->unique()->each(fn($tag) => $this->createTag($tag, $group));
+            $result->pluck($group)->flatten()->unique()->each(fn ($tag) => $this->createTag($tag, $group));
         }
     }
 
@@ -73,10 +74,11 @@ class LearningMaterialSeeder extends Seeder
         $missingFiles = collect();
 
         foreach ($result as $materialData) {
-            $filePath = 'presentations/' . $materialData['file_path'];
+            $filePath = 'presentations/'.$materialData['file_path'];
 
-            if (!Storage::disk('public')->exists($filePath)) {
+            if (! Storage::disk('public')->exists($filePath)) {
                 $missingFiles->push($materialData['file_path']);
+
                 continue;
             }
 

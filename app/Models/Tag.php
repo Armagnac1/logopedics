@@ -6,5 +6,4 @@ use Spatie\Tags\Tag as SpatieTag;
 
 class Tag extends SpatieTag
 {
-
 }

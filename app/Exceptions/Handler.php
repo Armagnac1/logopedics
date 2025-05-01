@@ -36,7 +36,7 @@ class Handler extends ExceptionHandler
             return back()->with([
                 'flash' => [
                     'csrf_valid' => false,
-                ]
+                ],
             ]);
         }
 

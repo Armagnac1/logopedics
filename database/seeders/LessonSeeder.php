@@ -18,7 +18,7 @@ class LessonSeeder extends Seeder
         $learningMaterials = LearningMaterial::get();
         Pupil::get()->each(function ($pupil) use ($learningMaterials) {
             Lesson::factory(20)->state(new Sequence(
-                fn(Sequence $sequence) => [
+                fn (Sequence $sequence) => [
                     'pupil_id' => $pupil->id,
                 ],
             ))->create()->each(function ($lesson) use ($learningMaterials) {

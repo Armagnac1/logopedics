@@ -6,7 +6,9 @@ use Throwable;
 
 class AiProviderChain implements AiProviderInterface
 {
-    public function __construct(private array $providers) {}
+    public function __construct(private array $providers)
+    {
+    }
 
     public function ask(string $prompt): string
     {
@@ -15,6 +17,7 @@ class AiProviderChain implements AiProviderInterface
                 return $provider->ask($prompt);
             } catch (Throwable $e) {
                 report($e);
+
                 continue;
             }
         }

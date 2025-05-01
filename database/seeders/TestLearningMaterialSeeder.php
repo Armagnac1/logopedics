@@ -16,7 +16,7 @@ class TestLearningMaterialSeeder extends Seeder
     {
 
         LearningMaterial::factory(500)->state(new Sequence(
-            fn(Sequence $sequence) => ['tags' => [Tag::getWithType('learning_material')->random()]],
+            fn (Sequence $sequence) => ['tags' => [Tag::getWithType('learning_material')->random()]],
         ))->create();
     }
 }

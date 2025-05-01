@@ -1,9 +1,10 @@
 <?php
+
 namespace App\Services\Ai\Providers;
 
+use App\Exceptions\AiProviderException;
 use App\Services\Ai\AiProviderInterface;
 use Illuminate\Support\Facades\Log;
-use App\Exceptions\AiProviderException;
 
 abstract class AbstractAiProvider implements AiProviderInterface
 {
@@ -15,7 +16,7 @@ abstract class AbstractAiProvider implements AiProviderInterface
             'status' => $response->status(),
             'body' => $response->body(),
         ]);
-        throw new AiProviderException("AI provider error: {$provider} returned status " . $response->status());
+        throw new AiProviderException("AI provider error: {$provider} returned status ".$response->status());
     }
 
     protected function handleException(string $provider, \Throwable $e): void
@@ -24,6 +25,6 @@ abstract class AbstractAiProvider implements AiProviderInterface
             'message' => $e->getMessage(),
             'trace' => $e->getTraceAsString(),
         ]);
-        throw new AiProviderException("AI provider exception: " . $e->getMessage(), 0, $e);
+        throw new AiProviderException('AI provider exception: '.$e->getMessage(), 0, $e);
     }
 }

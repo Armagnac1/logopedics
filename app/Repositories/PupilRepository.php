@@ -35,9 +35,10 @@ class PupilRepository implements PupilRepositoryInterface
     {
         $pupil->load(['tags', 'lessons.learningMaterials.tags', 'city']);
         $pupil->setRelation('lessons', $pupil->lessons->sortBy([
-            fn(Lesson $a, Lesson $b) => strtotime($a['start_at']) <=> strtotime($b['start_at']),
-            fn(Lesson $a, Lesson $b) => $b['id'] <=> $a['id'],
+            fn (Lesson $a, Lesson $b) => strtotime($a['start_at']) <=> strtotime($b['start_at']),
+            fn (Lesson $a, Lesson $b) => $b['id'] <=> $a['id'],
         ])->values());
+
         return $pupil;
     }
 
@@ -46,12 +47,14 @@ class PupilRepository implements PupilRepositoryInterface
         $pupil = new Pupil($data);
         $pupil->tutor_id = auth()->user()->tutor->id;
         $pupil->save();
+
         return $pupil;
     }
 
     public function updatePupil(Pupil $pupil, array $data)
     {
         $pupil->update($data);
+
         return $pupil;
     }
 

@@ -14,6 +14,7 @@ class MediaService implements MediaServiceInterface
         foreach ($files as $file) {
             $storedMedia[] = auth()->user()->addMedia($file)->toMediaCollection('learning_materials_files');
         }
+
         return $storedMedia;
     }
 

@@ -9,9 +9,9 @@ use App\Services\Abstracts\SearchServiceInterface;
 
 class SearchService implements SearchServiceInterface
 {
-    public function getForIndex(string $searchInput = null): array
+    public function getForIndex(?string $searchInput = null): array
     {
-        if (!$searchInput) {
+        if (! $searchInput) {
             return [
                 'pupils' => Pupil::limit(5)->with(['user'])->get(),
                 'lessons' => Lesson::limit(5)->get(),

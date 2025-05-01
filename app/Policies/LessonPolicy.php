@@ -8,7 +8,6 @@ use Illuminate\Auth\Access\Response;
 
 class LessonPolicy
 {
-
     /**
      * Determine whether the user can view any models.
      */
@@ -26,6 +25,7 @@ class LessonPolicy
             ? Response::allow()
             : Response::deny('You are not allowed to view this lesson.');
     }
+
     /**
      * Determine whether the user can create models.
      */

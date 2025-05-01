@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('lesson_id')->constrained()->cascadeOnDelete();
             $table->foreignId('learning_material_id')->constrained()->cascadeOnDelete();
-            $table->unique(['lesson_id', 'lesson_id']);
+            $table->unique(['lesson_id', 'learning_material_id']);
         });
     }
 

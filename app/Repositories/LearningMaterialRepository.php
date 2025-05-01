@@ -19,6 +19,7 @@ class LearningMaterialRepository implements LearningMaterialRepositoryInterface
         if ($useAI) {
             $lesson = Lesson::find($filters['filters']['lessonId']);
             $resultIds = app(AISuggestionsService::class)->getLearningMaterialSuggestions($lesson);
+
             return LearningMaterial::whereIn('id', $resultIds)->with(['tags', 'media'])->simplePaginate(10);
         }
 
@@ -65,7 +66,7 @@ class LearningMaterialRepository implements LearningMaterialRepositoryInterface
     public function update(LearningMaterial $learningMaterial, array $data): bool
     {
         $learningMaterial->media
-            ->reject(fn(Media $media) => in_array($media->id, $data['mediaIds']))
+            ->reject(fn (Media $media) => in_array($media->id, $data['mediaIds']))
             ->each(function ($media) {
                 $media->delete();
             });
@@ -93,6 +94,7 @@ class LearningMaterialRepository implements LearningMaterialRepositoryInterface
     {
         $lesson = Lesson::find($lessonId);
         $resultIds = app(AISuggestionsService::class)->getLearningMaterialSuggestions($lesson);
+
         return LearningMaterial::whereIn('id', $resultIds)->get();
     }
 }

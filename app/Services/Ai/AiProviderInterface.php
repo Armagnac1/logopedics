@@ -2,6 +2,7 @@
 
 namespace App\Services\Ai;
 
-interface AiProviderInterface {
+interface AiProviderInterface
+{
     public function ask(string $prompt): string;
 }

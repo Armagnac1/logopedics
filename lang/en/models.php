@@ -1,4 +1,5 @@
 <?php
+
 return [
     'learningMaterial' => 'learning material',
     'pupil' => 'pupil',

@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Enums\RoleEnum;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
-use App\Enums\RoleEnum;
 
 class RoleSeeder extends Seeder
 {
@@ -21,7 +21,7 @@ class RoleSeeder extends Seeder
             'create/change/view owned learning material',
             'create lesson',
             'update lesson',
-            'create/change pupil'
+            'create/change pupil',
         ];
 
         // Create permissions
@@ -38,32 +38,32 @@ class RoleSeeder extends Seeder
                 'create/change/view owned learning material',
                 'create lesson',
                 'update lesson',
-                'create/change pupil'
+                'create/change pupil',
             ],
             RoleEnum::ADMIN->value => [
                 'login as others',
                 'create/change/view owned learning material',
                 'create lesson',
                 'update lesson',
-                'create/change pupil'
+                'create/change pupil',
             ],
             RoleEnum::TUTOR->value => [
                 'create/change/view owned learning material',
-                'update lesson'
+                'update lesson',
             ],
             RoleEnum::TUTOR_SELLER->value => [
                 'create/change/view owned learning material',
                 'create lesson',
                 'update lesson',
-                'create/change pupil'
+                'create/change pupil',
             ],
-            RoleEnum::PUPIL->value => []
+            RoleEnum::PUPIL->value => [],
         ];
 
         // Create roles and sync permissions
         foreach ($roles as $roleName => $rolePermissions) {
             $role = Role::create(['name' => $roleName]);
-            $role->syncPermissions(array_map(fn($permission) => $permissionInstances[$permission], $rolePermissions));
+            $role->syncPermissions(array_map(fn ($permission) => $permissionInstances[$permission], $rolePermissions));
         }
     }
 }

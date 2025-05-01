@@ -13,6 +13,7 @@ class UpdateLearningMaterialRequest extends FormRequest
     public function authorize(): bool
     {
         $learningMaterial = $this->route('learning_material');
+
         return Auth::user()->tutor->id === $learningMaterial->creator_user_id;
     }
 

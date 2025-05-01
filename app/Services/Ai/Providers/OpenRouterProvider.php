@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services\Ai\Providers;
 
 use Illuminate\Support\Facades\Http;
@@ -9,7 +10,7 @@ class OpenRouterProvider extends AbstractAiProvider
     {
         try {
             $response = Http::withHeaders([
-                'Authorization' => 'Bearer ' . config('services.ai.keys.openrouter'),
+                'Authorization' => 'Bearer '.config('services.ai.keys.openrouter'),
                 'HTTP-Referer' => config('app.url'),
                 'X-Title' => config('app.name'),
             ])->post('https://openrouter.ai/api/v1/chat/completions', [
@@ -17,11 +18,12 @@ class OpenRouterProvider extends AbstractAiProvider
                 'messages' => [['role' => 'user', 'content' => $prompt]],
             ]);
 
-            if (!$response->successful()) {
+            if (! $response->successful()) {
                 $this->handleError('OpenRouter', $response);
             }
 
             $data = $response->json();
+
             return $data['choices'][0]['message']['content'] ?? 'No response from AI provider';
         } catch (\Throwable $e) {
             $this->handleException('OpenRouterProvider', $e);

@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Lesson;
-use App\Models\User;
 use App\Repositories\Abstracts\CalendarRepositoryInterface;
 use Eluceo\iCal\Domain\Entity\Calendar;
 use Eluceo\iCal\Domain\Entity\Event;
@@ -20,7 +19,7 @@ class CalendarRepository implements CalendarRepositoryInterface
         $calendar = new Calendar();
 
         foreach ($events as $e) {
-            if (!$e->start_at) {
+            if (! $e->start_at) {
                 continue;
             }
 
@@ -45,7 +44,7 @@ class CalendarRepository implements CalendarRepositoryInterface
 
         return ResponseFacade::make($calendarComponent, 200, [
             'Content-Type' => 'text/calendar',
-            'Content-Disposition' => 'inline; filename="' . config("app.name") . '.ics"',
+            'Content-Disposition' => 'inline; filename="'.config('app.name').'.ics"',
         ]);
     }
 

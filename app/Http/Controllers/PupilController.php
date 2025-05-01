@@ -27,7 +27,7 @@ class PupilController extends Controller
 
         return Inertia::render('Pupil/Index', [
             'pupils' => PupilTableResource::collection($pupilsOrdered),
-            'filters' => $request->only(['search'])
+            'filters' => $request->only(['search']),
         ]);
     }
 
@@ -36,8 +36,8 @@ class PupilController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Pupil/CreateShow',[
-            'tags' => Tag::whereModel(Pupil::class)->get()
+        return Inertia::render('Pupil/CreateShow', [
+            'tags' => Tag::whereModel(Pupil::class)->get(),
         ]);
     }
 
@@ -49,6 +49,7 @@ class PupilController extends Controller
 
         session()->flash('flash.banner', __('messages.model_created', ['model' => __('models.pupil')]));
         session()->flash('flash.bannerStyle', 'success');
+
         return redirect()->route('pupil.index');
     }
 
@@ -58,9 +59,10 @@ class PupilController extends Controller
     public function show(Pupil $pupil)
     {
         $pupil = $this->pupilRepository->getPupilWithRelations($pupil);
+
         return Inertia::render('Pupil/CreateShow', [
             'pupil' => $pupil,
-            'tags' => Tag::whereModel(Pupil::class)->get(['id', 'name'])
+            'tags' => Tag::whereModel(Pupil::class)->get(['id', 'name']),
         ]);
     }
 
@@ -72,6 +74,7 @@ class PupilController extends Controller
 
         session()->flash('flash.banner', __('messages.model_updated', ['model' => __('models.pupil')]));
         session()->flash('flash.bannerStyle', 'success');
+
         return redirect()->route('pupil.index');
     }
 
@@ -81,6 +84,7 @@ class PupilController extends Controller
 
         session()->flash('flash.banner', __('messages.model_deleted', ['model' => __('models.pupil')]));
         session()->flash('flash.bannerStyle', 'success');
+
         return to_route('home');
     }
 }

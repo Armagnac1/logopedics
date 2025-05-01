@@ -11,19 +11,22 @@ class TagController extends Controller
 {
     protected $tagRepository;
 
-    public function __construct(TagRepositoryInterface $tagRepository) {
+    public function __construct(TagRepositoryInterface $tagRepository)
+    {
         $this->tagRepository = $tagRepository;
     }
 
-    public function index(Request $request) {
-        if (!$request->inertia() && $request->expectsJson()) {
+    public function index(Request $request)
+    {
+        if (! $request->inertia() && $request->expectsJson()) {
             return response()->json([
                 'tags' => $this->tagRepository->getTagsForModel(LearningMaterial::class),
             ]);
         }
     }
 
-    public function destroy(Tag $tag) {
+    public function destroy(Tag $tag)
+    {
         $this->tagRepository->deleteTag($tag);
     }
 }

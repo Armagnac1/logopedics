@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Lesson;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 
 class UpdateLessonRequest extends FormRequest
 {

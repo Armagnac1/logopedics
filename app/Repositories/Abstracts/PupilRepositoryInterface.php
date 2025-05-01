@@ -7,6 +7,7 @@ use App\Models\Pupil;
 interface PupilRepositoryInterface
 {
     public function getForIndex($search);
+
     public function getPupilWithRelations(Pupil $pupil);
 
     public function createPupil(array $data);

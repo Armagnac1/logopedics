@@ -7,20 +7,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Laravel\Scout\Attributes\SearchUsingPrefix;
 use Laravel\Scout\Searchable;
 use Spatie\Tags\HasTags;
 
 class Pupil extends Model
 {
     use HasFactory;
-    use Searchable;
     use HasTags;
+    use Searchable;
+
     protected $guarded = ['id', 'created_at'];
+
     public function toSearchableArray(): array
     {
         return [
-            'full_name' => $this->full_name
+            'full_name' => $this->full_name,
         ];
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services\Ai\Providers;
 
 use Illuminate\Support\Facades\Http;
@@ -14,11 +15,12 @@ class DeepSeekProvider extends AbstractAiProvider
                     'messages' => [['role' => 'user', 'content' => $prompt]],
                 ]);
 
-            if (!$response->successful()) {
+            if (! $response->successful()) {
                 $this->handleError('DeepSeek', $response);
             }
 
             $data = $response->json();
+
             return $data['choices'][0]['message']['content'] ?? 'No response from AI provider';
         } catch (\Throwable $e) {
             $this->handleException('DeepSeekProvider', $e);

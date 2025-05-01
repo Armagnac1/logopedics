@@ -26,5 +26,4 @@ class Tutor extends Model
     {
         return $this->hasManyThrough(Lesson::class, Pupil::class);
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 return [
     'model_created' => ':Model created',
     'model_updated' => ':Model updated',

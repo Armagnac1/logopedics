@@ -42,6 +42,3 @@ Route::middleware([
     });
     Route::get('logout', [\Laravel\Fortify\Http\Controllers\AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });
-
-
-

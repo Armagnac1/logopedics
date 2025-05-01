@@ -28,6 +28,7 @@ class LessonLearningMaterialController extends Controller
 
         session()->flash('flash.banner', __('messages.model_attached', ['attachable' => __('models.learningMaterial'), 'model' => __('models.lesson')]));
         session()->flash('bannerStyle', 'success');
+
         return back();
     }
 

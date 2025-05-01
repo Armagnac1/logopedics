@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use Spatie\Tags\Tag as SpatieTag;
 use App\Models\Tag as AppTag;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
+use Spatie\Tags\Tag as SpatieTag;
 
 class TagsSeeder extends Seeder
 {
@@ -26,7 +26,7 @@ class TagsSeeder extends Seeder
             'Работа над звуком',
             'Физминутка',
             'Игры из Мерсибо',
-            'ВПФ'
+            'ВПФ',
         ];
 
         collect($logopedicsGroups)->each(function ($group) {
@@ -43,7 +43,7 @@ class TagsSeeder extends Seeder
         $sourceTags = [
             'Частный',
             'Белая Цапля',
-            'Школа'
+            'Школа',
         ];
 
         collect($sourceTags)->each(function ($tag) {

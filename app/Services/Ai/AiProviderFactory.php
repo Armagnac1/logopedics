@@ -2,8 +2,8 @@
 
 namespace App\Services\Ai;
 
-use App\Services\Ai\Providers\GroqProvider;
 use App\Services\Ai\Providers\DeepSeekProvider;
+use App\Services\Ai\Providers\GroqProvider;
 use App\Services\Ai\Providers\OpenRouterProvider;
 
 class AiProviderFactory

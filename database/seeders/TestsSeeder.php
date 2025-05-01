@@ -5,7 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class EssentialsSeeder extends Seeder
+class TestsSeeder extends Seeder
 {
     /**
      * Seed the application's database.
@@ -17,8 +17,8 @@ class EssentialsSeeder extends Seeder
             CitySeeder::class,
             RoleSeeder::class,
             UserSeeder::class,
-            LearningMaterialSeeder::class,
             TutorSeeder::class,
+            TagsSeeder::class,
         ]);
 
     }

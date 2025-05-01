@@ -33,11 +33,12 @@ class LessonFactory extends Factory
             $tutor_comments = fake()->realText(200);
             $homework_comments = fake()->realText(200);
         }
+
         return [
             'title' => fake()->realText(40),
             'status' => $status,
             'start_at' => $startTime,
-            'duration' => fake()->randomElement([30,40,50,60]),
+            'duration' => fake()->randomElement([30, 40, 50, 60]),
             'tutor_comments' => $tutor_comments,
             'homework_comments' => $homework_comments,
         ];

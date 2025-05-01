@@ -37,7 +37,7 @@ return [
             'deepseek' => env('AI_DEEPSEEK_KEY'),
             'groq' => env('AI_GROQ_KEY'),
             'openrouter' => env('AI_OPENROUTER_KEY'),
-        ]
+        ],
     ],
 
 ];

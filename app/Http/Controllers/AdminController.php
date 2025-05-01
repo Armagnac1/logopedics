@@ -20,7 +20,7 @@ class AdminController extends Controller
     public function index(Request $request)
     {
         return Inertia::render('Admin/Index', [
-            'users' => $this->userRepository->getForIndex()
+            'users' => $this->userRepository->getForIndex(),
         ]);
     }
 
@@ -28,12 +28,14 @@ class AdminController extends Controller
     {
         session()->put(['impersonator' => Auth::id()]);
         session()->put(['impersonate' => $user->id]);
+
         return redirect()->route('profile.show');
     }
 
     public function impersonateBack()
     {
         session()->forget('impersonate');
+
         return redirect()->route('profile.show');
     }
 }

@@ -7,12 +7,15 @@ use App\Repositories\Abstracts\LessonRepositoryInterface;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
-class LessonRepository implements LessonRepositoryInterface {
-    public function getAll() {
+class LessonRepository implements LessonRepositoryInterface
+{
+    public function getAll()
+    {
         return Lesson::all();
     }
 
-    public function create(array $data) {
+    public function create(array $data)
+    {
         $dates = $data['start_dates'];
         foreach ($dates as $date) {
             $lesson = new Lesson();
@@ -28,8 +31,8 @@ class LessonRepository implements LessonRepositoryInterface {
     {
         $sortedLessons = $lesson->pupil->lessons
             ->sortBy([
-                fn(Lesson $a, Lesson $b) => strtotime($a['start_at']) <=> strtotime($b['start_at']),
-                fn(Lesson $a, Lesson $b) => $b['id'] <=> $a['id'],
+                fn (Lesson $a, Lesson $b) => strtotime($a['start_at']) <=> strtotime($b['start_at']),
+                fn (Lesson $a, Lesson $b) => $b['id'] <=> $a['id'],
             ])->values();
 
         $currentLessonIndex = $sortedLessons->where('id', $lesson->id)->keys()->first();
@@ -40,19 +43,25 @@ class LessonRepository implements LessonRepositoryInterface {
         ];
     }
 
-    public function find($id) {
+    public function find($id)
+    {
         return Lesson::findOrFail($id);
     }
 
-    public function update($lesson, array $data) {
+    public function update($lesson, array $data)
+    {
         $lesson->update($data);
+
         return $lesson;
     }
 
-    public function delete($lesson) {
+    public function delete($lesson)
+    {
         $lesson->delete();
     }
-    public function attachLearningMaterials(Lesson $lesson, $materialIds) {
+
+    public function attachLearningMaterials(Lesson $lesson, $materialIds)
+    {
         $lesson->learningMaterials()->attach($materialIds);
     }
 
@@ -61,8 +70,8 @@ class LessonRepository implements LessonRepositoryInterface {
         return DB::table('lesson_learning_materials')->where('id', $lessonLearningMaterialId)->first();
     }
 
-    public function detachLearningMaterial($lessonLearningMaterialId) {
+    public function detachLearningMaterial($lessonLearningMaterialId)
+    {
         return DB::table('lesson_learning_materials')->where('id', $lessonLearningMaterialId)->delete();
     }
 }
-

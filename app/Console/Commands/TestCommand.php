@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Models\LearningMaterial;
 use App\Models\Lesson;
 use App\Services\Ai\AISuggestionsService;
 use Illuminate\Console\Command;
@@ -36,8 +35,9 @@ class TestCommand extends Command
         $lessonId = $this->argument('lessonId');
         $lesson = Lesson::with('pupil', 'learningMaterials')->find($lessonId);
 
-        if (!$lesson) {
+        if (! $lesson) {
             $this->error("Lesson with ID $lessonId not found.");
+
             return Command::FAILURE;
         }
 

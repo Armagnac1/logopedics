@@ -6,7 +6,6 @@ use App\Http\Requests\LearningMaterial\IndexLearningMaterialRequest;
 use App\Http\Requests\LearningMaterial\StoreLearningMaterialRequest;
 use App\Http\Requests\LearningMaterial\UpdateLearningMaterialRequest;
 use App\Models\LearningMaterial;
-use App\Models\Tag;
 use App\Repositories\Abstracts\LearningMaterialRepositoryInterface;
 use App\Repositories\Abstracts\TagRepositoryInterface;
 use Inertia\Inertia;
@@ -14,6 +13,7 @@ use Inertia\Inertia;
 class LearningMaterialController extends Controller
 {
     private LearningMaterialRepositoryInterface $learningMaterialRepository;
+
     private TagRepositoryInterface $tagRepository;
 
     public function __construct(LearningMaterialRepositoryInterface $learningMaterialRepository, TagRepositoryInterface $tagRepository)
@@ -25,11 +25,13 @@ class LearningMaterialController extends Controller
 
     public function index(IndexLearningMaterialRequest $request)
     {
-        if (!$request->inertia() && $request->expectsJson()) {
+        if (! $request->inertia() && $request->expectsJson()) {
             $filters = $request->only(['search', 'filters', 'ai']);
             $learningMaterials = $this->learningMaterialRepository->getForIndex($filters);
+
             return response()->json(['learning_materials' => $learningMaterials]);
         }
+
         return to_route('home');
     }
 
@@ -45,12 +47,14 @@ class LearningMaterialController extends Controller
         $this->learningMaterialRepository->create($request->validated());
         session()->flash('flash.banner', __('messages.model_created', ['model' => __('models.learningMaterial')]));
         session()->flash('flash.bannerStyle', 'success');
+
         return to_route('home');
     }
 
     public function show(LearningMaterial $learningMaterial)
     {
         $learningMaterialWithLoaded = $this->learningMaterialRepository->getById($learningMaterial->id);
+
         return Inertia::render('LearningMaterial/CreateShow', [
             'learning_material' => $learningMaterialWithLoaded,
             'tags' => $this->tagRepository->getTagsForModel(LearningMaterial::class),
@@ -62,6 +66,7 @@ class LearningMaterialController extends Controller
         $this->learningMaterialRepository->update($learningMaterial, $request->validated());
         session()->flash('flash.banner', __('messages.model_updated', ['model' => __('models.learningMaterial')]));
         session()->flash('flash.bannerStyle', 'success');
+
         return back();
     }
 
@@ -70,6 +75,7 @@ class LearningMaterialController extends Controller
         $this->learningMaterialRepository->delete($learningMaterial);
         session()->flash('flash.banner', __('messages.model_deleted', ['model' => __('models.learningMaterial')]));
         session()->flash('flash.bannerStyle', 'success');
+
         return to_route('home');
     }
 }

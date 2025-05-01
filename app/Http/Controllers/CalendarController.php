@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Repositories\Abstracts\CalendarRepositoryInterface;
-use Illuminate\Http\Response;
 use Inertia\Inertia;
 
 class CalendarController extends Controller
@@ -20,14 +19,16 @@ class CalendarController extends Controller
     {
         $tutorId = auth()->user()->tutor->id;
         $lessons = $this->calendarRepository->getLessonsForTutor($tutorId);
+
         return Inertia::render('Calendar', [
-            'lessons' => $lessons
+            'lessons' => $lessons,
         ]);
     }
 
     public function generateCalendar(User $user)
     {
         $tutorId = auth()->user()->tutor->id;
+
         return $this->calendarRepository->generateCalendar($tutorId);
     }
 }

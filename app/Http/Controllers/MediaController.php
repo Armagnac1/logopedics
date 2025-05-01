@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Media\StoreMediaRequest;
-use App\Services\Abstracts\Abstracts\MediaServiceInterface;
+use App\Services\Abstracts\MediaServiceInterface;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class MediaController extends Controller
@@ -19,11 +19,12 @@ class MediaController extends Controller
     public function store(StoreMediaRequest $request)
     {
         $storedMedia = $this->mediaService->storeMedia($request->file('files'));
+
         return response()->json(['files' => $storedMedia->transform(function ($media) {
             return [
                 'id' => $media->id,
                 'url' => $media->getUrl(),
-                'name' => $media->name
+                'name' => $media->name,
             ];
         })]);
     }

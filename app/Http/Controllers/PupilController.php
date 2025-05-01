@@ -43,7 +43,7 @@ class PupilController extends Controller
 
     public function store(StorePupilRequest $request)
     {
-        $pupil = $this->pupilRepository->createPupil($request->validated());
+        $pupil = $this->pupilRepository->create($request->validated());
         $tags = collect($request->tags)->pluck('id')->toArray();
         $pupil->tags()->sync($tags);
 
@@ -68,7 +68,7 @@ class PupilController extends Controller
 
     public function update(UpdatePupilRequest $request, Pupil $pupil)
     {
-        $this->pupilRepository->updatePupil($pupil, $request->validated());
+        $this->pupilRepository->update($pupil, $request->validated());
         $tags = collect($request->tags)->pluck('id')->toArray();
         $pupil->tags()->sync($tags);
 
@@ -80,7 +80,7 @@ class PupilController extends Controller
 
     public function destroy(Pupil $pupil)
     {
-        $this->pupilRepository->deletePupil($pupil);
+        $this->pupilRepository->delete($pupil);
 
         session()->flash('flash.banner', __('messages.model_deleted', ['model' => __('models.pupil')]));
         session()->flash('flash.bannerStyle', 'success');

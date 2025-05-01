@@ -14,12 +14,12 @@ use App\Repositories\LessonRepository;
 use App\Repositories\PupilRepository;
 use App\Repositories\TagRepository;
 use App\Repositories\UserRepository;
-use App\Services\Abstracts\MediaServiceInterface;
-use App\Services\Abstracts\SearchServiceInterface;
-use App\Services\Ai\AiProviderFactory;
-use App\Services\Ai\AiProviderInterface;
-use App\Services\MediaService;
-use App\Services\SearchService;
+use App\Services\CrossDomain\Ai\AiProviderFactory;
+use App\Services\CrossDomain\Ai\AiProviderInterface;
+use App\Services\CrossDomain\Search\SearchService;
+use App\Services\CrossDomain\Search\SearchServiceInterface;
+use App\Services\Domain\Media\MediaService;
+use App\Services\Domain\Media\MediaServiceInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Ai\Providers;
+namespace App\Services\CrossDomain\Ai\Providers;
 
 use Illuminate\Support\Facades\Http;
 
@@ -21,7 +21,7 @@ class DeepSeekProvider extends AbstractAiProvider
 
             $data = $response->json();
 
-            return $data['choices'][0]['message']['content'] ?? 'No response from AI provider';
+            return $data['choices'][0]['message']['content'];
         } catch (\Throwable $e) {
             $this->handleException('DeepSeekProvider', $e);
         }

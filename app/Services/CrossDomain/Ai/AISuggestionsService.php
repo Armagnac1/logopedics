@@ -1,12 +1,16 @@
 <?php
 
-namespace App\Services\Ai;
+namespace App\Services\CrossDomain\Ai;
 
 use App\Models\Lesson;
+use App\Repositories\LessonRepository;
 
 class AISuggestionsService
 {
-    public function __construct(private AiProviderInterface $provider)
+    public function __construct(
+        private AiProviderInterface $provider,
+        private LessonRepository    $lessonRepository
+    )
     {
     }
 
@@ -20,8 +24,8 @@ class AISuggestionsService
 
     public function getLearningMaterialSuggestions(Lesson $lesson): array
     {
-        $ownHistory = $this->getCurrentPupilMaterialHistory($lesson);
-        $groupedOthers = $this->getGroupedMaterialHistory($lesson);
+        $ownHistory = $this->lessonRepository->getPupilMaterialHistory($lesson)->values()->toJson(JSON_UNESCAPED_UNICODE);
+        $groupedOthers = $this->lessonRepository->getGroupedMaterialHistory($lesson)->values()->toJson(JSON_UNESCAPED_UNICODE);
 
         $prompt = $this->buildLearningMaterialPrompt($ownHistory, $groupedOthers);
         $response = $this->provider->ask($prompt);
@@ -29,44 +33,9 @@ class AISuggestionsService
         return $this->parseMaterialIds($response);
     }
 
-    private function getCurrentPupilMaterialHistory(Lesson $lesson): string
-    {
-        $pupilId = $lesson->pupil_id;
-
-        $lessons = Lesson::where('pupil_id', $pupilId)
-            ->with('learningMaterials')
-            ->get()
-            ->map(function (Lesson $l) use ($lesson) {
-                $ids = $l->learningMaterials->pluck('id')->toArray();
-                if ($l->id === $lesson->id) {
-                    $ids[] = '*';
-                }
-
-                return $ids;
-            });
-
-        return $lessons->values()->toJson(JSON_UNESCAPED_UNICODE);
-    }
-
-    private function getGroupedMaterialHistory(Lesson $lesson): string
-    {
-        $currentPupilId = $lesson->pupil_id;
-
-        $grouped = Lesson::with(['pupil', 'learningMaterials'])
-            ->get()
-            ->filter(fn ($l) => $l->pupil && $l->learningMaterials->isNotEmpty() && $l->pupil->id !== $currentPupilId
-            )
-            ->groupBy(fn ($l) => $l->pupil->id)
-            ->map(fn ($lessons) => $lessons->map(fn ($l) => $l->learningMaterials->pluck('id')->toArray()
-            )
-            );
-
-        return $grouped->values()->toJson(JSON_UNESCAPED_UNICODE);
-    }
-
     private function buildSimplePrompt(array $data): string
     {
-        return 'Based on the following data, provide suggestions: '.
+        return 'Based on the following data, provide suggestions: ' .
             json_encode($data, JSON_UNESCAPED_UNICODE);
     }
 

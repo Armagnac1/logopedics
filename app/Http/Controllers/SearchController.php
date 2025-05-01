@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\Abstracts\SearchServiceInterface;
+use App\Services\CrossDomain\Search\SearchServiceInterface;
 use Illuminate\Http\Request;
 
 class SearchController extends Controller

@@ -74,4 +74,39 @@ class LessonRepository implements LessonRepositoryInterface
     {
         return DB::table('lesson_learning_materials')->where('id', $lessonLearningMaterialId)->delete();
     }
+
+    public function getPupilMaterialHistory(Lesson $lesson)
+    {
+        $pupilId = $lesson->pupil_id;
+
+        $lessons = Lesson::where('pupil_id', $pupilId)
+            ->with('learningMaterials')
+            ->get()
+            ->map(function (Lesson $l) use ($lesson) {
+                $ids = $l->learningMaterials->pluck('id')->toArray();
+                if ($l->id === $lesson->id) {
+                    $ids[] = '*';
+                }
+
+                return $ids;
+            });
+
+        return $lessons;
+    }
+
+    public function getGroupedMaterialHistory(Lesson $lesson)
+    {
+        $currentPupilId = $lesson->pupil_id;
+
+        $grouped = Lesson::with(['pupil', 'learningMaterials'])
+            ->get()
+            ->filter(fn ($l) => $l->pupil && $l->learningMaterials->isNotEmpty() && $l->pupil->id !== $currentPupilId
+            )
+            ->groupBy(fn ($l) => $l->pupil->id)
+            ->map(fn ($lessons) => $lessons->map(fn ($l) => $l->learningMaterials->pluck('id')->toArray()
+            )
+            );
+
+        return $grouped;
+    }
 }

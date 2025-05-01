@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Abstracts;
+namespace App\Services\Domain\Media;
 
 use Illuminate\Support\Collection;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;

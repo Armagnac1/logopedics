@@ -42,7 +42,12 @@ class PupilRepository implements PupilRepositoryInterface
         return $pupil;
     }
 
-    public function createPupil(array $data)
+    public function getAllIdsWithFullNames()
+    {
+        return Pupil::select(['id', 'full_name'])->get()->toArray();
+    }
+
+    public function create(array $data)
     {
         $pupil = new Pupil($data);
         $pupil->tutor_id = auth()->user()->tutor->id;
@@ -51,14 +56,14 @@ class PupilRepository implements PupilRepositoryInterface
         return $pupil;
     }
 
-    public function updatePupil(Pupil $pupil, array $data)
+    public function update(Pupil $pupil, array $data)
     {
         $pupil->update($data);
 
         return $pupil;
     }
 
-    public function deletePupil(Pupil $pupil)
+    public function delete(Pupil $pupil)
     {
         $pupil->delete();
     }

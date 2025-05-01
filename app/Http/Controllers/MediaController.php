@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Media\StoreMediaRequest;
-use App\Services\Abstracts\MediaServiceInterface;
+use App\Services\Domain\Media\MediaServiceInterface;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class MediaController extends Controller

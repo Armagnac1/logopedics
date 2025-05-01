@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\CrossDomain\Search;
 
 use App\Models\LearningMaterial;
 use App\Models\Lesson;
 use App\Models\Pupil;
-use App\Services\Abstracts\SearchServiceInterface;
 
 class SearchService implements SearchServiceInterface
 {

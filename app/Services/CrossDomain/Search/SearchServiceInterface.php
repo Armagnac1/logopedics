@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Abstracts;
+namespace App\Services\CrossDomain\Search;
 
 interface SearchServiceInterface
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Services\Ai\Providers;
+namespace App\Services\CrossDomain\Ai\Providers;
 
 use App\Exceptions\AiProviderException;
-use App\Services\Ai\AiProviderInterface;
+use App\Services\CrossDomain\Ai\AiProviderInterface;
 use Illuminate\Support\Facades\Log;
 
 abstract class AbstractAiProvider implements AiProviderInterface

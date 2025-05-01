@@ -10,9 +10,9 @@ interface PupilRepositoryInterface
 
     public function getPupilWithRelations(Pupil $pupil);
 
-    public function createPupil(array $data);
+    public function create(array $data);
 
-    public function updatePupil(Pupil $pupil, array $data);
+    public function update(Pupil $pupil, array $data);
 
-    public function deletePupil(Pupil $pupil);
+    public function delete(Pupil $pupil);
 }

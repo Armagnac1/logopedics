@@ -81,7 +81,7 @@ class PupilRepositoryTest extends TestCase
         $this->be($user);
 
         $data = ['full_name' => 'Test'];
-        $pupil = $this->repo->createPupil($data);
+        $pupil = $this->repo->create($data);
 
         $this->assertDatabaseHas('pupils', ['id' => $pupil->id, 'tutor_id' => $tutor->id]);
     }
@@ -90,7 +90,7 @@ class PupilRepositoryTest extends TestCase
     {
         $pupil = Pupil::factory()->create(['full_name' => 'Old']);
         $data = ['full_name' => 'New'];
-        $updated = $this->repo->updatePupil($pupil, $data);
+        $updated = $this->repo->update($pupil, $data);
 
         $this->assertEquals('New', $updated->full_name);
         $this->assertDatabaseHas('pupils', ['id' => $pupil->id, 'full_name' => 'New']);
@@ -99,7 +99,7 @@ class PupilRepositoryTest extends TestCase
     public function test_delete_pupil_removes_from_database()
     {
         $pupil = Pupil::factory()->create();
-        $this->repo->deletePupil($pupil);
+        $this->repo->delete($pupil);
         $this->assertDatabaseMissing('pupils', ['id' => $pupil->id]);
     }
 }

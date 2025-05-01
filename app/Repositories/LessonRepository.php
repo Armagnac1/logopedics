@@ -44,8 +44,7 @@ class LessonRepository implements LessonRepositoryInterface {
         return Lesson::findOrFail($id);
     }
 
-    public function update($id, array $data) {
-        $lesson = $this->find($id);
+    public function update($lesson, array $data) {
         $lesson->update($data);
         return $lesson;
     }

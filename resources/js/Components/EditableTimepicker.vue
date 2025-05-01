@@ -2,7 +2,7 @@
 import { nextTick, ref } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { useForm } from '@inertiajs/vue3';
-import { dayjs } from '../translation.config.js';
+import { dayjs } from '../translation.config.ts';
 import DateTimePicker from '@/Components/DateTime/DateTimePicker.vue';
 
 const props = defineProps({

@@ -8,7 +8,7 @@ import SearchInput from '@/Layouts/SearchInput.vue';
 import { ref } from 'vue';
 import SearchModal from '@/Components/SearchModal.vue';
 import Modal from '@/Components/Modal.vue';
-import { checkHasOneOfRoles } from '@/helpers.js';
+import { checkHasOneOfRoles } from '@/helpers.ts';
 import { useI18n } from 'vue-i18n';
 
 defineProps({

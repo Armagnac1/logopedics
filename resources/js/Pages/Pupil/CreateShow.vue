@@ -1,4 +1,5 @@
-<script setup>
+<script setup lang="ts">
+import { defineProps, ref } from 'vue';
 import BackButton from '@/Components/BackButton.vue';
 import Card from '@/Components/Card.vue';
 import { Link, useForm } from '@inertiajs/vue3';
@@ -14,13 +15,46 @@ import Textarea from '@/Components/Textarea.vue';
 import AdvancedSelect from '@/Components/AdvancedSelect.vue';
 import DeleteEntityButton from '@/Components/DeleteEntityButton.vue';
 
+interface Tag {
+    id: number;
+    name: {
+        ru: string;
+    };
+}
 
-const props = defineProps({
-    pupil: Object,
-    tags: Array
-})
+interface Pupil {
+    full_name: string;
+    age: string;
+    parent_name: string;
+    time_zone: string;
+    email: string;
+    lesson_duration: string;
+    tutor_comments: string;
+    city?: {
+        id: number;
+    };
+    tags: Tag[];
+    lessons?: any[]; // Define a more specific type if possible
+}
 
-const form = useForm({
+interface FormData {
+    full_name: string;
+    age: string;
+    parent_name: string;
+    time_zone: string;
+    email: string;
+    lesson_duration: string;
+    tutor_comments: string;
+    city_id: number | null;
+    tags: { name: string; id: number }[];
+}
+
+const props = defineProps<{
+    pupil?: Pupil;
+    tags: Tag[];
+}>();
+
+const form = useForm<FormData>({
     full_name: '',
     age: '',
     parent_name: '',
@@ -30,34 +64,36 @@ const form = useForm({
     tutor_comments: '',
     city_id: null,
     tags: []
-})
+});
 
-const tagMap = (i) => {
-    return { name: i.name.ru, id: i.id }
-}
-const tagsOptions = props.tags.map(tagMap)
+const tagMap = (i: Tag) => {
+    return { name: i.name.ru, id: i.id };
+};
+
+const tagsOptions = props.tags.map(tagMap);
 
 if (props.pupil) {
-    form.full_name = props.pupil.full_name
-    form.age = props.pupil.age
-    form.parent_name = props.pupil.parent_name
-    form.time_zone = props.pupil.time_zone
-    form.email = props.pupil.email
-    form.lesson_duration = props.pupil.lesson_duration
-    form.tutor_comments = props.pupil.tutor_comments
-    form.city_id = props.pupil.city?.id
-    form.tags = props.pupil.tags.map(tagMap)
+    form.full_name = props.pupil.full_name;
+    form.age = props.pupil.age;
+    form.parent_name = props.pupil.parent_name;
+    form.time_zone = props.pupil.time_zone;
+    form.email = props.pupil.email;
+    form.lesson_duration = props.pupil.lesson_duration;
+    form.tutor_comments = props.pupil.tutor_comments;
+    form.city_id = props.pupil.city?.id || null;
+    form.tags = props.pupil.tags.map(tagMap);
 }
+
 const submit = () => {
     form.transform(({ media, ...data }) => ({
         ...data
     })).submit(props.pupil ? 'put' : 'post',
         props.pupil ? route('pupil.update', props.pupil.id) : route('pupil.store'), {
             onSuccess: () => {
+                // Handle success
             }
-        })
-}
-
+        });
+};
 </script>
 
 <template>
@@ -169,10 +205,10 @@ const submit = () => {
                     </div>
                 </form>
             </Card>
-            <Card v-if="pupil" class="row-span-2 col-span-1 mb-5">
+            <Card v-if="props.pupil" class="row-span-2 col-span-1 mb-5">
                 <div class="py-1.5 pb-5 px-1 border-b border-gray-100 justify-between align-middle flex items-center">
                     <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">{{ $t('common.lessons') }}</h3>
-                    <Link :href="route('lesson.create', pupil.id)" draggable="false">
+                    <Link :href="route('lesson.create', props.pupil.id)" draggable="false">
                         <PrimaryButton class="py-2 px-3 inline-flex items-center gap-x-2">
                             <font-awesome-icon icon="fa-solid fa-plus"/>
                             {{ $t('common.create') }}
@@ -180,13 +216,12 @@ const submit = () => {
                     </Link>
                 </div>
                 <div class="divide-y divide-gray-100 gap-2">
-                    <SmallLessonCard v-for="lesson in pupil.lessons" :key="lesson.id" :lesson="lesson" class="mb-2"/>
+                    <SmallLessonCard v-for="lesson in props.pupil.lessons" :key="lesson.id" :lesson="lesson" class="mb-2"/>
                 </div>
-
             </Card>
-            <Card v-if="pupil" class="row-span-2 col-span-1 flex justify-end items-center gap-x-2">
+            <Card v-if="props.pupil" class="row-span-2 col-span-1 flex justify-end items-center gap-x-2">
                 <DeleteEntityButton :entityName="$t('common.pupil')"
-                                    :url="route('pupil.destroy', pupil.id)"></DeleteEntityButton>
+                                    :url="route('pupil.destroy', props.pupil.id)"></DeleteEntityButton>
             </Card>
         </div>
     </TopBarLayout>

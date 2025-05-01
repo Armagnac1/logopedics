@@ -16,6 +16,8 @@ use App\Repositories\TagRepository;
 use App\Repositories\UserRepository;
 use App\Services\Abstracts\MediaServiceInterface;
 use App\Services\Abstracts\SearchServiceInterface;
+use App\Services\Ai\AiProviderFactory;
+use App\Services\Ai\AiProviderInterface;
 use App\Services\MediaService;
 use App\Services\SearchService;
 use Illuminate\Support\ServiceProvider;
@@ -38,6 +40,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(SearchServiceInterface::class, SearchService::class);
         $this->app->bind(PupilRepositoryInterface::class, PupilRepository::class);
         $this->app->bind(TagRepositoryInterface::class, TagRepository::class);
+        $this->app->bind(AiProviderInterface::class, function () {
+            return (new AiProviderFactory())->make();
+        });
     }
 
     /**

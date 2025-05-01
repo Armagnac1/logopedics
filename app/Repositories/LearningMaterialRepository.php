@@ -5,7 +5,7 @@ namespace App\Repositories;
 use App\Models\LearningMaterial;
 use App\Models\Lesson;
 use App\Repositories\Abstracts\LearningMaterialRepositoryInterface;
-use App\Services\AISuggestionsService;
+use App\Services\Ai\AISuggestionsService;
 use Illuminate\Support\Collection;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 

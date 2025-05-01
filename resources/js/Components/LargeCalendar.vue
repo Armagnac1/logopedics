@@ -5,7 +5,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import { router } from '@inertiajs/vue3';
-import { dayjs } from '../translation.config.js';
+import { dayjs } from '../translation.config.ts';
 
 const props = defineProps({
     events: Array

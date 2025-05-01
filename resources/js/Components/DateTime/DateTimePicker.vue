@@ -3,7 +3,7 @@ import VueDatePicker from '@vuepic/vue-datepicker';
 import { nextTick, ref } from 'vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import { dayjs } from '../../translation.config.js';
+import { dayjs } from '../../translation.config.ts';
 
 
 const emit = defineEmits(['update:modelValue'])

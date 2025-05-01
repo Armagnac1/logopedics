@@ -1,7 +1,7 @@
 <script setup>
 import EditableLabel from '@/Components/EditableLabel.vue';
 import EditableTimepicker from '@/Components/EditableTimepicker.vue';
-import { dayjs } from '../../translation.config.js';
+import { dayjs } from '../../translation.config.ts';
 
 const props = defineProps({
     lesson: Object,

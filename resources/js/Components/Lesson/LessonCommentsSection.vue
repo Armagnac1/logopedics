@@ -12,6 +12,11 @@ const commentsForm = useForm({
     tutor_comments: props.lesson.tutor_comments,
     homework_comments: props.lesson.homework_comments
 });
+
+// 1. Define submit function
+const submit = () => {
+    commentsForm.put(route('lesson.update', props.lesson.id))
+}
 </script>
 
 <template>

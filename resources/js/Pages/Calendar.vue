@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import LargeCalendar from '@/Components/LargeCalendar.vue';
 import Card from '@/Components/Card.vue';
 import TopBarLayout from '@/Layouts/TopBarLayout.vue';
-import { dayjs } from '@/translation.config.js';
+import { dayjs } from '@/translation.config.ts';
 import { defineProps } from 'vue';
 
 interface Lesson {

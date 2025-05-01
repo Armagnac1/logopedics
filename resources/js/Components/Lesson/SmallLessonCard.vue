@@ -1,6 +1,6 @@
 <script setup>
 
-import { dayjs } from '../../translation.config.js';
+import { dayjs } from '../../translation.config.ts';
 import { Link } from '@inertiajs/vue3';
 import { computed } from 'vue';
 

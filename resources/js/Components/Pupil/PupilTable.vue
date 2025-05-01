@@ -6,7 +6,7 @@ import { Link, router } from '@inertiajs/vue3'
 import throttle from 'lodash/throttle'
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { checkHasOneOfRoles } from '@/helpers.js';
+import { checkHasOneOfRoles } from '@/helpers.ts';
 
 const props = defineProps({
     pupils: Object,

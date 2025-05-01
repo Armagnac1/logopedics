@@ -69,10 +69,10 @@ class LessonController extends Controller
         //
     }
 
-    public function update(UpdateLessonRequest $request, $id)
+    public function update(UpdateLessonRequest $request, Lesson $lesson)
     {
         $data = $request->validated();
-        $lesson = $this->lessonRepository->update($id, $data);
+        $lesson = $this->lessonRepository->update($lesson, $data);
         session()->flash('flash.banner', __('messages.model_updated', ['model' => __('models.lesson')]));
         session()->flash('flash.bannerStyle', 'success');
         return to_route('lesson.show', $lesson->id);

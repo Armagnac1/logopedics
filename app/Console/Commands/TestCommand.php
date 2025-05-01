@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\LearningMaterial;
 use App\Models\Lesson;
-use App\Services\Abstracts\Abstracts\AISuggestionsService;
+use App\Services\Ai\AISuggestionsService;
 use Illuminate\Console\Command;
 
 class TestCommand extends Command
@@ -23,22 +23,9 @@ class TestCommand extends Command
      */
     protected $description = 'Command description';
 
-    /**
-     * The AI Suggestions Service instance.
-     *
-     * @var AISuggestionsService
-     */
-    protected $aiSuggestionsService;
-
-    /**
-     * Create a new command instance.
-     *
-     * @param AISuggestionsService $aiSuggestionsService
-     */
-    public function __construct(AISuggestionsService $aiSuggestionsService)
+    public function __construct(private AISuggestionsService $aiService)
     {
         parent::__construct();
-        $this->aiSuggestionsService = $aiSuggestionsService;
     }
 
     /**
@@ -47,15 +34,19 @@ class TestCommand extends Command
     public function handle()
     {
         $lessonId = $this->argument('lessonId');
-        $randomLesson = Lesson::whereId($lessonId)->first();
-        $resultIds = $this->aiSuggestionsService->getLearningMaterialSuggestions($randomLesson);
-        $result = LearningMaterial::whereIn('id', $resultIds)->get();
+        $lesson = Lesson::with('pupil', 'learningMaterials')->find($lessonId);
 
-        foreach ($result as $learningMaterial) {
-            $this->info('Learning Material ID: ' . $learningMaterial->id);
-            $this->info('Title: ' . $learningMaterial->title);
-            $this->info('Description: ' . $learningMaterial->description);
-            $this->info('---');
+        if (!$lesson) {
+            $this->error("Lesson with ID $lessonId not found.");
+            return Command::FAILURE;
         }
+
+        $this->info("Generating suggestions for Lesson ID: $lessonId");
+        $suggestions = $this->aiService->getLearningMaterialSuggestions($lesson);
+
+        $this->info('Suggested learning material IDs:');
+        $this->line(json_encode($suggestions, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+        return Command::SUCCESS;
     }
 }

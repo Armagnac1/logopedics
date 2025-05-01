@@ -9,6 +9,7 @@ import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 
 // Import Ziggy for route handling
+// @ts-ignore
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 
 // Import i18n for internationalization
@@ -23,20 +24,23 @@ import { far } from '@fortawesome/free-regular-svg-icons';
 // Add FontAwesome icons to the library
 library.add(fas, far);
 
-// Define application name
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+// @ts-ignore
+const appName: string = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 // Create and configure Inertia app
+// @ts-ignore
 createInertiaApp({
-    title: (title) => `${title} - ${appName}`,
-    resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
+    title: (title: string) => `${title} - ${appName}`,
+    // @ts-ignore
+    resolve: (name: string) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
     setup({ el, App, props, plugin }) {
-        return createApp({ render: () => h(App, props) })
+        const vueApp = createApp({ render: () => h(App, props) })
             .use(plugin)
             .component('font-awesome-icon', FontAwesomeIcon)
             .use(ZiggyVue)
-            .use(i18n)
-            .mount(el);
+            .use(i18n);
+        vueApp.mount(el);
+        return vueApp;
     },
     progress: {
         color: '#4B5563',

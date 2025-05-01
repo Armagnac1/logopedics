@@ -1,6 +1,6 @@
 <script setup>
 import { nextTick, ref, watch } from 'vue';
-import { dayjs } from '../translation.config.js';
+import { dayjs } from '../translation.config.ts';
 import throttle from 'lodash/throttle.js';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 

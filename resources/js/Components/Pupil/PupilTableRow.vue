@@ -1,6 +1,6 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
-import { dayjs } from '@/translation.config.js';
+import { dayjs } from '@/translation.config.ts';
 
 const props = defineProps({
     pupil: Object

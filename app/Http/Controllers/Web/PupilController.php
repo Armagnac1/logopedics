@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Pupil\StorePupilRequest;
 use App\Http\Requests\Pupil\UpdatePupilRequest;
 use App\Http\Resources\PupilTableResource;
 use App\Models\Pupil;
-use App\Repositories\Abstracts\PupilRepositoryInterface;
+use App\Repositories\Contracts\PupilRepositoryInterface;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Spatie\Tags\Tag;

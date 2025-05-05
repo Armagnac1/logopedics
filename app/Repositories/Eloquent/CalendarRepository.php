@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Eloquent;
 
 use App\Models\Lesson;
-use App\Repositories\Abstracts\CalendarRepositoryInterface;
+use App\Repositories\Contracts\CalendarRepositoryInterface;
 use Eluceo\iCal\Domain\Entity\Calendar;
 use Eluceo\iCal\Domain\Entity\Event;
 use Eluceo\iCal\Domain\ValueObject\DateTime as ICalDateTime;

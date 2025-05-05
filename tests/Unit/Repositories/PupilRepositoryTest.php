@@ -8,7 +8,7 @@ use App\Models\Pupil;
 use App\Models\Tag;
 use App\Models\Tutor;
 use App\Models\User;
-use App\Repositories\PupilRepository;
+use App\Repositories\Eloquent\PupilRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

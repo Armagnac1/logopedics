@@ -2,8 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Lesson;
-use App\Services\Ai\AISuggestionsService;
+use App\Services\CrossDomain\Ai\AiTextToModelService;
 use Illuminate\Console\Command;
 
 class TestCommand extends Command
@@ -13,7 +12,7 @@ class TestCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'app:test-command {lessonId}';
+    protected $signature = 'app:test-command {text}';
 
     /**
      * The console command description.
@@ -22,7 +21,7 @@ class TestCommand extends Command
      */
     protected $description = 'Command description';
 
-    public function __construct(private AISuggestionsService $aiService)
+    public function __construct(private AiTextToModelService $aiTextToModelService)
     {
         parent::__construct();
     }
@@ -32,20 +31,13 @@ class TestCommand extends Command
      */
     public function handle()
     {
-        $lessonId = $this->argument('lessonId');
-        $lesson = Lesson::with('pupil', 'learningMaterials')->find($lessonId);
+        $text = $this->argument('text');
+        $this->info("Testing AiTextToModelService with input: \"$text\"");
 
-        if (! $lesson) {
-            $this->error("Lesson with ID $lessonId not found.");
+        $result = $this->aiTextToModelService->convertTextToModel($text);
 
-            return Command::FAILURE;
-        }
-
-        $this->info("Generating suggestions for Lesson ID: $lessonId");
-        $suggestions = $this->aiService->getLearningMaterialSuggestions($lesson);
-
-        $this->info('Suggested learning material IDs:');
-        $this->line(json_encode($suggestions, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+        $this->line("Result:");
+        $this->line(json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
         return Command::SUCCESS;
     }

@@ -3,7 +3,7 @@
 namespace Tests\Unit\Repositories;
 
 use App\Models\Tag;
-use App\Repositories\TagRepository;
+use App\Repositories\Eloquent\TagRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

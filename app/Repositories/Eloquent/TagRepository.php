@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Eloquent;
 
 use App\Models\Tag;
-use App\Repositories\Abstracts\TagRepositoryInterface;
+use App\Repositories\Contracts\TagRepositoryInterface;
 
 class TagRepository implements TagRepositoryInterface
 {

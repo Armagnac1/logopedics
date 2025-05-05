@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Abstracts;
+namespace App\Repositories\Contracts;
 
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;

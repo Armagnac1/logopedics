@@ -1,11 +1,11 @@
 <script setup>
 import FullCalendar from '@fullcalendar/vue3'
-import ruLocale from '@fullcalendar/core/locales/ru'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import { router } from '@inertiajs/vue3';
 import { dayjs } from '../translation.config.ts';
+import { fullCalendarLocales, getCurrentLocale } from '@/i18n.ts';
 
 const props = defineProps({
     events: Array
@@ -14,7 +14,8 @@ const props = defineProps({
 const calendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin],
     initialView: 'timeGridWeek',
-    locale: ruLocale,
+    locales: fullCalendarLocales,
+    locale: getCurrentLocale(),
     allDaySlot: false,
     eventShortHeight: 60,
     slotEventOverlap: false,
@@ -43,8 +44,8 @@ const calendarOptions = {
         <template #dayHeaderContent="arg">
             <div class="fc-scrollgrid-sync-inner">
                 <a class="fc-col-header-cell-cushion">
-                    <span class="fc-day-of-week">{{ dayjs(arg.date).format('dd') }} </span>
-                    <span class="fc-day-number">{{ dayjs(arg.date).format('D') }}</span>
+                    <span class="fc-day-of-week">{{ dayjs(arg.date).locale(getCurrentLocale()).format('dd')  }} </span>
+                    <span class="fc-day-number">{{ dayjs(arg.date).locale(getCurrentLocale()).format('D') }}</span>
                 </a>
             </div>
         </template>

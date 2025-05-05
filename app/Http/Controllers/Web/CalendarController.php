@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Repositories\Abstracts\CalendarRepositoryInterface;
+use App\Repositories\Contracts\CalendarRepositoryInterface;
 use Inertia\Inertia;
 
 class CalendarController extends Controller

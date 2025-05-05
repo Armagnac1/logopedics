@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Lesson\StoreLessonRequest;
 use App\Http\Requests\Lesson\UpdateLessonRequest;
 use App\Models\Lesson;
 use App\Models\Pupil;
-use App\Repositories\Abstracts\LessonRepositoryInterface;
+use App\Repositories\Contracts\LessonRepositoryInterface;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Eloquent;
 
 use App\Models\Lesson;
-use App\Repositories\Abstracts\LessonRepositoryInterface;
+use App\Repositories\Contracts\LessonRepositoryInterface;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 

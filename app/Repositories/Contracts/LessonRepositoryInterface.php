@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Abstracts;
+namespace App\Repositories\Contracts;
 
 use App\Models\Lesson;
 
@@ -23,4 +23,7 @@ interface LessonRepositoryInterface
     public function findPivotMaterialById($lessonLearningMaterialId);
 
     public function detachLearningMaterial($lessonLearningMaterialId);
+
+    public function getPupilMaterialHistory(Lesson $lesson);
+    public function getGroupedMaterialHistory(Lesson $lesson);
 }

@@ -5,7 +5,7 @@ namespace Tests\Unit\Repositories;
 use App\Models\LearningMaterial;
 use App\Models\Lesson;
 use App\Models\Pupil;
-use App\Repositories\LessonRepository;
+use App\Repositories\Eloquent\LessonRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;

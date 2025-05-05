@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Abstracts;
+namespace App\Repositories\Contracts;
 
 use App\Models\LearningMaterial;
 use Illuminate\Contracts\Pagination\Paginator;

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Eloquent;
 
 use App\Models\LearningMaterial;
 use App\Models\Lesson;
-use App\Repositories\Abstracts\LearningMaterialRepositoryInterface;
+use App\Repositories\Contracts\LearningMaterialRepositoryInterface;
 use App\Services\CrossDomain\Ai\AISuggestionsService;
 use Illuminate\Support\Collection;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;

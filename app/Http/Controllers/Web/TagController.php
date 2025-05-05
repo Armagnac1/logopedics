@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
+use App\Http\Controllers\Controller;
 use App\Models\LearningMaterial;
 use App\Models\Tag;
-use App\Repositories\Abstracts\TagRepositoryInterface;
+use App\Repositories\Contracts\TagRepositoryInterface;
 use Illuminate\Http\Request;
 
 class TagController extends Controller

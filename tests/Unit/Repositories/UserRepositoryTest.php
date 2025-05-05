@@ -3,7 +3,7 @@
 namespace Tests\Unit\Repositories;
 
 use App\Models\User;
-use App\Repositories\UserRepository;
+use App\Repositories\Eloquent\UserRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

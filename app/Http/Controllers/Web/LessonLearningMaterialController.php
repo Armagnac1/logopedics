@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Lesson\StoreLessonLearningMaterialRequest;
 use App\Models\Lesson;
-use App\Repositories\Abstracts\LessonRepositoryInterface;
+use App\Repositories\Contracts\LessonRepositoryInterface;
 use Illuminate\Support\Facades\Gate;
 
 class LessonLearningMaterialController extends Controller

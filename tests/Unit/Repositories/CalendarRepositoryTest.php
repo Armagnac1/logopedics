@@ -6,7 +6,7 @@ use App\Models\Lesson;
 use App\Models\Pupil;
 use App\Models\Tutor;
 use App\Models\User;
-use App\Repositories\CalendarRepository;
+use App\Repositories\Eloquent\CalendarRepository;
 use Illuminate\Http\Response;
 use Mockery;
 use Tests\TestCase;

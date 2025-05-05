@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Eloquent;
 
 use App\Enums\LessonStatus;
 use App\Models\Lesson;
 use App\Models\Pupil;
-use App\Repositories\Abstracts\PupilRepositoryInterface;
+use App\Repositories\Contracts\PupilRepositoryInterface;
 
 class PupilRepository implements PupilRepositoryInterface
 {

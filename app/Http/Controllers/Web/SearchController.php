@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
+use App\Http\Controllers\Controller;
 use App\Services\CrossDomain\Search\SearchServiceInterface;
 use Illuminate\Http\Request;
 

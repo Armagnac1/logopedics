@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\LearningMaterial\IndexLearningMaterialRequest;
 use App\Http\Requests\LearningMaterial\StoreLearningMaterialRequest;
 use App\Http\Requests\LearningMaterial\UpdateLearningMaterialRequest;
 use App\Models\LearningMaterial;
-use App\Repositories\Abstracts\LearningMaterialRepositoryInterface;
-use App\Repositories\Abstracts\TagRepositoryInterface;
+use App\Repositories\Contracts\LearningMaterialRepositoryInterface;
+use App\Repositories\Contracts\TagRepositoryInterface;
 use Inertia\Inertia;
 
 class LearningMaterialController extends Controller

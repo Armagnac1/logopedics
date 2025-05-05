@@ -3,7 +3,7 @@
 namespace App\Services\CrossDomain\Ai;
 
 use App\Models\Lesson;
-use App\Repositories\LessonRepository;
+use App\Repositories\Eloquent\LessonRepository;
 
 class AISuggestionsService
 {

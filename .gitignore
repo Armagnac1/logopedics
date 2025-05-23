@@ -17,3 +17,13 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+# Kubernetes
+k8s/secrets.yaml
+k8s/*.env
+k8s/*.secret
+k8s/*.key
+k8s/*.pem
+k8s/*.crt
+k8s/*.csr
+k8s/*.srl
+k8s/*.kubeconfig

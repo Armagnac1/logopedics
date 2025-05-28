@@ -5,12 +5,17 @@ namespace App\Repositories\Eloquent;
 use App\Models\LearningMaterial;
 use App\Models\Lesson;
 use App\Repositories\Contracts\LearningMaterialRepositoryInterface;
-use App\Services\CrossDomain\Ai\AISuggestionsService;
+use App\Services\CrossDomain\Suggestions\SuggestionsServiceInterface;
 use Illuminate\Support\Collection;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class LearningMaterialRepository implements LearningMaterialRepositoryInterface
 {
+
+    public function __construct(private SuggestionsServiceInterface $aiSuggestionsService)
+    {
+    }
+
     public function getForIndex(array $filters): \Illuminate\Contracts\Pagination\Paginator
     {
         $searchInput = $filters['search'] ?? null;
@@ -18,7 +23,7 @@ class LearningMaterialRepository implements LearningMaterialRepositoryInterface
 
         if ($useAI) {
             $lesson = Lesson::find($filters['filters']['lessonId']);
-            $resultIds = app(AISuggestionsService::class)->getLearningMaterialSuggestions($lesson);
+            $resultIds = $this->aiSuggestionsService->getLearningMaterialSuggestions($lesson);
 
             return LearningMaterial::whereIn('id', $resultIds)->with(['tags', 'media'])->simplePaginate(10);
         }
@@ -66,7 +71,7 @@ class LearningMaterialRepository implements LearningMaterialRepositoryInterface
     public function update(LearningMaterial $learningMaterial, array $data): bool
     {
         $learningMaterial->media
-            ->reject(fn (Media $media) => in_array($media->id, $data['mediaIds']))
+            ->reject(fn(Media $media) => in_array($media->id, $data['mediaIds']))
             ->each(function ($media) {
                 $media->delete();
             });
@@ -93,7 +98,7 @@ class LearningMaterialRepository implements LearningMaterialRepositoryInterface
     public function getSuggestionsForLesson(int $lessonId): Collection
     {
         $lesson = Lesson::find($lessonId);
-        $resultIds = app(AISuggestionsService::class)->getLearningMaterialSuggestions($lesson);
+        $resultIds = $this->aiSuggestionsService->getLearningMaterialSuggestions($lesson);
 
         return LearningMaterial::whereIn('id', $resultIds)->get();
     }

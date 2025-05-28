@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services\CrossDomain\Ai;
+namespace App\Services\CrossDomain\Suggestions\Ai;
 
-use App\Services\CrossDomain\Ai\Providers\DeepSeekProvider;
-use App\Services\CrossDomain\Ai\Providers\GroqProvider;
-use App\Services\CrossDomain\Ai\Providers\OpenRouterProvider;
+use App\Services\CrossDomain\Suggestions\Ai\Providers\DeepSeekProvider;
+use App\Services\CrossDomain\Suggestions\Ai\Providers\GroqProvider;
+use App\Services\CrossDomain\Suggestions\Ai\Providers\OpenRouterProvider;
 
 class AiProviderFactory
 {

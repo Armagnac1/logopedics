@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\CrossDomain\Ai;
+namespace App\Services\CrossDomain\Suggestions\Ai;
 
 use Throwable;
 

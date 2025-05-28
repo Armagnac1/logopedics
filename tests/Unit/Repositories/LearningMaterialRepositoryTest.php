@@ -7,7 +7,7 @@ use App\Models\Lesson;
 use App\Models\Pupil;
 use App\Models\Tag;
 use App\Repositories\Eloquent\LearningMaterialRepository;
-use App\Services\CrossDomain\Ai\AISuggestionsService;
+use App\Services\CrossDomain\Suggestions\Ai\AISuggestionsService;
 use Faker\Factory as Faker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;

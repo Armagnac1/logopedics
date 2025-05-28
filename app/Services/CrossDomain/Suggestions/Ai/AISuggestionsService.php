@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Services\CrossDomain\Ai;
+namespace App\Services\CrossDomain\Suggestions\Ai;
 
 use App\Models\Lesson;
 use App\Repositories\Eloquent\LessonRepository;
+use App\Services\CrossDomain\Suggestions\SuggestionsServiceInterface;
 
-class AISuggestionsService
+class AISuggestionsService implements SuggestionsServiceInterface
 {
     public function __construct(
         private AiProviderInterface $provider,

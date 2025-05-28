@@ -14,10 +14,12 @@ use App\Repositories\Eloquent\LearningMaterialRepository;
 use App\Repositories\Eloquent\LessonRepository;
 use App\Repositories\Eloquent\PupilRepository;
 use App\Repositories\Eloquent\UserRepository;
-use App\Services\CrossDomain\Ai\AiProviderFactory;
-use App\Services\CrossDomain\Ai\AiProviderInterface;
 use App\Services\CrossDomain\Search\SearchService;
 use App\Services\CrossDomain\Search\SearchServiceInterface;
+use App\Services\CrossDomain\Suggestions\Ai\AiProviderFactory;
+use App\Services\CrossDomain\Suggestions\Ai\AiProviderInterface;
+use App\Services\CrossDomain\Suggestions\Ai\AISuggestionsService;
+use App\Services\CrossDomain\Suggestions\SuggestionsServiceInterface;
 use App\Services\Domain\Media\MediaService;
 use App\Services\Domain\Media\MediaServiceInterface;
 use Illuminate\Support\ServiceProvider;
@@ -39,6 +41,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(SearchServiceInterface::class, SearchService::class);
         $this->app->bind(PupilRepositoryInterface::class, PupilRepository::class);
         $this->app->bind(TagRepositoryInterface::class, CachedTagRepository::class);
+        $this->app->bind(SuggestionsServiceInterface::class, AISuggestionsService::class);
         $this->app->bind(AiProviderInterface::class, function () {
             return (new AiProviderFactory())->make();
         });

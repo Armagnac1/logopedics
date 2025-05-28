@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\CrossDomain\Ai\Providers;
+namespace App\Services\CrossDomain\Suggestions\Ai\Providers;
 
 use Illuminate\Support\Facades\Http;
 

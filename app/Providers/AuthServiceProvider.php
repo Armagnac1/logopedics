@@ -12,7 +12,9 @@ use App\Policies\LessonPolicy;
 use App\Policies\MediaPolicy;
 use App\Policies\PupilPolicy;
 use App\Policies\TutorPolicy;
+use App\Providers\Auth\CachedUserProvider;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
@@ -37,6 +39,10 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerPolicies();
+
+        Auth::provider('cached', function ($app, array $config) {
+            return new CachedUserProvider($app['hash'], $config['model']);
+        });
         Gate::before(function ($user, $ability) {
             return $user->hasRole('superadmin') ? true : null;
         });

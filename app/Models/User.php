@@ -65,6 +65,17 @@ class User extends Authenticatable implements HasMedia
         'profile_photo_url',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::updated(function ($user) {
+            if ($user->isDirty('roles')) {
+                $user->clearRoleCache();
+            }
+        });
+    }
+
     public function pupil(): HasOne
     {
         return $this->hasOne(Pupil::class);

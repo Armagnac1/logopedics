@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Lesson;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use App\Repositories\Cached\CachedUserRepository;
 
 class LessonPolicy
 {
@@ -21,7 +22,7 @@ class LessonPolicy
      */
     public function view(User $user, Lesson $lesson): Response
     {
-        return $lesson->pupil->tutor->id === $user->tutor->id
+        return app()->make(CachedUserRepository::class)->getTutorId($user->id) === $lesson->pupil->tutor->id
             ? Response::allow()
             : Response::deny('You are not allowed to view this lesson.');
     }
@@ -39,7 +40,7 @@ class LessonPolicy
      */
     public function delete(User $user, Lesson $lesson): Response
     {
-        return $lesson->pupil->tutor->id === $user->tutor->id
+        return app()->make(CachedUserRepository::class)->getTutorId($user->id) === $lesson->pupil->tutor->id
             ? Response::allow()
             : Response::deny('You are not allowed to delete this lesson.');
     }
@@ -49,7 +50,7 @@ class LessonPolicy
      */
     public function update(User $user, Lesson $lesson): Response
     {
-        return $user->can('update lesson') && $lesson->pupil->tutor->id === $user->tutor->id
+        return $user->can('update lesson') && app()->make(CachedUserRepository::class)->getTutorId($user->id) === $lesson->pupil->tutor->id
             ? Response::allow()
             : Response::deny('You are not allowed to update this lesson.');
     }

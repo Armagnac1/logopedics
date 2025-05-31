@@ -19,6 +19,7 @@ Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
+    'impersonate',
 ])->group(function () {
     Route::redirect('/', '/calendar')->name('home');
     Route::get('/test', function () {

@@ -5,13 +5,14 @@ namespace App\Repositories\Eloquent;
 use App\Enums\LessonStatus;
 use App\Models\Lesson;
 use App\Models\Pupil;
+use App\Repositories\Cached\CachedUserRepository;
 use App\Repositories\Contracts\PupilRepositoryInterface;
 
 class PupilRepository implements PupilRepositoryInterface
 {
     public function getForIndex($search)
     {
-        $tutorId = auth()->user()->tutor->id;
+        $tutorId = app()->make(CachedUserRepository::class)->getTutorId(auth()->id());
         $upcomingLessons = \DB::table('lessons')
             ->selectRaw('pupil_id, MIN(start_at) as start_at')
             ->where('status', LessonStatus::SCHEDULED)
@@ -50,7 +51,7 @@ class PupilRepository implements PupilRepositoryInterface
     public function create(array $data)
     {
         $pupil = new Pupil($data);
-        $pupil->tutor_id = auth()->user()->tutor->id;
+        $pupil->tutor_id = app()->make(CachedUserRepository::class)->getTutorId(auth()->id());
         $pupil->save();
 
         return $pupil;

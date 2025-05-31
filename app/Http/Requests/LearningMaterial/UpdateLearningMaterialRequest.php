@@ -4,6 +4,7 @@ namespace App\Http\Requests\LearningMaterial;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use App\Repositories\Cached\CachedUserRepository;
 
 class UpdateLearningMaterialRequest extends FormRequest
 {
@@ -14,7 +15,7 @@ class UpdateLearningMaterialRequest extends FormRequest
     {
         $learningMaterial = $this->route('learning_material');
 
-        return Auth::user()->tutor->id === $learningMaterial->creator_user_id;
+        return app()->make(CachedUserRepository::class)->getTutorId(Auth::id()) === $learningMaterial->creator_user_id;
     }
 
     /**

@@ -26,7 +26,7 @@ class Impersonate
                 auth('web')->getName() => $user->id,
             ]);
             session()->forget('impersonator');
-        } elseif (Auth::user()->can('login as others') && session()->has('impersonate')) {
+        } elseif (session()->has('impersonate') && Auth::user()->can('login as others')) {
             $user = User::find(session('impersonate'));
             app('auth')->guard('sanctum')->setUser($user);
             session()->put([

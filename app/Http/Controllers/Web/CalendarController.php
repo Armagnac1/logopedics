@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Repositories\Contracts\CalendarRepositoryInterface;
+use App\Repositories\Cached\CachedUserRepository;
 use Inertia\Inertia;
 
 class CalendarController extends Controller
@@ -18,7 +19,7 @@ class CalendarController extends Controller
 
     public function index()
     {
-        $tutorId = auth()->user()->tutor->id;
+        $tutorId = app()->make(CachedUserRepository::class)->getTutorId(auth()->id());
         $lessons = $this->calendarRepository->getLessonsForTutor($tutorId);
 
         return Inertia::render('Calendar', [
@@ -28,7 +29,7 @@ class CalendarController extends Controller
 
     public function generateCalendar(User $user)
     {
-        $tutorId = auth()->user()->tutor->id;
+        $tutorId = app()->make(CachedUserRepository::class)->getTutorId(auth()->id());
 
         return $this->calendarRepository->generateCalendar($tutorId);
     }

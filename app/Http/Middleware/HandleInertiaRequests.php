@@ -36,8 +36,18 @@ class HandleInertiaRequests extends Middleware
         $permissions = [];
         $roles = [];
         if (auth()->user()) {
-            $permissions = auth()->user()->roles()->with('permissions')->get()->pluck('permissions')->first()->pluck('name');
-            $roles = auth()->user()->roles()->get()->pluck('name');
+            $user = auth()->user();
+            $cacheKey = 'user_' . $user->id . '_roles_permissions';
+            
+            $cachedData = cache()->remember($cacheKey, now()->addHours(24), function () use ($user) {
+                return [
+                    'permissions' => $user->roles()->with('permissions')->get()->pluck('permissions')->first()->pluck('name'),
+                    'roles' => $user->roles()->get()->pluck('name')
+                ];
+            });
+            
+            $permissions = $cachedData['permissions'];
+            $roles = $cachedData['roles'];
         }
         $urlPrev = request()->wantsJson() ? null : $this->savePreviousUrl();
 

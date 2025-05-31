@@ -14,4 +14,13 @@ class UserRepository implements UserRepositoryInterface
             ->paginate($perPage)
             ->withQueryString();
     }
+
+    public function getTutorId($userId): ?int
+    {
+        $user = User::find($userId);
+        if ($user && $user->tutor) {
+            return $user->tutor->id;
+        }
+        return null;
+    }
 }

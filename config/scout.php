@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'driver' => env('SCOUT_DRIVER', 'database'),
+    'driver' => env('SCOUT_DRIVER', 'elasticsearch'),
 
     /*
     |--------------------------------------------------------------------------
@@ -133,11 +133,7 @@ return [
     'meilisearch' => [
         'host' => env('MEILISEARCH_HOST', 'http://localhost:7700'),
         'key' => env('MEILISEARCH_KEY'),
-        'index-settings' => [
-            // 'users' => [
-            //     'filterableAttributes'=> ['id', 'name', 'email'],
-            // ],
-        ],
+        'index-settings' => [],
     ],
 
     /*
@@ -173,30 +169,22 @@ return [
             'num_retries' => env('TYPESENSE_NUM_RETRIES', 3),
             'retry_interval_seconds' => env('TYPESENSE_RETRY_INTERVAL_SECONDS', 1),
         ],
-        'model-settings' => [
-            // User::class => [
-            //     'collection-schema' => [
-            //         'fields' => [
-            //             [
-            //                 'name' => 'id',
-            //                 'type' => 'string',
-            //             ],
-            //             [
-            //                 'name' => 'name',
-            //                 'type' => 'string',
-            //             ],
-            //             [
-            //                 'name' => 'created_at',
-            //                 'type' => 'int64',
-            //             ],
-            //         ],
-            //         'default_sorting_field' => 'created_at',
-            //     ],
-            //     'search-parameters' => [
-            //         'query_by' => 'name'
-            //     ],
-            // ],
+        'model-settings' => [],
+    ],
+
+    'elasticsearch' => [
+        'index' => env('SCOUT_PREFIX', '') . env('APP_ENV', 'local'),
+        'hosts' => [
+            [
+                'host' => env('ELASTICSEARCH_HOST', 'localhost'),
+                'port' => env('ELASTICSEARCH_PORT', '9200'),
+                'scheme' => env('ELASTICSEARCH_SCHEME', 'http'),
+            ],
         ],
+        'ssl_verification' => false,
+        'retries' => 3,
+        'connection_timeout' => 2,
+        'healthcheck_interval' => 30,
     ],
 
 ];

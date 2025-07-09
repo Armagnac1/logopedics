@@ -1,0 +1,72 @@
+services:
+  # Main Laravel application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.simple
+    container_name: logopedics-app
+    ports:
+      - "8000:80"
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - DB_HOST=mysql
+      - DB_DATABASE=logopedics
+      - DB_USERNAME=logopedics_user
+      - DB_PASSWORD=logopedics_password
+      - REDIS_HOST=redis
+    volumes:
+      - .:/var/www/html
+      - ./storage:/var/www/html/storage
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - logopedics-network
+
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: logopedics-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: logopedics
+      MYSQL_USER: logopedics_user
+      MYSQL_PASSWORD: logopedics_password
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - logopedics-network
+
+  # Redis for caching
+  redis:
+    image: redis:7-alpine
+    container_name: logopedics-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - logopedics-network
+
+  # Mail testing tool
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: logopedics-mailpit
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - logopedics-network
+
+networks:
+  logopedics-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+    driver: local
+  redis_data:
+    driver: local

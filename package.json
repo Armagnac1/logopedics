@@ -1,12 +1,25 @@
 {
+    "name": "logopedics",
+    "version": "1.0.0",
+    "description": "Logopedics Desktop Application",
+    "author": {
+        "name": "Dmitrii Sorokin",
+        "email": "your.email@example.com"
+    },
     "private": true,
     "type": "module",
+    "main": "electron/main.js",
     "scripts": {
         "dev": "vite",
         "build": "vite build",
         "lint": "eslint ./resources/js",
         "lint:debug": "eslint ./resources/js --debug",
-        "lint:fix": "eslint ./resources/js --fix"
+        "lint:fix": "eslint ./resources/js --fix",
+        "electron:dev": "NODE_ENV=development electron .",
+        "electron:build": "vite build && electron-builder",
+        "electron:build:mac": "REMOTE_SERVER=https://logopedics.ru electron-builder --mac",
+        "electron:build:win": "REMOTE_SERVER=https://logopedics.ru electron-builder --win",
+        "electron:build:linux": "REMOTE_SERVER=https://logopedics.ru electron-builder --linux"
     },
     "devDependencies": {
         "@inertiajs/vue3": "^1.0.0",
@@ -48,5 +61,33 @@
     },
     "optionalDependencies": {
         "@rollup/rollup-linux-x64-gnu": "4.6.1"
+    },
+    "build": {
+        "appId": "com.logopedics.app",
+        "productName": "Logopedics",
+        "directories": {
+            "output": "dist_electron"
+        },
+        "files": [
+            "dist/**/*",
+            "electron/**/*"
+        ],
+        "mac": {
+            "category": "public.app-category.medical",
+            "target": ["dmg", "zip"]
+        },
+        "win": {
+            "target": ["nsis", "portable"]
+        },
+        "linux": {
+            "target": ["AppImage", "deb"],
+            "category": "Medical"
+        },
+        "extraResources": [
+            {
+                "from": "resources",
+                "to": "resources"
+            }
+        ]
     }
 }
